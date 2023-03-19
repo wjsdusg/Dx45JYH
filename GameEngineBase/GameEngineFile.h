@@ -1,6 +1,6 @@
 #pragma once
 #include "GameEnginePath.h"
-
+#include <GameEngineBase/GameEngineSerializer.h>
 // Ό³Έν :
 class GameEngineFile
 {
@@ -20,7 +20,7 @@ public:
 	{
 		return Path.Path.string();
 	}
-
+	void Save(const GameEngineSerializer& _Data);
 protected:
 
 private:

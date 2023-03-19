@@ -14,3 +14,7 @@ GameEngineFile::GameEngineFile(std::filesystem::path _Path)
 {
 
 }
+void GameEngineFile::Save( const GameEngineSerializer& _Data)
+{
+
+}
