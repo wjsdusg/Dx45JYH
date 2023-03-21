@@ -8,3 +8,10 @@ GameEngineLevel::~GameEngineLevel()
 {
 }
 
+
+
+void GameEngineLevel::Loading()
+{
+
+
+}

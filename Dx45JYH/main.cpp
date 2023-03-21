@@ -1,14 +1,20 @@
 #include <Windows.h>
 #include <GameEngineBase\GameEngineFile.h>
-#include <GameEngineCore/GameEngineCore.h>
-#pragma comment(lib,"GameEngineBase.lib")
+#include <GameEngineBase\GameEngineDirectory.h>
+#include <GameEngineCore\GameEngineCore.h>
+#include <GameEngineContents\ContentsCore.h>
+
+#pragma comment(lib, "GameEngineCore.lib")
+#pragma comment(lib, "GameEngineContents.lib")
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-	int Value = -1;
-
-	GameEngineSerializer Data;
-	Data.Write(Value);
+	GameEngineCore::Start(hInstance,
+		ContentsCore::GameStart,
+		ContentsCore::GameEnd
+	);
 }
+
