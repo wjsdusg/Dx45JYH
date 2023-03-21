@@ -1,6 +1,17 @@
 #pragma once
 #include "GameEnginePath.h"
-#include <GameEngineBase/GameEngineSerializer.h>
+#include "GameEngineSerializer.h"
+
+// 파일이라는 것은 확장자도 의미없고
+// 바이트 덩어리일 뿐이다.
+// c스타일의 파일입출력을 사용할것입니다.
+
+enum class SAVEMODE
+{
+	Text,
+	Bin,
+};
+
 // 설명 :
 class GameEngineFile
 {
@@ -16,11 +27,16 @@ public:
 	//GameEngineFile& operator=(const GameEngineFile& _Other) = delete;
 	//GameEngineFile& operator=(GameEngineFile&& _Other) noexcept = delete;
 
-	std::string GetFullPath() 
+	std::string GetFullPath()
 	{
 		return Path.Path.string();
 	}
-	void Save(const GameEngineSerializer& _Data);
+
+	void SaveBin(const GameEngineSerializer& _Data);
+	void SaveText(const std::string_view& _View);
+
+	void LoadBin(GameEngineSerializer& _Data);
+
 protected:
 
 private:
