@@ -13,6 +13,7 @@
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -22,5 +23,6 @@
       <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
 </Project>
