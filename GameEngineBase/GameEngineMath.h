@@ -43,14 +43,57 @@ public:
 
 	static float4 AngleToDirection2DToRad(float _Rad)
 	{
+		// 빗변의 길이가 1일수밖에 없다.
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	static float4 CrossReturn(const float4& _Left, const float4& _Right)
+	{
+		float4 ReturnValue;
+		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
+		ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
+		ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
+		return ReturnValue;
+	}
+
 public:
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
-	float w = 1.0f;
+	union
+	{
+		struct
+		{
+			float x;
+			float y;
+			float z;
+			float w;
+		};
+
+		float Arr1D[4];
+	};
+
+	float4()
+		: x(0.0f), y(0.0f), z(0.0f), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y)
+		: x(_x), y(_y), z(0.0f), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y, float _z)
+		: x(_x), y(_y), z(_z), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y, float _z, float _w)
+		: x(_x), y(_y), z(_z), w(_w)
+	{
+
+	}
+
 	// 마지막이 1인지는 3d 때 배우게 될겁니다.
 
 	int ix() const
@@ -58,17 +101,17 @@ public:
 		return static_cast<int>(x);
 	}
 
-	int iy() const 
+	int iy() const
 	{
 		return static_cast<int>(y);
 	}
 
-	int iz() const 
+	int iz() const
 	{
 		return static_cast<int>(z);
 	}
 
-	int iw() const 
+	int iw() const
 	{
 		return static_cast<int>(w);
 	}
@@ -114,9 +157,40 @@ public:
 		return w * 0.5f;
 	}
 
-	float GetAnagleDeg() 
+	float GetAnagleDeg()
 	{
 		return GetAnagleRad() * GameEngineMath::RadToDeg;
+	}
+
+	float4 RotaitonXDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	float4 RotaitonYDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	float4 RotaitonZDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	void RotaitonXDeg(float _Deg)
+	{
+		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotaitonYDeg(float _Deg)
+	{
+		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
 	}
 
 	void RotaitonZDeg(float _Deg)
@@ -124,20 +198,32 @@ public:
 		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
+	void RotaitonXRad(float _Rad)
+	{
+		float4 Copy = *this;
+		float Z = Copy.z;
+		float Y = Copy.y;
+		z = Z * cosf(_Rad) - Y * sinf(_Rad);
+		y = Z * sinf(_Rad) + Y * cosf(_Rad);
+	}
+
+	void RotaitonYRad(float _Rad)
+	{
+		float4 Copy = *this;
+		float X = Copy.x;
+		float Z = Copy.z;
+		x = X * cosf(_Rad) - Z * sinf(_Rad);
+		z = X * sinf(_Rad) + Z * cosf(_Rad);
+	}
+
 	void RotaitonZRad(float _Rad)
 	{
 		float4 Copy = *this;
-		x = Copy.x * cosf(_Rad) - Copy.y * sinf(_Rad);
-		y = Copy.x * sinf(_Rad) + Copy.y * cosf(_Rad);
+		float X = Copy.x;
+		float Y = Copy.y;
+		x = X * cosf(_Rad) - Y * sinf(_Rad);
+		y = X * sinf(_Rad) + Y * cosf(_Rad);
 	}
-
-	float4 RotaitonZDegReturn(float _Deg)
-	{
-		float4 Copy = *this;
-		Copy.RotaitonZDeg(_Deg);
-		return Copy;
-	}
-
 
 	float GetAnagleRad()
 	{
@@ -145,7 +231,7 @@ public:
 		AngleCheck.Normalize();
 		// functon(1) == 50; 1을 50으로 바꾸는 함수
 		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
-		
+
 		// cosf(각도);
 
 		float Result = acosf(AngleCheck.x);
@@ -158,14 +244,14 @@ public:
 
 	}
 
-	POINT ToWindowPOINT() 
+	POINT ToWindowPOINT()
 	{
 		return POINT(ix(), iy());
 	}
 
 	float4 half() const
 	{
-		return {x * 0.5f,y * 0.5f,z * 0.5f,w};
+		return { x * 0.5f,y * 0.5f,z * 0.5f,w };
 	}
 
 	bool IsZero() const
@@ -175,12 +261,13 @@ public:
 
 	float Size() const
 	{
+		// 완벽
 		return sqrtf(x * x + y * y);
 	}
 
 	// 2, 0
 	// 0, 2
-	void Normalize() 
+	void Normalize()
 	{
 		float SizeValue = Size();
 		x /= SizeValue;
@@ -266,10 +353,10 @@ public:
 
 	float4 operator -() const
 	{
-		return {-x, -y, -z, 1.0f};
+		return { -x, -y, -z, 1.0f };
 	}
 
-	float4& operator +=(const float4& _Other) 
+	float4& operator +=(const float4& _Other)
 	{
 		x += _Other.x;
 		y += _Other.y;
@@ -310,7 +397,9 @@ public:
 		return *this;
 	}
 
-	std::string ToString() 
+	float4 operator*(const class float4x4& _Other);
+
+	std::string ToString()
 	{
 		char ArrReturn[256];
 
@@ -346,7 +435,7 @@ public:
 
 	float4 LeftTop() const
 	{
-		return float4{Left(), Top()};
+		return float4{ Left(), Top() };
 	}
 	float4 RightTop() const
 	{
@@ -360,4 +449,53 @@ public:
 	{
 		return float4{ Right(), Bot() };
 	}
+};
+
+class float4x4
+{
+public:
+	union
+	{
+		float Arr1D[16];
+		float Arr2D[4][4];
+		float4 ArrVector[4];
+
+		struct
+		{
+			float _00;
+			float _01;
+			float _02;
+			float _03;
+			float _10;
+			float _11;
+			float _12;
+			float _13;
+			float _20;
+			float _21;
+			float _22;
+			float _23;
+			float _30;
+			float _31;
+			float _32;
+			float _33;
+		};
+	};
+
+	float4x4()
+	{
+		Identity();
+	}
+
+	void Identity()
+	{
+		memset(Arr1D, 0, sizeof(float) * 16);
+		Arr2D[0][0] = 1.0f;
+		Arr2D[1][1] = 1.0f;
+		Arr2D[2][2] = 1.0f;
+		Arr2D[3][3] = 1.0f;
+	}
+
+
+	// float4 operator*()
+
 };

@@ -40,7 +40,7 @@ void Player::Render(float _Delta)
 	// 크자이공부
 
 	// 크기를 키우고
-	// 회전시킨다음
+	// 자전시킨다음
 	// 이동하고
 	// 공전시키고
 	// 부모의 변환을 적용시킨다.
@@ -49,7 +49,7 @@ void Player::Render(float _Delta)
 	for (size_t i = 0; i < VertexCount; i++)
 	{
 		ArrVertex[i].RotaitonZDeg(Angle);
-		ArrVertex[i] += Pos;
+		//ArrVertex[i] += Pos;
 
 
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
