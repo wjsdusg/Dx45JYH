@@ -160,21 +160,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineActor.h" />
+    <ClInclude Include="GameEngineCamera.h" />
     <ClInclude Include="GameEngineComponent.h" />
     <ClInclude Include="GameEngineCore.h" />
     <ClInclude Include="GameEngineLevel.h" />
     <ClInclude Include="GameEngineMesh.h" />
     <ClInclude Include="GameEngineObject.h" />
     <ClInclude Include="GameEngineResource.h" />
+    <ClInclude Include="GameEngineTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp" />
+    <ClCompile Include="GameEngineCamera.cpp" />
     <ClCompile Include="GameEngineComponent.cpp" />
     <ClCompile Include="GameEngineCore.cpp" />
     <ClCompile Include="GameEngineLevel.cpp" />
     <ClCompile Include="GameEngineMesh.cpp" />
     <ClCompile Include="GameEngineObject.cpp" />
     <ClCompile Include="GameEngineResource.cpp" />
+    <ClCompile Include="GameEngineTransform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

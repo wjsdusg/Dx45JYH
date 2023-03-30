@@ -2,10 +2,13 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <list>
 #include <memory>
+#include "GameEngineTransform.h"
 
 // 설명 :
 class GameEngineObject
 {
+	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineObject();
@@ -63,6 +66,11 @@ public:
 		return Parent;
 	}
 
+	GameEngineTransform& GetTransform()
+	{
+		return Transform;
+	}
+
 protected:
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
@@ -80,13 +88,7 @@ private:
 
 	////////////////////////////////////////////////////////////// Transform 기하구조
 
-public:
-	float4 GetPos()
-	{
-		return Pos;
-	}
-
 private:
-	float4 Pos;
+	GameEngineTransform Transform;
 
 };
