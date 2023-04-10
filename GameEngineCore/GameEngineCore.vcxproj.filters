@@ -21,7 +21,7 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineCamera.h">
-      <Filter>Rendering</Filter>
+      <Filter>Object\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineTransform.h">
       <Filter>Object</Filter>
@@ -48,7 +48,7 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineCamera.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>Object\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineTransform.cpp">
       <Filter>Object</Filter>
@@ -61,7 +61,7 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{39705810-6d8b-420b-8753-c9aeff1a7eec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rendering">
+    <Filter Include="Object\Rendering">
       <UniqueIdentifier>{0ca70620-7ddf-4195-9792-945338f646e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
