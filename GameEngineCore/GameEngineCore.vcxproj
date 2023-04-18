@@ -167,6 +167,7 @@
     <ClInclude Include="GameEngineLevel.h" />
     <ClInclude Include="GameEngineMesh.h" />
     <ClInclude Include="GameEngineObject.h" />
+    <ClInclude Include="GameEngineObjectBase.h" />
     <ClInclude Include="GameEngineRenderer.h" />
     <ClInclude Include="GameEngineResource.h" />
     <ClInclude Include="GameEngineTransform.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="GameEngineLevel.cpp" />
     <ClCompile Include="GameEngineMesh.cpp" />
     <ClCompile Include="GameEngineObject.cpp" />
+    <ClCompile Include="GameEngineObjectBase.cpp" />
     <ClCompile Include="GameEngineRenderer.cpp" />
     <ClCompile Include="GameEngineResource.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />

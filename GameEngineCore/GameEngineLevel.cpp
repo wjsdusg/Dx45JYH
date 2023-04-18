@@ -30,6 +30,7 @@ void GameEngineLevel::Update(float _DeltaTime)
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
 			Actor->Update(_DeltaTime);
+			Actor->ComponentsUpdate(_DeltaTime);
 		}
 	}
 }
@@ -46,6 +47,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
 			Actor->Render(_DeltaTime);
+			Actor->ComponentsRender(_DeltaTime);
 		}
 	}
 }
