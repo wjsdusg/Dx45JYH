@@ -22,12 +22,12 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("CamMoveForward", 'W');
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
 
-		GameEngineInput::CreateKey("RotY+", VK_NUMPAD1);
-		GameEngineInput::CreateKey("RotY-", VK_NUMPAD2);
-		GameEngineInput::CreateKey("RotZ+", VK_NUMPAD4);
-		GameEngineInput::CreateKey("RotZ-", VK_NUMPAD5);
-		GameEngineInput::CreateKey("RotX+", VK_NUMPAD7);
-		GameEngineInput::CreateKey("RotX-", VK_NUMPAD8);
+		GameEngineInput::CreateKey("RotY+", 'Z');
+		GameEngineInput::CreateKey("RotY-", 'X');
+		GameEngineInput::CreateKey("RotZ+", 'C');
+		GameEngineInput::CreateKey("RotZ-", 'V');
+		GameEngineInput::CreateKey("RotX+", 'B');
+		GameEngineInput::CreateKey("RotX-", 'N');
 
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
 		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
