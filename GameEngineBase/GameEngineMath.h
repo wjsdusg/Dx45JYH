@@ -364,6 +364,8 @@ public:
 		//Return.z = z * _Value;
 	}
 
+
+
 	bool operator ==(const float4& _Value) const
 	{
 		return _Value.x == x && _Value.y == y && _Value.z == z;
@@ -693,6 +695,18 @@ public:
 
 	}
 
+	void Inverse()
+	{
+		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);
+	}
+
+	float4x4 InverseReturn() const
+	{
+		float4x4 Return = *this;
+		Return.Inverse();
+		return Return;
+	}
+
 	void Scale(const float4& _Value)
 	{
 		//100, 0 , 0 , 0
@@ -878,4 +892,5 @@ public:
 	}
 
 };
+
 

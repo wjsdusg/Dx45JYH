@@ -56,20 +56,11 @@ public:
 		Name = _Name;
 	}
 
-	void SetParent(GameEngineObject* _Parent)
-	{
-		Parent = _Parent;
-	}
-
-	GameEngineObject* GetParent()
-	{
-		return Parent;
-	}
-
 	GameEngineTransform& GetTransform()
 	{
 		return Transform;
 	}
+
 
 protected:
 
@@ -78,11 +69,6 @@ private:
 	bool IsActive = true; // 켜졌다 꺼졌다
 	bool IsDeath = false; // 죽었다 살았다
 	int Order = 0;
-
-	GameEngineObject* Parent = nullptr;
-
-	std::list<std::shared_ptr<GameEngineObject>> Child;
-
 	////////////////////////////////////////////////////////////// Transform 기하구조
 
 private:

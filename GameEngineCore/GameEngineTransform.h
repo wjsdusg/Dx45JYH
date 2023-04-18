@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <memory>
 #include <GameEngineBase/GameEngineMath.h>
 
 // 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
@@ -15,6 +16,50 @@ public:
 	GameEngineTransform(GameEngineTransform&& _Other) noexcept = delete;
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
+
+	void SetWorldScale(const float4& _Value)
+	{
+		//float4 LocalPostionValue = WorldPostion * Parent.InverseReturn();
+		//float4 WorldPostionValue = LocalPostion * Parent;
+
+		WorldScale = _Value;
+
+		if (nullptr == Parent)
+		{
+			LocalScale = WorldScale;
+			TransformUpdate();
+			CalChild();
+			//for (GameEngineTransform* Parent : Child)
+			//{
+			//	Parent->SetLocalScale(Parent->GetLocalScale());
+			//	Parent->TransformUpdate();
+			//}
+			return;
+		}
+
+		LocalScale = WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetWorldRotation(const float4& _Value)
+	{
+		WorldRotation = _Value;
+
+		if (nullptr == Parent)
+		{
+			LocalRotation = WorldRotation;
+		}
+
+
+		TransformUpdate();
+	}
+
+	void SetWorldPosition(const float4& _Value)
+	{
+		WorldPosition = _Value;
+		TransformUpdate();
+	}
 
 	void SetLocalScale(const float4& _Value)
 	{
@@ -116,18 +161,22 @@ public:
 		WorldMatrix *= ViewPort;
 	}
 
+	void CalChild()
+	{
+	}
+
 protected:
 
 private:
 	void TransformUpdate();
 
-	// 추후에 쓸것이고.
-	GameEngineTransform* Parent = nullptr;
-	std::list<GameEngineTransform*> Child;
-
 	float4 LocalScale = float4::One;
 	float4 LocalRotation = float4::Zero;
 	float4 LocalPosition = float4::Zero;
+
+	float4 WorldScale = float4::One;
+	float4 WorldRotation = float4::Zero;
+	float4 WorldPosition = float4::Zero;
 
 	float4x4 LocalScaleMatrix;
 	float4x4 LocalRotationMatrix;
@@ -140,5 +189,8 @@ private:
 	float4x4 View;
 	float4x4 Projection;
 	float4x4 ViewPort;
+
+	GameEngineTransform* Parent = nullptr;
+	std::list <GameEngineTransform*> Child;
 };
 

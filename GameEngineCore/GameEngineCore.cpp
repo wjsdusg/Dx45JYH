@@ -90,5 +90,5 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 
 void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 {
-	_Level->Loading();
+	_Level->Start();
 }
