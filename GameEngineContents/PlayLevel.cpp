@@ -13,7 +13,7 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Loading()
 {
-	GetMainCamera()->GetTransform().SetLocalPosition({ 0, 0, -100.0f });
+	GetMainCamera()->GetTransform().SetLocalPosition({ 0, 0, -1000.0f });
 
 	std::shared_ptr<Player> NewPlayer = CreateActor<Player>("Player");
 
