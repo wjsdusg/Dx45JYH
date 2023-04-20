@@ -14,6 +14,7 @@
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -24,5 +25,6 @@
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PrecompileHeader.cpp" />
   </ItemGroup>
 </Project>

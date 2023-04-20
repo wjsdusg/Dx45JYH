@@ -51,6 +51,7 @@
     <ClInclude Include="GameEngineRenderTarget.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -105,6 +106,7 @@
     <ClCompile Include="GameEngineRenderTarget.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
