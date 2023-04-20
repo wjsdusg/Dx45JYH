@@ -164,6 +164,7 @@
     <ClInclude Include="GameEngineCollision.h" />
     <ClInclude Include="GameEngineComponent.h" />
     <ClInclude Include="GameEngineCore.h" />
+    <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineLevel.h" />
     <ClInclude Include="GameEngineMesh.h" />
     <ClInclude Include="GameEngineNameObject.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="GameEngineComponent.cpp" />
     <ClCompile Include="GameEngineCore.cpp" />
     <ClCompile Include="GameEngineCore_Resources.cpp" />
+    <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineLevel.cpp" />
     <ClCompile Include="GameEngineMesh.cpp" />
     <ClCompile Include="GameEngineNameObject.cpp" />
