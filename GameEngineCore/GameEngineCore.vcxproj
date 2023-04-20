@@ -166,12 +166,15 @@
     <ClInclude Include="GameEngineCore.h" />
     <ClInclude Include="GameEngineLevel.h" />
     <ClInclude Include="GameEngineMesh.h" />
+    <ClInclude Include="GameEngineNameObject.h" />
     <ClInclude Include="GameEngineObject.h" />
     <ClInclude Include="GameEngineObjectBase.h" />
     <ClInclude Include="GameEngineRenderer.h" />
     <ClInclude Include="GameEngineResource.h" />
+    <ClInclude Include="GameEngineTexture.h" />
     <ClInclude Include="GameEngineTransform.h" />
     <ClInclude Include="GameEngineUpdateObject.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp" />
@@ -179,14 +182,20 @@
     <ClCompile Include="GameEngineCollision.cpp" />
     <ClCompile Include="GameEngineComponent.cpp" />
     <ClCompile Include="GameEngineCore.cpp" />
+    <ClCompile Include="GameEngineCore_Resources.cpp" />
     <ClCompile Include="GameEngineLevel.cpp" />
     <ClCompile Include="GameEngineMesh.cpp" />
+    <ClCompile Include="GameEngineNameObject.cpp" />
     <ClCompile Include="GameEngineObject.cpp" />
     <ClCompile Include="GameEngineObjectBase.cpp" />
     <ClCompile Include="GameEngineRenderer.cpp" />
     <ClCompile Include="GameEngineResource.cpp" />
+    <ClCompile Include="GameEngineTexture.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />
     <ClCompile Include="GameEngineUpdateObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameEngineCore.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
