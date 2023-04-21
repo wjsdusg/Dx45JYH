@@ -34,6 +34,7 @@ OutPut Texture_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut)0;
 
+    _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldMatrix);
     // OutPutValue.Pos = _Value.Pos;
     OutPutValue.Color = _Value.Color;
@@ -44,13 +45,18 @@ OutPut Texture_VS(Input _Value)
     return OutPutValue;
 }
 
-//struct OutColor
-//{
-//    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
-//    float4 Color : SV_Target0;
-//};
+cbuffer OutPixelColor : register(b0)
+{
+    float4 OutColor;
+}
+
+cbuffer OutPixelColor1 : register(b1)
+{
+    float4 OutColor1;
+}
+
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    return float4(1.0f, 0.0f, 0.0f, 1.0f);
+    return OutColor;
 }
