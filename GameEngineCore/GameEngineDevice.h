@@ -56,12 +56,6 @@ private:
 
 	static std::shared_ptr<class GameEngineRenderTarget> BackBufferTarget;
 
-	// HBITMAP
-	// static ID3D11Texture2D* BackBufferTexture;
-
-	// HDC
-	// static ID3D11RenderTargetView* RenderTarget;
-
 	// constrcuter destructer
 	GameEngineDevice();
 	~GameEngineDevice();
