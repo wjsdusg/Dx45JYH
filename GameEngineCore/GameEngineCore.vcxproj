@@ -167,7 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="EngineEnum.h" />
     <ClInclude Include="GameEngineActor.h" />
     <ClInclude Include="GameEngineCamera.h" />
     <ClInclude Include="GameEngineCollision.h" />
@@ -176,6 +175,7 @@
     <ClInclude Include="GameEngineCore.h" />
     <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineDirectBuffer.h" />
+    <ClInclude Include="GameEngineEnum.h" />
     <ClInclude Include="GameEngineIndexBuffer.h" />
     <ClInclude Include="GameEngineInputLayOut.h" />
     <ClInclude Include="GameEngineLevel.h" />

@@ -4,7 +4,23 @@
 // 선언해 놨다고 쓰는게 아니에요.
 cbuffer TransformData : register(b0)
 {
+    float4 LocalScale;
+    float4 LocalRotation;
+    float4 LocalQuaternion;
+    float4 LocalPosition;
+    float4 WorldScale;
+    float4 WorldRotation;
+    float4 WorldQuaternion;
+    float4 WorldPosition;
+    float4x4 LocalScaleMatrix;
+    float4x4 LocalRotationMatrix;
+    float4x4 LocalPositionMatrix;
+    float4x4 LocalWorldMatrix;
     float4x4 WorldMatrix;
+    float4x4 View;
+    float4x4 Projection;
+    float4x4 ViewPort;
+    float4x4 WorldViewProjectionMatrix;
 }
 
 // 어떤 정보가 들어올지 구조체로 만들어야 합니다.
@@ -15,7 +31,7 @@ struct Input
     // 시맨틱      어떤역할을 가졌는지 
     // 버텍스 쉐이더에다가 순서를 어떻게 해놓건 사실 그건 상관이 없어요.
     // 중요한건 버텍스 버퍼고 
-    float4 Pos   : POSITION;
+    float4 Pos : POSITION;
     float4 Color : COLOR;
 };
 
@@ -35,7 +51,7 @@ OutPut Texture_VS(Input _Value)
     OutPut OutPutValue = (OutPut)0;
 
     _Value.Pos.w = 1.0f;
-    OutPutValue.Pos = mul(_Value.Pos, WorldMatrix);
+    OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     // OutPutValue.Pos = _Value.Pos;
     OutPutValue.Color = _Value.Color;
 
