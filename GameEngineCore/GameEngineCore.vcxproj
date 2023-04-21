@@ -175,6 +175,7 @@
     <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineDirectBuffer.h" />
     <ClInclude Include="GameEngineIndexBuffer.h" />
+    <ClInclude Include="GameEngineInputLayOut.h" />
     <ClInclude Include="GameEngineLevel.h" />
     <ClInclude Include="GameEngineMesh.h" />
     <ClInclude Include="GameEngineNameObject.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineDirectBuffer.cpp" />
     <ClCompile Include="GameEngineIndexBuffer.cpp" />
+    <ClCompile Include="GameEngineInputLayOut.cpp" />
     <ClCompile Include="GameEngineLevel.cpp" />
     <ClCompile Include="GameEngineMesh.cpp" />
     <ClCompile Include="GameEngineNameObject.cpp" />
