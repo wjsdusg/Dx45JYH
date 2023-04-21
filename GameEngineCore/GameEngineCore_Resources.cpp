@@ -140,8 +140,8 @@ void GameEngineCore::CoreResourcesInit()
 	// 버텍스 쉐이더 컴파일
 	{
 		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("Shader");
-		//NewDir.Move("EngineResources");
+		NewDir.MoveParentToDirectory("EngineResources");
+		NewDir.Move("EngineResources");
 		NewDir.Move("Shader");
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
