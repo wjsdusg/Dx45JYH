@@ -4,7 +4,7 @@
 #include <io.h>
 #include <GameEngineBase/GameEngineDebug.h>
 
-GameEnginePath::GameEnginePath() 
+GameEnginePath::GameEnginePath()
 	: Path(std::filesystem::current_path())
 {
 }
@@ -26,7 +26,7 @@ GameEnginePath::GameEnginePath(GameEnginePath&& _Other)
 
 }
 
-GameEnginePath::~GameEnginePath() 
+GameEnginePath::~GameEnginePath()
 {
 }
 
@@ -41,13 +41,18 @@ std::string GameEnginePath::GetFileName() const
 	return Path.filename().string();
 }
 
+std::string GameEnginePath::GetExtension() const
+{
+	return Path.extension().string();
+}
 
-std::string GameEnginePath::GetPathToString() const
+
+std::string GameEnginePath::GetFullPath() const
 {
 	return Path.string();
 }
 
-void GameEnginePath::MoveParent() 
+void GameEnginePath::MoveParent()
 {
 	Path = Path.parent_path();
 }
@@ -60,7 +65,7 @@ void GameEnginePath::MoveParentToChildPath(const std::string_view& _String)
 		{
 			return;
 		}
-		
+
 		MoveParent();
 	}
 
@@ -92,7 +97,7 @@ bool GameEnginePath::IsExists()
 
 bool GameEnginePath::IsExistsToPlusString(const std::string_view& _String)
 {
-	std::string Str = GetPathToString() + _String.data();
+	std::string Str = GetFullPath() + _String.data();
 	return 0 == _access(Str.c_str(), 0);
 }
 
