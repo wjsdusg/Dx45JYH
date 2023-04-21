@@ -180,6 +180,8 @@
     <ClInclude Include="GameEngineNameObject.h" />
     <ClInclude Include="GameEngineObject.h" />
     <ClInclude Include="GameEngineObjectBase.h" />
+    <ClInclude Include="GameEnginePixelShader.h" />
+    <ClInclude Include="GameEngineRasterizer.h" />
     <ClInclude Include="GameEngineRenderer.h" />
     <ClInclude Include="GameEngineRenderingPipeLine.h" />
     <ClInclude Include="GameEngineRenderTarget.h" />
@@ -209,6 +211,8 @@
     <ClCompile Include="GameEngineNameObject.cpp" />
     <ClCompile Include="GameEngineObject.cpp" />
     <ClCompile Include="GameEngineObjectBase.cpp" />
+    <ClCompile Include="GameEnginePixelShader.cpp" />
+    <ClCompile Include="GameEngineRasterizer.cpp" />
     <ClCompile Include="GameEngineRenderer.cpp" />
     <ClCompile Include="GameEngineRenderingPipeLine.cpp" />
     <ClCompile Include="GameEngineRenderTarget.cpp" />
