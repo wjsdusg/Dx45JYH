@@ -36,6 +36,7 @@ public:
 		FILL_MODE = _Value;
 	}
 
+	void RenderingPipeLineSetting();
 	void Render();
 
 protected:

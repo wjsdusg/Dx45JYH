@@ -28,9 +28,6 @@ cbuffer TransformData : register(b0)
 // 이름 마음대로
 struct Input
 {
-	// 시맨틱      어떤역할을 가졌는지 
-    // 버텍스 쉐이더에다가 순서를 어떻게 해놓건 사실 그건 상관이 없어요.
-    // 중요한건 버텍스 버퍼고 
     float4 Pos : POSITION;
     float4 UV : TEXCOORD;
 };
@@ -48,15 +45,11 @@ struct OutPut
 
 OutPut Texture_VS(Input _Value)
 {
-    OutPut OutPutValue = (OutPut) 0;
-	
+    OutPut OutPutValue = (OutPut)0;
+
     _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
-    // OutPutValue.Pos = _Value.Pos;
     OutPutValue.UV = _Value.UV;
-	
-	// 다음단계에서 사용할 정보들.
-    // OutPutValue.Pos *= 월드뷰프로젝션;
 
     return OutPutValue;
 }
@@ -67,19 +60,16 @@ cbuffer OutPixelColor : register(b0)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState CLAMPSAMPLER : register(s0);
+SamplerState WRAPSAMPLER : register(s0);
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    // 스위즐링 표현법이라고 해서
-    // float4
-    // float4.xy == float2
-    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
-    
-    //if (0.5 < _Value.Color.x)
-    //{
-    //    clip(-1);
-    //}
-    
+    float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
+
+    if (Color.a == 0)
+    {
+        clip(-1);
+    }
+
     return Color;
 }
