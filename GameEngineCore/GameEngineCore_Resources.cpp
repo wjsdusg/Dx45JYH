@@ -15,6 +15,7 @@
 #include "GameEngineRenderingPipeLine.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineConstantBuffer.h"
 
 #include "GameEngineVertexShader.h"
 
@@ -102,8 +103,8 @@ void GameEngineCore::CoreResourcesInit()
 	// 버텍스 쉐이더 컴파일
 	{
 		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("EngineResources");
-		NewDir.Move("EngineResources");
+		NewDir.MoveParentToDirectory("Shader");
+		//NewDir.Move("EngineResources");
 		NewDir.Move("Shader");
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
@@ -178,12 +179,13 @@ void GameEngineCore::CoreResourcesInit()
 
 void GameEngineCore::CoreResourcesEnd()
 {
-	GameEngineResource<GameEnginePixelShader>::ResourcesClear();
-	GameEngineResource<GameEngineRasterizer>::ResourcesClear();
-	GameEngineResource<GameEngineVertexShader>::ResourcesClear();
-	GameEngineResource<GameEngineIndexBuffer>::ResourcesClear();
-	GameEngineResource<GameEngineVertexBuffer>::ResourcesClear();
-	GameEngineResource<GameEngineMesh>::ResourcesClear();
-	GameEngineResource<GameEngineTexture>::ResourcesClear();
-	GameEngineResource<GameEngineRenderTarget>::ResourcesClear();
+	GameEngineConstantBuffer::ResourcesClear();
+	GameEnginePixelShader::ResourcesClear();
+	GameEngineRasterizer::ResourcesClear();
+	GameEngineVertexShader::ResourcesClear();
+	GameEngineIndexBuffer::ResourcesClear();
+	GameEngineVertexBuffer::ResourcesClear();
+	GameEngineMesh::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
+	GameEngineRenderTarget::ResourcesClear();
 }
