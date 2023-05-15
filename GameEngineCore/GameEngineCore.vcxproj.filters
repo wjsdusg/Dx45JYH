@@ -107,6 +107,30 @@
     <ClInclude Include="GameEngineDepthState.h">
       <Filter>Resources\RenderingSetting</Filter>
     </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -213,6 +237,27 @@
     <ClCompile Include="GameEngineDepthState.cpp">
       <Filter>Resources\RenderingSetting</Filter>
     </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -271,6 +316,9 @@
     </Filter>
     <Filter Include="Resources\Movie">
       <UniqueIdentifier>{14ac290c-a0a0-4187-a0d5-e234ad60ff66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imGui">
+      <UniqueIdentifier>{c4138a7c-f85d-44e0-8fa9-10086b8eecb3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
