@@ -3,6 +3,7 @@
 #include <GameEngineCore\GameEngineCore.h>
 #include "PlayLevel.h"
 #include "TitleLevel.h"
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 ContentsCore::ContentsCore()
 {
@@ -24,6 +25,10 @@ void ContentsCore::GameStart()
 	// 이전에 매쉬는 만들어져 있어야 한다.
 
 	new int();
+
+	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
+
+
 
 	ContentsResourcesCreate();
 

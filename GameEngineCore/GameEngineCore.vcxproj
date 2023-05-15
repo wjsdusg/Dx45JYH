@@ -174,10 +174,12 @@
     <ClInclude Include="GameEngineComponent.h" />
     <ClInclude Include="GameEngineConstantBuffer.h" />
     <ClInclude Include="GameEngineCore.h" />
+    <ClInclude Include="GameEngineCoreWindow.h" />
     <ClInclude Include="GameEngineDepthState.h" />
     <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineDirectBuffer.h" />
     <ClInclude Include="GameEngineEnum.h" />
+    <ClInclude Include="GameEngineGUI.h" />
     <ClInclude Include="GameEngineIndexBuffer.h" />
     <ClInclude Include="GameEngineInputLayOut.h" />
     <ClInclude Include="GameEngineLevel.h" />
@@ -222,10 +224,12 @@
     <ClCompile Include="GameEngineComponent.cpp" />
     <ClCompile Include="GameEngineConstantBuffer.cpp" />
     <ClCompile Include="GameEngineCore.cpp" />
+    <ClCompile Include="GameEngineCoreWindow.cpp" />
     <ClCompile Include="GameEngineCore_Resources.cpp" />
     <ClCompile Include="GameEngineDepthState.cpp" />
     <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineDirectBuffer.cpp" />
+    <ClCompile Include="GameEngineGUI.cpp" />
     <ClCompile Include="GameEngineIndexBuffer.cpp" />
     <ClCompile Include="GameEngineInputLayOut.cpp" />
     <ClCompile Include="GameEngineLevel.cpp" />

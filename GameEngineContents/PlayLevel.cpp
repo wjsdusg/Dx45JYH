@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineVideo.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 PlayLevel::PlayLevel()
 {
@@ -19,11 +20,13 @@ void PlayLevel::Update(float _DeltaTime)
 
 }
 
+void PlayLevel::PlayerCreate(/*Playlevel* this*/)
+{
+	std::shared_ptr<Player> Object = CreateActor<Player>(0);
+}
+
 void PlayLevel::Start()
 {
-
-
-
 
 	{
 		GameEngineDirectory NewDir;
@@ -45,8 +48,17 @@ void PlayLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
 
+	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+
 	{
-		std::shared_ptr<Player> Object = CreateActor<Player>(0);
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 테스트 코드 미작동");
+		}
+
+		Window->Test = std::bind(&PlayLevel::PlayerCreate, this);
+
+		// std::shared_ptr<Player> Object = CreateActor<Player>(0);
 	}
 
 

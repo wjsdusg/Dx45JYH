@@ -3,6 +3,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
 #include "GameEngineVideo.h"
+#include "GameEngineGUI.h"
 
 GameEngineLevel::GameEngineLevel()
 {
@@ -80,6 +81,9 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 			Actor->ComponentsRender(_DeltaTime);
 		}
 	}
+
+	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+
 }
 
 void GameEngineLevel::Update(float _DeltaTime)
