@@ -11,8 +11,7 @@
 #include <d3d11_4.h>
 #include <d3dcompiler.h>
 #include <DirectXPackedVector.h>
-
-
+#include <DirectXCollision.h>
 
 
 
@@ -551,7 +550,7 @@ public:
 
 };
 
-class CollisionData
+class CollisionDataAPI
 {
 public:
 	float4 Position;

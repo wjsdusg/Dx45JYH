@@ -22,7 +22,10 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Update(float _DeltaTime)
 {
-	Object3->GetTransform()->AddLocalRotation({ 0.0f, 0.0f, 100.0f * _DeltaTime });
+	if (Object3->Render->GetTransform()->Collision({ Object1->Render->GetTransform(), ColType::OBBBOX3D, ColType::OBBBOX3D }))
+	{
+		int a = 0;
+	}
 
 	//if (nullptr != Object1 && 1.0f <= Object1->GetLiveTime())
 	//{
@@ -40,7 +43,7 @@ void PlayLevel::PlayerCreate(/*Playlevel* this*/)
 {
 	if (nullptr != Object1)
 	{
-		Object1->GetTransform()->SetParent(Object3->GetTransform());
+		RenderTest->GetTransform()->SetParent(Object3->GetTransform());
 	}
 
 }
@@ -87,19 +90,19 @@ void PlayLevel::Start()
 		Object1->GetTransform()->SetLocalPosition({ 150.0f, 0.0f, 0.0f });
 		Object1->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
 
-		RenderTest = Object1->CreateComponent<GameEngineSpriteRenderer>();
+		// RenderTest = Object1->CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderTest->GetTransform()->SetLocalPosition({ 100.0f, 0.0f, 0.0f });
-		RenderTest->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+		//RenderTest->GetTransform()->SetLocalPosition({ 100.0f, 0.0f, 0.0f });
+		//RenderTest->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
 
 		Object1->GetTransform()->SetParent(Object0->GetTransform());
 
 
-		std::shared_ptr<TestObject> Object2 = CreateActor<TestObject>(-20);
-		Object2->GetTransform()->SetLocalPosition({ 400.0f, 0.0f, 0.0f });
-		Object2->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+		//std::shared_ptr<TestObject> Object2 = CreateActor<TestObject>(-20);
+		//Object2->GetTransform()->SetLocalPosition({ 400.0f, 0.0f, 0.0f });
+		//Object2->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
 
-		Object2->GetTransform()->SetParent(Object1->GetTransform());
+		//Object2->GetTransform()->SetParent(Object1->GetTransform());
 
 		Object3 = CreateActor<TestObject>(-20);
 		Object3->GetTransform()->SetLocalPosition({ 000.0f, 200.0f, 0.0f });

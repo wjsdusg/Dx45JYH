@@ -28,6 +28,8 @@ public:
 	float Inter = 0.1f;
 	bool Loop = true;
 	bool ScaleToTexture = false;
+	std::vector<size_t> FrameIndex = std::vector<size_t>();
+	std::vector<float> FrameTime = std::vector<float>();
 
 	bool IsEnd();
 };
@@ -43,6 +45,8 @@ public:
 	float FrameInter = 0.1f;
 	bool Loop = true;
 	bool ScaleToTexture = false;
+	std::vector<size_t> FrameIndex = std::vector<size_t>();
+	std::vector<float> FrameTime = std::vector<float>();
 };
 
 
@@ -85,6 +89,20 @@ public:
 
 	void AllAnimation();
 
+	bool IsAnimationEnd()
+	{
+		return CurAnimation->IsEnd();
+	}
+
+	size_t GetCurrentFrame()
+	{
+		return CurAnimation->CurFrame;
+	}
+
+	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
+
+	void SetFrame(size_t _Frame);
+
 protected:
 
 private:
@@ -95,6 +113,10 @@ private:
 	std::shared_ptr<AnimationInfo> CurAnimation;
 
 	float4 AtlasData;
+
+	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
+	size_t Frame = -1;
+
 
 	float ScaleRatio = 1.0f;
 

@@ -24,7 +24,7 @@ void Player::Update(float _DeltaTime)
 
 	GameEnginePixelColor Pixel = Ptr->GetPixel(356, 329);
 
-	float RotSpeed = 180.0f;
+	float RotSpeed = 10.0f;
 
 	float Speed = 200.0f;
 

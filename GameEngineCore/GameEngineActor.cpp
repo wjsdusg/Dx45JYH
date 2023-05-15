@@ -17,6 +17,6 @@ void GameEngineActor::ComponentInit(std::shared_ptr<class GameEngineComponent> _
 	_Component->GetTransform()->SetParent(GetTransform());
 	_Component->Start();
 
-	PushChild(_Component);
+	// PushChild(_Component); << SetParent 문제로 child가 두 번 들어가서 뺌
 }
 
