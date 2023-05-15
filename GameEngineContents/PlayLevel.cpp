@@ -22,6 +22,8 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Update(float _DeltaTime)
 {
+	Object3->GetTransform()->AddLocalRotation({ 0.0f, 0.0f, 100.0f * _DeltaTime });
+
 	//if (nullptr != Object1 && 1.0f <= Object1->GetLiveTime())
 	//{
 	//	if (nullptr == Object1)
@@ -38,9 +40,9 @@ void PlayLevel::PlayerCreate(/*Playlevel* this*/)
 {
 	if (nullptr != Object1)
 	{
-		Object1->Render->Death();
-		Object1 = nullptr;
+		Object1->GetTransform()->SetParent(Object3->GetTransform());
 	}
+
 }
 
 void PlayLevel::Start()
@@ -98,6 +100,10 @@ void PlayLevel::Start()
 		Object2->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
 
 		Object2->GetTransform()->SetParent(Object1->GetTransform());
+
+		Object3 = CreateActor<TestObject>(-20);
+		Object3->GetTransform()->SetLocalPosition({ 000.0f, 200.0f, 0.0f });
+		Object3->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
 	}
 
 

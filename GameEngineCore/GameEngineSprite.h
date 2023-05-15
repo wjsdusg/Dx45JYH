@@ -27,11 +27,16 @@ public:
 	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path)
 	{
 		GameEnginePath NewPath = std::string(_Path);
+		return LoadFolder(NewPath.GetFileName(), _Path);
+	}
 
-		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(NewPath.GetFileName());
+	static std::shared_ptr<GameEngineSprite> LoadFolder(std::string _Spritename, const std::string_view& _Path)
+	{
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(_Spritename);
 		NewTexture->ResLoadFolder(_Path);
 		return NewTexture;
 	}
+
 
 	static std::shared_ptr<GameEngineSprite> LoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
 	{

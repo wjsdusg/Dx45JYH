@@ -197,8 +197,6 @@ void Player::Start()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Test\\TestAnimation.png").GetFullPath(), 3, 5);
 
 		// std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-
 	}
 
 
