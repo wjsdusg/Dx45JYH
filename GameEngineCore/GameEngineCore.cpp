@@ -55,9 +55,11 @@ void GameEngineCore::EngineUpdate()
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
+	MainLevel->ActorUpdate(TimeDeltaTime);
 
 	GameEngineDevice::RenderStart();
 	MainLevel->Render(TimeDeltaTime);
+	MainLevel->ActorRender(TimeDeltaTime);
 	GameEngineDevice::RenderEnd();
 }
 
@@ -87,7 +89,6 @@ void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, st
 
 	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
 	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
-
 }
 
 void GameEngineCore::ChangeLevel(const std::string_view& _Name)

@@ -101,6 +101,12 @@
     <ClInclude Include="GameEngineBlend.h">
       <Filter>Resources\RenderingSetting</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineVideo.h">
+      <Filter>Resources\Movie</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDepthState.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -201,6 +207,12 @@
     <ClCompile Include="GameEngineBlend.cpp">
       <Filter>Resources\RenderingSetting</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineVideo.cpp">
+      <Filter>Resources\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDepthState.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -256,6 +268,9 @@
     </Filter>
     <Filter Include="Object\Rendering\Component\2D">
       <UniqueIdentifier>{f15659cf-dd6d-44e0-972e-720a9f8aebf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Movie">
+      <UniqueIdentifier>{14ac290c-a0a0-4187-a0d5-e234ad60ff66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

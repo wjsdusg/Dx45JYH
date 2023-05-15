@@ -23,6 +23,8 @@ void Player::Update(float _DeltaTime)
 
 	float Speed = 200.0f;
 
+	// Render0->GetTransform()->SetWorldRotation(float4::Zero);
+
 	if (true == GameEngineInput::IsPress("PlayerSpeedBoost"))
 	{
 		Speed = 500.0f;
@@ -30,11 +32,11 @@ void Player::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
 	{
-		Render0->GetTransform()->SetLocalNegativeScaleX();
+		// Render0->GetTransform()->SetLocalNegativeScaleX();
 	}
 	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
 	{
-		Render0->GetTransform()->SetLocalPositiveScaleX();
+		// Render0->GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
@@ -114,6 +116,15 @@ void Player::Update(float _DeltaTime)
 	{
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
+
+	float4 GetLocalScale = Render0->GetTransform()->GetLocalScale();
+	float4 GetWorldScale = Render0->GetTransform()->GetWorldScale();
+
+	float4 GetLocalRotation = Render0->GetTransform()->GetLocalRotation();
+	float4 GetWorldRotation = Render0->GetTransform()->GetWorldRotation();
+
+	float4 GetLocalPosition = Render0->GetTransform()->GetLocalPosition();
+	float4 GetWorldPosition = Render0->GetTransform()->GetWorldPosition();
 }
 
 void Player::Start()
@@ -147,8 +158,18 @@ void Player::Start()
 
 	// 나는 스케일을 1로 고정해 놓는게 좋다.
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->SetTexture("Test.png");
-	Render0->GetTransform()->SetLocalScale({ 500.0f, 500.0f , 500.0f });
+	Render0->SetTexture("AAAA.png");
+	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+
+	Render1 = CreateComponent<GameEngineSpriteRenderer>();
+	Render1->SetTexture("AAAA.png");
+	Render1->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	Render1->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
+
+	Render2 = CreateComponent<GameEngineSpriteRenderer>();
+	Render2->SetTexture("AAAA.png");
+	Render2->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
 
 	//Render1 = CreateComponent<GameEngineRenderer>();
 	//Render1->SetPipeLine("2DTexture");
