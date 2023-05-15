@@ -28,6 +28,8 @@ public:
 
 	void Setting() override;
 
+	void Reset();
+
 	void CreateDepthTexture();
 
 protected:

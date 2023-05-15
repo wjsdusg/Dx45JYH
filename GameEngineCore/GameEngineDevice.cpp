@@ -198,6 +198,17 @@ void GameEngineDevice::RenderEnd()
 
 }
 
+void GameEngineDevice::VidioRenderStart()
+{
+	BackBufferTarget->Clear();
+	BackBufferTarget->Reset();
+}
+
+void GameEngineDevice::VidioRenderEnd()
+{
+	HRESULT Result = SwapChain->Present(0, 0);
+}
+
 void GameEngineDevice::Initialize()
 {
 	// Com객체라고 해요.

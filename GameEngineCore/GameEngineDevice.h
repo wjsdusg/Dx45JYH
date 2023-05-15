@@ -22,6 +22,10 @@ public:
 
 	static void RenderEnd();
 
+	static void VidioRenderStart();
+
+	static void VidioRenderEnd();
+
 	static ID3D11Device* GetDevice()
 	{
 		return Device;

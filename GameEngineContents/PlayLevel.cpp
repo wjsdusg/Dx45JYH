@@ -23,21 +23,6 @@ void PlayLevel::Start()
 {
 
 
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineVideo::Load(File[i].GetFullPath());
-		}
-
-		Video = GameEngineVideo::Find("TestVideo.avi");
-		Video->Play();
-	}
 
 
 	{
@@ -60,14 +45,13 @@ void PlayLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
 
-
 	{
-		std::shared_ptr<Player> Object = CreateActor<Player>("Player");
+		std::shared_ptr<Player> Object = CreateActor<Player>(0);
 	}
 
 
 	{
-		std::shared_ptr<TestObject> Object = CreateActor<TestObject>();
+		std::shared_ptr<TestObject> Object = CreateActor<TestObject>(-20);
 		Object->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
 		Object->GetTransform()->SetLocalPosition({ 0, 0, 100.0f });
 	}

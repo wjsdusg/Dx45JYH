@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineVideo.h>
 
 Player::Player()
 {
@@ -18,6 +19,9 @@ Player::~Player()
 
 void Player::Update(float _DeltaTime)
 {
+	std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
+
+	GameEnginePixelColor Pixel = Ptr->GetPixel(356, 329);
 
 	float RotSpeed = 180.0f;
 
@@ -32,6 +36,23 @@ void Player::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
 	{
+
+		//{
+		//	GameEngineDirectory NewDir;
+		//	NewDir.MoveParentToDirectory("ContentResources");
+		//	NewDir.Move("ContentResources");
+
+		//	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
+
+		//	for (size_t i = 0; i < File.size(); i++)
+		//	{
+		//		GameEngineVideo::Load(File[i].GetFullPath());
+		//	}
+
+		//	std::shared_ptr<GameEngineVideo> Video = GameEngineVideo::Find("TestVideo.avi");
+		//	Video->Play();
+		//}
+
 		// Render0->GetTransform()->SetLocalNegativeScaleX();
 	}
 	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
@@ -163,6 +184,7 @@ void Player::Start()
 
 	// 나는 스케일을 1로 고정해 놓는게 좋다.
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
+	// Render0->SetOrder(5);
 	Render0->SetTexture("Test.png");
 	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 
