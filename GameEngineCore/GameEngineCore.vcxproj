@@ -196,6 +196,7 @@
     <ClInclude Include="GameEngineSampler.h" />
     <ClInclude Include="GameEngineShader.h" />
     <ClInclude Include="GameEngineShaderResHelper.h" />
+    <ClInclude Include="GameEngineSprite.h" />
     <ClInclude Include="GameEngineSpriteRenderer.h" />
     <ClInclude Include="GameEngineTexture.h" />
     <ClInclude Include="GameEngineTransform.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="GameEngineSampler.cpp" />
     <ClCompile Include="GameEngineShader.cpp" />
     <ClCompile Include="GameEngineShaderResHelper.cpp" />
+    <ClCompile Include="GameEngineSprite.cpp" />
     <ClCompile Include="GameEngineSpriteRenderer.cpp" />
     <ClCompile Include="GameEngineTexture.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />

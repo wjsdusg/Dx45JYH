@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineVideo.h>
+#include <GameEngineCore/GameEngineSprite.h>
 
 Player::Player()
 {
@@ -36,28 +37,11 @@ void Player::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
 	{
-
-		//{
-		//	GameEngineDirectory NewDir;
-		//	NewDir.MoveParentToDirectory("ContentResources");
-		//	NewDir.Move("ContentResources");
-
-		//	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
-
-		//	for (size_t i = 0; i < File.size(); i++)
-		//	{
-		//		GameEngineVideo::Load(File[i].GetFullPath());
-		//	}
-
-		//	std::shared_ptr<GameEngineVideo> Video = GameEngineVideo::Find("TestVideo.avi");
-		//	Video->Play();
-		//}
-
-		// Render0->GetTransform()->SetLocalNegativeScaleX();
+		Render0->GetTransform()->SetLocalNegativeScaleX();
 	}
 	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
 	{
-		// Render0->GetTransform()->SetLocalPositiveScaleX();
+		Render0->GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
@@ -183,6 +167,34 @@ void Player::Start()
 		GameEngineInput::CreateKey("PlayerRotX+", VK_NUMPAD7);
 		GameEngineInput::CreateKey("PlayerRotX-", VK_NUMPAD8);
 		GameEngineInput::CreateKey("PlayerSpeedBoost", VK_LSHIFT);
+	}
+	//{
+//	GameEngineDirectory NewDir;
+//	NewDir.MoveParentToDirectory("ContentResources");
+//	NewDir.Move("ContentResources");
+
+//	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+
+//	for (size_t i = 0; i < File.size(); i++)
+//	{
+//		GameEngineTexture::Load(File[i].GetFullPath());
+//	}
+//}
+
+
+	if (nullptr == GameEngineSprite::Find("CHAc_Ground_Run"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CHAc_Ground_Run").GetFullPath());
+
+		// std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+
 	}
 
 

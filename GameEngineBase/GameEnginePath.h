@@ -38,6 +38,8 @@ public:
 
 	// bool MoveParentToChildPath(const std::string_view& _IOName );
 
+	bool IsDirectory() const;
+
 	bool IsRoot();
 
 	bool Move(const std::string_view& _Path);

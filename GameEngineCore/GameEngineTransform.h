@@ -66,6 +66,18 @@ public:
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
 
+	void SetLocalPositiveScaleX()
+	{
+		TransData.Scale.x = abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
+
+	void SetLocalNegativeScaleX()
+	{
+		TransData.Scale.x = -abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
+
 	void SetWorldScale(const float4& _Value)
 	{
 		AbsoluteScale = true;
@@ -205,24 +217,6 @@ public:
 	{
 		return TransData.LocalWorldMatrix.ArrVector[0].NormalizeReturn();
 	}
-
-
-
-	//float4 GetWorldPosition()
-	//{
-	//	return WorldPosition;
-	//}
-
-	//float4 GetWorldScale()
-	//{
-	//	return WorldScale;
-	//}
-
-	//float4 GetWorldRotation()
-	//{
-	//	return WorldRotation;
-	//}
-
 
 	float4x4 GetLocalWorldMatrix()
 	{
