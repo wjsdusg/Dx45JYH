@@ -24,18 +24,28 @@ void GameEngineLevel::Start()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
-
-	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{
-		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
 
-		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 		{
-			if (false == Actor->IsUpdate())
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; ++ActorStart)
 			{
-				continue;
+				std::shared_ptr<GameEngineActor> CheckActor = (*ActorStart);
+
+				if (true == CheckActor->IsUpdate())
+				{
+					CheckActor->AccLiveTime(_DeltaTime);
+				}
+
+				// ActorStart = ActorList.erase(ActorStart);
 			}
-			Actor->AccLiveTime(_DeltaTime);
 		}
 	}
 
@@ -45,38 +55,57 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 		return;
 	}
 
-	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{
-		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
 
-		// TimeScale;
-		// 추후에 적용하겠다.
-		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 		{
-			if (false == Actor->IsUpdate())
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; ++ActorStart)
 			{
-				continue;
+				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+
+				if (false == Actor->IsUpdate())
+				{
+					continue;
+				}
+				Actor->Update(_DeltaTime);
+				Actor->ComponentsUpdate(_DeltaTime);
 			}
-			Actor->Update(_DeltaTime);
-			Actor->ComponentsUpdate(_DeltaTime);
 		}
 	}
 }
 
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
-
 	GetMainCamera()->Setting();
 
 	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
-	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
-	{
-		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
 
-		// TimeScale;
-		// 추후에 적용하겠다.
-		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
+	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+	{
+		std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+		for (; ActorStart != ActorEnd; ++ActorStart)
 		{
+			std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
+
 			Actor->Render(_DeltaTime);
 			Actor->ComponentsRender(_DeltaTime);
 		}
@@ -88,27 +117,29 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 void GameEngineLevel::ActorRelease()
 {
-	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
 
-	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
+	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 	{
-		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+		std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
 
-		std::list<std::shared_ptr<GameEngineActor>>::iterator Start = ActorList.begin();
-		std::list<std::shared_ptr<GameEngineActor>>::iterator End = ActorList.end();
+		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
 
-		for (; Start != End; )
+		for (; ActorStart != ActorEnd; )
 		{
-			std::shared_ptr<GameEngineActor> RelaseActor = (*Start);
+			std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
 
 			if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
 			{
-				++Start;
+				RelaseActor->ComponentsRelease();
+				++ActorStart;
 				continue;
 			}
 
 			RelaseActor->Release();
-			Start = ActorList.erase(Start);
+			ActorStart = ActorList.erase(ActorStart);
 		}
 	}
 
