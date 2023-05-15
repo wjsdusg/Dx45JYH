@@ -95,6 +95,12 @@
     <ClInclude Include="GameEngineTexture.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineSpriteRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineBlend.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -189,6 +195,12 @@
     <ClCompile Include="GameEngineTexture.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineSpriteRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineBlend.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -241,6 +253,9 @@
     </Filter>
     <Filter Include="Resources\Texture">
       <UniqueIdentifier>{138edc5d-7c75-4e66-ab0b-a5d8169da805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering\Component\2D">
+      <UniqueIdentifier>{f15659cf-dd6d-44e0-972e-720a9f8aebf7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

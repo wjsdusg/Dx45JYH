@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineActor.h" />
+    <ClInclude Include="GameEngineBlend.h" />
     <ClInclude Include="GameEngineCamera.h" />
     <ClInclude Include="GameEngineCollision.h" />
     <ClInclude Include="GameEngineComponent.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="GameEngineSampler.h" />
     <ClInclude Include="GameEngineShader.h" />
     <ClInclude Include="GameEngineShaderResHelper.h" />
+    <ClInclude Include="GameEngineSpriteRenderer.h" />
     <ClInclude Include="GameEngineTexture.h" />
     <ClInclude Include="GameEngineTransform.h" />
     <ClInclude Include="GameEngineUpdateObject.h" />
@@ -204,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp" />
+    <ClCompile Include="GameEngineBlend.cpp" />
     <ClCompile Include="GameEngineCamera.cpp" />
     <ClCompile Include="GameEngineCollision.cpp" />
     <ClCompile Include="GameEngineComponent.cpp" />
@@ -228,6 +231,7 @@
     <ClCompile Include="GameEngineSampler.cpp" />
     <ClCompile Include="GameEngineShader.cpp" />
     <ClCompile Include="GameEngineShaderResHelper.cpp" />
+    <ClCompile Include="GameEngineSpriteRenderer.cpp" />
     <ClCompile Include="GameEngineTexture.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />
     <ClCompile Include="GameEngineUpdateObject.cpp" />

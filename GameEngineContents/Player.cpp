@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -25,6 +26,15 @@ void Player::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("PlayerSpeedBoost"))
 	{
 		Speed = 500.0f;
+	}
+
+	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
+	{
+		Render0->GetTransform()->SetLocalNegativeScaleX();
+	}
+	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
+	{
+		Render0->GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
@@ -136,9 +146,8 @@ void Player::Start()
 
 
 	// 나는 스케일을 1로 고정해 놓는게 좋다.
-	Render0 = CreateComponent<GameEngineRenderer>();
-	Render0->SetPipeLine("2DTexture");
-	Render0->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");
+	Render0 = CreateComponent<GameEngineSpriteRenderer>();
+	Render0->SetTexture("Test.png");
 	Render0->GetTransform()->SetLocalScale({ 500.0f, 500.0f , 500.0f });
 
 	//Render1 = CreateComponent<GameEngineRenderer>();

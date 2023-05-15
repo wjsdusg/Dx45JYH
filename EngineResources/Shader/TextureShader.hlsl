@@ -45,12 +45,12 @@ struct OutPut
 
 OutPut Texture_VS(Input _Value)
 {
-    OutPut OutPutValue = (OutPut)0;
-
+    OutPut OutPutValue = (OutPut) 0;
+	
     _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     OutPutValue.UV = _Value.UV;
-
+    
     return OutPutValue;
 }
 
@@ -65,11 +65,6 @@ SamplerState WRAPSAMPLER : register(s0);
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
-
-    if (Color.a == 0)
-    {
-        clip(-1);
-    }
-
+    
     return Color;
 }

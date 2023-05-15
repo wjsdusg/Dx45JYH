@@ -87,6 +87,7 @@ void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, st
 
 	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
 	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
+
 }
 
 void GameEngineCore::ChangeLevel(const std::string_view& _Name)

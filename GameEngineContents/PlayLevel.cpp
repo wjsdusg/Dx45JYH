@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PlayLevel.h"
 #include "Player.h"
+#include "TestObject.h"
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 
@@ -29,7 +30,6 @@ void PlayLevel::Start()
 		}
 
 		int a = 0;
-
 	}
 
 
@@ -39,7 +39,15 @@ void PlayLevel::Start()
 
 
 
-	std::shared_ptr<Player> NewPlayer = CreateActor<Player>("Player");
+	{
+		std::shared_ptr<TestObject> Object = CreateActor<TestObject>();
+		Object->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
+		Object->GetTransform()->SetLocalPosition({ 0, 0, 100.0f });
+	}
+
+	{
+		std::shared_ptr<Player> Object = CreateActor<Player>("Player");
+	}
 
 
 }
