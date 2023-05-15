@@ -18,7 +18,7 @@ private:
 
 	void Update(float _DeltaTime);
 
-	std::shared_ptr<GameEngineTexture> CurFrameTexture();
+	const SpriteInfo& CurSpriteInfo();
 
 public:
 	size_t CurFrame = 0;
@@ -27,9 +27,24 @@ public:
 	float CurTime = 0.0f;
 	float Inter = 0.1f;
 	bool Loop = true;
+	bool ScaleToTexture = false;
 
 	bool IsEnd();
 };
+
+
+class AnimationParameter
+{
+public:
+	std::string_view AnimationName = "";
+	std::string_view SpriteName = "";
+	int Start = -1;
+	int End = -1;
+	float FrameInter = 0.1f;
+	bool Loop = true;
+	bool ScaleToTexture = false;
+};
+
 
 // Ό³Έν :
 class GameEngineSpriteRenderer : public GameEngineRenderer
@@ -49,17 +64,17 @@ public:
 
 	void SetTexture(const std::string_view& _Name);
 
+	void SetScaleRatio(float _Ratio)
+	{
+		ScaleRatio = _Ratio;
+	}
+
 	void SetFlipX();
 	void SetFlipY();
 
 	std::shared_ptr<AnimationInfo> FindAnimation(const std::string_view& _Name);
 
-	std::shared_ptr<AnimationInfo> CreateAnimation(const std::string_view& _Name,
-		const std::string_view& _SpriteName,
-		float _FrameInter = 0.1f,
-		int _Start = -1,
-		int _End = -1,
-		bool _Loop = true);
+	std::shared_ptr<AnimationInfo> CreateAnimation(const AnimationParameter& _Paramter);
 
 	void ChangeAnimation(const std::string_view& _Name, bool _Force, size_t _Frame = -1)
 	{
@@ -67,6 +82,8 @@ public:
 	}
 
 	void ChangeAnimation(const std::string_view& _Name, size_t _Frame = -1, bool _Force = true);
+
+	void AllAnimation();
 
 protected:
 
@@ -76,6 +93,10 @@ private:
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 
 	std::shared_ptr<AnimationInfo> CurAnimation;
+
+	float4 AtlasData;
+
+	float ScaleRatio = 1.0f;
 
 	void Start() override;
 };

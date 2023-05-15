@@ -37,11 +37,11 @@ void Player::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
 	{
-		Render0->GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->SetLocalNegativeScaleX();
 	}
 	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
 	{
-		Render0->GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
@@ -206,10 +206,14 @@ void Player::Start()
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	// Render0->SetOrder(5);
 	Render0->SetScaleToTexture("Test.png");
-	Render0->CreateAnimation("Run", "PlayerRun", 0.01f);
-	// Render0->CreateAnimation("Work", "TestAnimation.png", 0.01f, 0, 2);
+	// Render0->CreateAnimation({ "Run", "PlayerRun", 0.01f, -1, -1, true, true });
 
-	Render0->ChangeAnimation("Run");
+	Render0->CreateAnimation({ .AnimationName = "Run", .SpriteName = "PlayerRun", .ScaleToTexture = true });
+	Render0->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
+
+	Render0->SetScaleRatio(5.0f);
+
+	Render0->ChangeAnimation("Win");
 
 	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 }

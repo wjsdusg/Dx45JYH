@@ -48,6 +48,15 @@ struct OutPut
 };
 
 
+cbuffer AtlasData : register(b1)
+{
+    // 0.0 0.5
+    float2 FramePos;
+    // 0.5 0.5 
+    float2 FrameScale;
+    // float4 AtlasUV;
+}
+
 // 월드뷰프로젝션
 
 OutPut Texture_VS(Input _Value)
@@ -56,7 +65,19 @@ OutPut Texture_VS(Input _Value)
 	
     _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
-    OutPutValue.UV = _Value.UV;
+    // OutPutValue.UV = _Value.UV;
+    
+    // [][]
+    // [][]
+    
+    // 0.5 0.0  0.5 0.5 
+    
+    // 0,0    1,0
+    //
+    //
+    // 0,1    1,1
+    OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
+    OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
     
     return OutPutValue;
 }
