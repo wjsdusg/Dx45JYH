@@ -21,7 +21,10 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Update(float _DeltaTime)
 {
-
+	if (1.0f <= Object1->GetLiveTime())
+	{
+		Object1->Death();
+	}
 }
 
 void PlayLevel::PlayerCreate(/*Playlevel* this*/)
