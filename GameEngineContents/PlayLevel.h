@@ -21,6 +21,10 @@ protected:
 	void Update(float _DeltaTime) override;
 	void Start() override;
 
+	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
+
+
 private:
 
 
