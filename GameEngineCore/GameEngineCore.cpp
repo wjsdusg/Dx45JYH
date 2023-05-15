@@ -7,6 +7,7 @@
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
 #include "GameEngineDevice.h"
+#include "GameEngineVideo.h"
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -77,10 +78,15 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 
-	GameEngineDevice::RenderStart();
-	MainLevel->Render(TimeDeltaTime);
-	MainLevel->ActorRender(TimeDeltaTime);
-	GameEngineDevice::RenderEnd();
+	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
+	if (State != GameEngineVideo::VideoState::Running)
+	{
+		GameEngineDevice::RenderStart();
+		MainLevel->Render(TimeDeltaTime);
+		MainLevel->ActorRender(TimeDeltaTime);
+		GameEngineDevice::RenderEnd();
+	}
+
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)

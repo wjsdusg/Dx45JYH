@@ -2,6 +2,7 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
+#include "GameEngineVideo.h"
 
 GameEngineLevel::GameEngineLevel()
 {
@@ -64,6 +65,7 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
+
 	GetMainCamera()->Setting();
 
 	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
