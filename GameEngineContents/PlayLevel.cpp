@@ -22,23 +22,25 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Update(float _DeltaTime)
 {
-	if (nullptr != Object1 && 1.0f <= Object1->GetLiveTime())
-	{
-		if (nullptr == Object1)
-		{
-			return;
-		}
-		// RenderTest->Death();
-		Object1->Death();
-		Object1 = nullptr;
-	}
+	//if (nullptr != Object1 && 1.0f <= Object1->GetLiveTime())
+	//{
+	//	if (nullptr == Object1)
+	//	{
+	//		return;
+	//	}
+	//	// RenderTest->Death();
+	//	Object1->Death();
+	//	Object1 = nullptr;
+	//}
 }
 
 void PlayLevel::PlayerCreate(/*Playlevel* this*/)
 {
-	Object1->GetTransform()->DebugOn();
-
-	Object1->GetTransform()->SetParent(Object0->GetTransform());
+	if (nullptr != Object1)
+	{
+		Object1->Render->Death();
+		Object1 = nullptr;
+	}
 }
 
 void PlayLevel::Start()

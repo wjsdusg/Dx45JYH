@@ -11,6 +11,7 @@ class GameEngineObject :
 	public std::enable_shared_from_this<GameEngineObject>
 	// 침습형이 된겁니다.
 {
+	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 
 public:
@@ -40,7 +41,36 @@ public:
 	}
 
 
+	virtual void AccLiveTime(float _LiveTime)
+	{
+		LiveTime += _LiveTime;
+	}
+
+	void ResetLiveTime()
+	{
+		LiveTime = 0.0f;
+	}
+
+	float GetLiveTime()
+	{
+		return LiveTime;
+	}
+
+
+protected:
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void Render(float _DeltaTime) {}
+	virtual void Release();
+
+	void PushChild(std::shared_ptr<GameEngineObject> _Child)
+	{
+		Childs.push_back(_Child);
+	}
+
 private:
+	float LiveTime = 0.0f;
 	GameEngineTransform Transform;
 
+	std::list<std::shared_ptr<GameEngineObject>> Childs;
 };
