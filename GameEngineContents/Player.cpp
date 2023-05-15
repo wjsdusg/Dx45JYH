@@ -5,9 +5,11 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineVideo.h>
 #include <GameEngineCore/GameEngineSprite.h>
+#include "TestObject.h"
 
 Player::Player()
 {
@@ -20,10 +22,6 @@ Player::~Player()
 
 void Player::Update(float _DeltaTime)
 {
-	std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
-
-	GameEnginePixelColor Pixel = Ptr->GetPixel(356, 329);
-
 	float RotSpeed = 10.0f;
 
 	float Speed = 200.0f;
@@ -63,7 +61,6 @@ void Player::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("PlayerMoveForward"))
 	{
 		GetTransform()->AddLocalPosition(GetTransform()->GetLocalForwardVector() * Speed * _DeltaTime);
-		// GetTransform()->AddLocalPosition(float4::Forward * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("PlayerMoveBack"))
 	{
@@ -122,23 +119,17 @@ void Player::Update(float _DeltaTime)
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
 
-	float4 GetLocalScale = Render0->GetTransform()->GetLocalScale();
-	float4 GetWorldScale = Render0->GetTransform()->GetWorldScale();
+	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
-	float4 GetLocalRotation = Render0->GetTransform()->GetLocalRotation();
-	float4 GetWorldRotation = Render0->GetTransform()->GetWorldRotation();
+	if (Collsion->CollisionAll(2000, ColType::SPHERE2D, ColType::SPHERE2D, ColTest), 0 != ColTest.size())
+	{
+		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+		{
+			Col->GetActor()->Death();
+		}
+		// Col->GetActor()->Death();
+	}
 
-	float4 GetLocalPosition = Render0->GetTransform()->GetLocalPosition();
-	float4 GetWorldPosition = Render0->GetTransform()->GetWorldPosition();
-
-	float4 LocalPostion = GetTransform()->GetLocalPosition();
-
-	// GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(LocalPostion + (float4::Back * 100.0f));
-
-	//if (5.0f <= Render0->GetLiveTime())
-	//{
-	//	Render0->Off();
-	//}
 }
 
 void Player::Start()
@@ -199,6 +190,13 @@ void Player::Start()
 		// std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 	}
 
+	{
+		Collsion = CreateComponent<GameEngineCollision>();
+		Collsion->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+		Collsion->SetOrder(3000);
+	}
+
+
 
 	// 나는 스케일을 1로 고정해 놓는게 좋다.
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
@@ -208,6 +206,13 @@ void Player::Start()
 
 	Render0->CreateAnimation({ .AnimationName = "Run", .SpriteName = "PlayerRun", .ScaleToTexture = true });
 	Render0->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
+
+	Render0->SetAnimationStartEvent("Win", 5, [this]
+		{
+			//std::shared_ptr<TestObject> Actor = GetLevel()->CreateActor<TestObject>();
+			//Actor->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			//Actor->GetTransform()->SetLocalScale({100.0f, 100.0f, 1.0f});
+		});
 
 	Render0->SetScaleRatio(5.0f);
 

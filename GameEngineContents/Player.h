@@ -28,5 +28,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> Render1;
 	std::shared_ptr<class GameEngineSpriteRenderer> Render2;
 
+	std::shared_ptr<class GameEngineCollision> Collsion;
+
 };
 

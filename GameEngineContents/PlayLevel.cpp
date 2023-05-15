@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TestObject.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineVideo.h>
@@ -104,9 +105,25 @@ void PlayLevel::Start()
 
 		//Object2->GetTransform()->SetParent(Object1->GetTransform());
 
-		Object3 = CreateActor<TestObject>(-20);
-		Object3->GetTransform()->SetLocalPosition({ 000.0f, 200.0f, 0.0f });
-		Object3->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+		{
+			Object3 = CreateActor<TestObject>(-20);
+			Object3->GetTransform()->SetLocalPosition({ 000.0f, 200.0f, 0.0f });
+			Object3->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+
+			std::shared_ptr<GameEngineCollision> Col = Object3->CreateComponent<GameEngineCollision>(2000);
+			Col->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+		}
+
+		{
+			Object3 = CreateActor<TestObject>(-20);
+			Object3->GetTransform()->SetLocalPosition({ -100.0f, 200.0f, 0.0f });
+			Object3->Render->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+
+			std::shared_ptr<GameEngineCollision> Col = Object3->CreateComponent<GameEngineCollision>(2000);
+			Col->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+
+		}
+
 	}
 
 
