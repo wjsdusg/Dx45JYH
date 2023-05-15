@@ -97,6 +97,12 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 		int a = 0;
 	}
 
+	// 내가 원래 기존의 부모를 가지고 있다면
+	if (nullptr != Parent)
+	{
+		// 여기서 뭔가를 해서 
+	}
+
 	Parent = _Parent;
 
 	// 월드 포지션은 달라지는게 없다.

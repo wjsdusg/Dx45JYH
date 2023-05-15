@@ -190,7 +190,11 @@ void Player::Start()
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CHAc_Ground_Run").GetFullPath());
+		// TestAnimation.png
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("PlayerRun").GetFullPath());
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Test\\TestAnimation.png").GetFullPath(), 3, 5);
 
 		// std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
@@ -202,6 +206,10 @@ void Player::Start()
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	// Render0->SetOrder(5);
 	Render0->SetScaleToTexture("Test.png");
+	Render0->CreateAnimation("Run", "PlayerRun", 0.01f);
+	// Render0->CreateAnimation("Work", "TestAnimation.png", 0.01f, 0, 2);
+
+	Render0->ChangeAnimation("Run");
 
 	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
