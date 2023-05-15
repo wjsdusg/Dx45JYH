@@ -93,6 +93,10 @@ public:
 		return NewTexture;
 	}
 
+	ID3D11ShaderResourceView* GetSRV()
+	{
+		return SRV;
+	}
 
 	ID3D11RenderTargetView* GetRTV()
 	{

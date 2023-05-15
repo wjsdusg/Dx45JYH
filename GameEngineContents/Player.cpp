@@ -149,7 +149,7 @@ void Player::Update(float _DeltaTime)
 
 	float4 LocalPostion = GetTransform()->GetLocalPosition();
 
-	GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(LocalPostion + (float4::Back * 100.0f));
+	// GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(LocalPostion + (float4::Back * 100.0f));
 
 	//if (5.0f <= Render0->GetLiveTime())
 	//{
