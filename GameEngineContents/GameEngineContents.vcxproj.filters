@@ -7,6 +7,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{05b3deaf-6a18-4623-a4e0-44d702436399}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit">
+      <UniqueIdentifier>{1e7e79ed-9e35-4b6d-b49c-d0feeb648749}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -25,6 +28,12 @@
     <ClInclude Include="Map.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Ksword.h">
+      <Filter>Unit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -42,6 +51,12 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Ksword.cpp">
+      <Filter>Unit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "UIPannel.h"
+#include "MiniMap.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineLevel.h>
@@ -11,41 +11,39 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include "TestObject.h"
 
-UIPannel::UIPannel()
+MiniMap::MiniMap()
 {
 }
 
-UIPannel::~UIPannel()
+MiniMap::~MiniMap()
 {
 }
 
 
-void UIPannel::Update(float _DeltaTime)
+void MiniMap::Update(float _DeltaTime)
 {
-	
-	GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition());
-	
-	GetTransform()->AddLocalPosition({ 0,(-GameEngineWindow::GetScreenSize().y / 2.f)+80.f});
 
-	
+
+
+
+
+
 }
 
-void UIPannel::Start()
+void MiniMap::Start()
 {
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	
-	//Render0->SetScaleToTexture("pannel.png");
-
-	Render0->SetTexture("pannel.png");
-	Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x ), 160.f, 0.f, 1.f });
-
+	//Render0->SetTexture("background.png");
+	Render0->SetTexture("hero.bmp");
+	Render0->GetTransform()->SetLocalScale({ (200.f), 150.f});
+	//Render0->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x,-GameEngineWindow::GetScreenSize().y });
+	//Render0->SetOrder(50);
 	int s =Render0->GetOrder();
-
-
 }
 
 // 이건 디버깅용도나 
-void UIPannel::Render(float _Delta)
+void MiniMap::Render(float _Delta)
 {
-	
+
 };

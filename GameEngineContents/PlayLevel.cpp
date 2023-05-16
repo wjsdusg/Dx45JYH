@@ -10,11 +10,15 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include "Map.h"
 #include "UIPannel.h"
+#include "MiniMap.h"
+#include "Ksword.h"
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> Object1 = nullptr;
 std::shared_ptr<GameEngineSpriteRenderer> RenderTest = nullptr;
 std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
+std::shared_ptr<MiniMap> NewMiniMap = nullptr;
+std::shared_ptr<Ksword> NewKsword = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -69,8 +73,8 @@ void PlayLevel::Start()
 	
 	NewUIPannel = CreateActor<UIPannel>(-20);
 
-
-
+	NewMiniMap = CreateActor<MiniMap>(0);
+	NewKsword = CreateActor<Ksword>(10);
 }
 void PlayLevel::LevelChangeStart()
 {

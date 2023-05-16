@@ -18,7 +18,7 @@ void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 		MsgAssert("디렉토리가 아닌 경로입니다." + std::string(_Path));
 	}
 
-	std::vector<GameEngineFile> AllFile = Dir.GetAllFile({ ".png", ".jpg" });
+	std::vector<GameEngineFile> AllFile = Dir.GetAllFile({ ".png", ".jpg",".bmp"});
 
 	if (0 >= AllFile.size())
 	{
