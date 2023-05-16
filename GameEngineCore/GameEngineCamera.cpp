@@ -17,10 +17,10 @@ void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
 	{
-		GameEngineInput::CreateKey("CamMoveLeft", 'A');
-		GameEngineInput::CreateKey("CamMoveRight", 'D');
-		GameEngineInput::CreateKey("CamMoveUp", 'Q');
-		GameEngineInput::CreateKey("CamMoveDown", 'E');
+		GameEngineInput::CreateKey("CamMoveLeft", VK_LEFT);
+		GameEngineInput::CreateKey("CamMoveRight", VK_RIGHT);
+		GameEngineInput::CreateKey("CamMoveUp", VK_UP);
+		GameEngineInput::CreateKey("CamMoveDown", VK_DOWN);
 		GameEngineInput::CreateKey("CamMoveForward", 'W');
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
 
@@ -52,6 +52,24 @@ void GameEngineCamera::Start()
 
 void GameEngineCamera::Update(float _DeltaTime)
 {
+	float Speed = 300.0f;
+	if (true == GameEngineInput::IsPress("CamMoveLeft"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("CamMoveRight"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("CamMoveUp"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("CamMoveDown"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
+	}
+
 	if (true == GameEngineInput::IsDown("ProjectionModeChange"))
 	{
 		switch (ProjectionType)
@@ -93,22 +111,6 @@ void GameEngineCamera::Update(float _DeltaTime)
 			Speed = 1000.0f;
 		}
 
-		if (true == GameEngineInput::IsPress("CamMoveLeft"))
-		{
-			GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
-		}
-		if (true == GameEngineInput::IsPress("CamMoveRight"))
-		{
-			GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
-		}
-		if (true == GameEngineInput::IsPress("CamMoveUp"))
-		{
-			GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
-		}
-		if (true == GameEngineInput::IsPress("CamMoveDown"))
-		{
-			GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
-		}
 		if (true == GameEngineInput::IsPress("CamMoveForward"))
 		{
 			GetTransform()->AddLocalPosition(GetTransform()->GetWorldForwardVector() * Speed * _DeltaTime);
@@ -169,4 +171,5 @@ void GameEngineCamera::Render(float _DeltaTime)
 	}
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
+	//ViewPort.ViewPort(4444, 4444, 0.0f, 0.0f);
 }

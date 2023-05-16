@@ -700,7 +700,9 @@ public:
 
 	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
 	{
+		
 		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
+		
 	}
 
 	void DecomposeRotQuaternion(float4& _RotQuaternion)
