@@ -65,6 +65,24 @@ public:
 
 	virtual void Setting() {}
 
+
+	static void ResourcesClear()
+	{
+		for (std::shared_ptr<ResourcesType> Type : UnNamedRes)
+		{
+			Type->IsUnLoad = true;
+		}
+
+		for (std::pair<std::string, std::shared_ptr<ResourcesType>> Type : NamedResources)
+		{
+			Type.second->IsUnLoad = true;
+		}
+
+		NamedResources.clear();
+		UnNamedRes.clear();
+	}
+
+
 protected:
 	static std::shared_ptr<ResourcesType> CreateUnNamed()
 	{
@@ -93,15 +111,10 @@ protected:
 	}
 
 
-	static void ResourcesClear()
-	{
-		NamedResources.clear();
-		UnNamedRes.clear();
-	}
-
 private:
 	std::string Path;
 	std::string Name;
+	bool IsUnLoad = false;
 
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
