@@ -28,14 +28,14 @@ void Player::Update(float _DeltaTime)
 	
 	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
-	if (Collsion->CollisionAll(2000, ColType::SPHERE2D, ColType::SPHERE2D, ColTest), 0 != ColTest.size())
-	{
-		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-		{
-			Col->GetActor()->Death();
-		}
-		// Col->GetActor()->Death();
-	}
+	//if (Collsion->CollisionAll(2000, ColType::SPHERE2D, ColType::SPHERE2D, ColTest), 0 != ColTest.size())
+	//{
+	//	for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+	//	{
+	//		Col->GetActor()->Death();
+	//	}
+	//	// Col->GetActor()->Death();
+	//}
 
 }
 

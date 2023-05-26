@@ -92,6 +92,8 @@ private:
 
 	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
 
+	void Release();
+
 	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 };
 
