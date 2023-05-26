@@ -1,5 +1,5 @@
 #pragma once
-#include "GameEngineUpdateObject.h"
+#include "GameEngineObject.h"
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
@@ -8,7 +8,7 @@
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineCollision;
-class GameEngineLevel : public GameEngineUpdateObject
+class GameEngineLevel : public GameEngineObject
 {
 	friend class GameEngineCollision;
 	friend class GameEngineTransform;
@@ -28,10 +28,16 @@ public:
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
-	template<typename ActorType >
+	template<typename ActorType>
 	std::shared_ptr<ActorType> CreateActor(const std::string_view& _Name)
 	{
 		return CreateActor<ActorType>(0, _Name);
+	}
+
+	template<typename ActorType, typename EnumType >
+	std::shared_ptr<ActorType> CreateActor(EnumType  _Order, const std::string_view& _Name = "")
+	{
+		return CreateActor(static_cast<int>(_Order), _Name);
 	}
 
 	template<typename ActorType >

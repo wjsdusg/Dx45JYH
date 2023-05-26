@@ -167,6 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EngineContentRenderingStruct.h" />
     <ClInclude Include="GameEngineActor.h" />
     <ClInclude Include="GameEngineBlend.h" />
     <ClInclude Include="GameEngineCamera.h" />
@@ -200,7 +201,6 @@
     <ClInclude Include="GameEngineSpriteRenderer.h" />
     <ClInclude Include="GameEngineTexture.h" />
     <ClInclude Include="GameEngineTransform.h" />
-    <ClInclude Include="GameEngineUpdateObject.h" />
     <ClInclude Include="GameEngineVertex.h" />
     <ClInclude Include="GameEngineVertexBuffer.h" />
     <ClInclude Include="GameEngineVertexShader.h" />
@@ -251,7 +251,6 @@
     <ClCompile Include="GameEngineSpriteRenderer.cpp" />
     <ClCompile Include="GameEngineTexture.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />
-    <ClCompile Include="GameEngineUpdateObject.cpp" />
     <ClCompile Include="GameEngineVertex.cpp" />
     <ClCompile Include="GameEngineVertexBuffer.cpp" />
     <ClCompile Include="GameEngineVertexShader.cpp" />

@@ -29,9 +29,6 @@
     <ClInclude Include="GameEngineRenderer.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineUpdateObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineObjectBase.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -140,6 +137,7 @@
     <ClInclude Include="GameEngineSprite.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="EngineContentRenderingStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -169,9 +167,6 @@
     </ClCompile>
     <ClCompile Include="GameEngineRenderer.cpp">
       <Filter>Object\Rendering\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineUpdateObject.cpp">
-      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineObjectBase.cpp">
       <Filter>Object</Filter>

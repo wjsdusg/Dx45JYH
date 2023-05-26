@@ -82,9 +82,10 @@ OutPut Texture_VS(Input _Value)
     return OutPutValue;
 }
 
-cbuffer OutPixelColor : register(b0)
+cbuffer ColorOption : register(b0)
 {
-    float4 OutColor;
+    float4 MulColor;
+    float4 PlusColor;
 }
 
 Texture2D DiffuseTex : register(t0);
@@ -93,6 +94,9 @@ SamplerState WRAPSAMPLER : register(s0);
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
+    
+    Color *= MulColor;
+    Color += PlusColor;
     
     return Color;
 }
