@@ -381,5 +381,4 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
-
 }
