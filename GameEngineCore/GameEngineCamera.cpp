@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include "GameEngineDevice.h"
+#include "GameEngineRenderer.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -17,10 +18,10 @@ void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
 	{
-		GameEngineInput::CreateKey("CamMoveLeft", VK_LEFT);
-		GameEngineInput::CreateKey("CamMoveRight", VK_RIGHT);
-		GameEngineInput::CreateKey("CamMoveUp", VK_UP);
-		GameEngineInput::CreateKey("CamMoveDown", VK_DOWN);
+		GameEngineInput::CreateKey("CamMoveLeft", 'A');
+		GameEngineInput::CreateKey("CamMoveRight", 'D');
+		GameEngineInput::CreateKey("CamMoveUp", 'Q');
+		GameEngineInput::CreateKey("CamMoveDown", 'E');
 		GameEngineInput::CreateKey("CamMoveForward", 'W');
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
 
@@ -52,24 +53,6 @@ void GameEngineCamera::Start()
 
 void GameEngineCamera::Update(float _DeltaTime)
 {
-	float Speed = 300.0f;
-	if (true == GameEngineInput::IsPress("CamMoveLeft"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("CamMoveRight"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("CamMoveUp"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("CamMoveDown"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
-	}
-
 	if (true == GameEngineInput::IsDown("ProjectionModeChange"))
 	{
 		switch (ProjectionType)
@@ -111,6 +94,22 @@ void GameEngineCamera::Update(float _DeltaTime)
 			Speed = 1000.0f;
 		}
 
+		if (true == GameEngineInput::IsPress("CamMoveLeft"))
+		{
+			GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
+		}
+		if (true == GameEngineInput::IsPress("CamMoveRight"))
+		{
+			GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
+		}
+		if (true == GameEngineInput::IsPress("CamMoveUp"))
+		{
+			GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
+		}
+		if (true == GameEngineInput::IsPress("CamMoveDown"))
+		{
+			GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
+		}
 		if (true == GameEngineInput::IsPress("CamMoveForward"))
 		{
 			GetTransform()->AddLocalPosition(GetTransform()->GetWorldForwardVector() * Speed * _DeltaTime);
@@ -144,8 +143,29 @@ void GameEngineCamera::Setting()
 
 void GameEngineCamera::Render(float _DeltaTime)
 {
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupEndIter = Renderers.end();
 
+	for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+	{
+		std::list<std::shared_ptr<GameEngineRenderer>>& RenderGroup = RenderGroupStartIter->second;
 
+		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
+		std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
+
+		for (; StartRenderer != EndRenderer; ++StartRenderer)
+		{
+			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
+
+			Render->RenderTransformUpdate(this);
+			Render->Render(_DeltaTime);
+
+		}
+	}
+}
+
+void GameEngineCamera::CameraTransformUpdate()
+{
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
 	float4 EyeDir = GetTransform()->GetLocalForwardVector();
 	float4 EyeUp = GetTransform()->GetLocalUpVector();
@@ -171,5 +191,16 @@ void GameEngineCamera::Render(float _DeltaTime)
 	}
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
-	//ViewPort.ViewPort(4444, 4444, 0.0f, 0.0f);
+}
+
+
+void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
+{
+	if (nullptr == _Render)
+	{
+		MsgAssert("랜더러가 nullptr 입니다");
+		return;
+	}
+
+	Renderers[_Render->GetOrder()].push_back(_Render);
 }

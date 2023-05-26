@@ -138,6 +138,10 @@
       <Filter>Resources\Texture</Filter>
     </ClInclude>
     <ClInclude Include="EngineContentRenderingStruct.h" />
+    <ClInclude Include="GameEngineTileMapRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFSM.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -271,6 +275,10 @@
     <ClCompile Include="GameEngineSprite.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineTileMapRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFSM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

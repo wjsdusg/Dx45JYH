@@ -3,6 +3,7 @@
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
+#include <GameEngineCore/GameEngineRenderTarget.h>
 
 // Ό³Έν :
 class GameEngineActor;
@@ -29,15 +30,15 @@ public:
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
 	template<typename ActorType>
-	std::shared_ptr<ActorType> CreateActor(const std::string_view& _Name)
+	std::shared_ptr<ActorType> CreateActorToName(const std::string_view& _Name = "")
 	{
 		return CreateActor<ActorType>(0, _Name);
 	}
 
-	template<typename ActorType, typename EnumType >
+	template<typename ActorType, typename EnumType>
 	std::shared_ptr<ActorType> CreateActor(EnumType  _Order, const std::string_view& _Name = "")
 	{
-		return CreateActor(static_cast<int>(_Order), _Name);
+		return CreateActor<ActorType>(static_cast<int>(_Order), _Name);
 	}
 
 	template<typename ActorType >
@@ -80,8 +81,11 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 	std::shared_ptr<GameEngineCamera> MainCamera;
-	std::shared_ptr<GameEngineCamera> UICamera;
+
+	std::shared_ptr<GameEngineRenderTarget> CameraTarget;
+
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
 

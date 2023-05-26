@@ -23,7 +23,10 @@ void AnimationInfo::Reset()
 
 void AnimationInfo::Update(float _DeltaTime)
 {
-	IsEndValue = false;
+	if (true == Loop)
+	{
+		IsEndValue = false;
+	}
 
 	// 1;
 	// 
@@ -63,6 +66,7 @@ void AnimationInfo::Update(float _DeltaTime)
 			}
 			else
 			{
+				IsEndValue = true;
 				--CurFrame;
 			}
 		}
@@ -281,7 +285,7 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 		return;
 	}
 
-	if (CurAnimation == Find && false == _Force)
+	if (CurAnimation.get() == Find.get() && false == _Force)
 	{
 		return;
 	}

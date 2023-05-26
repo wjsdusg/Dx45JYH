@@ -180,6 +180,7 @@
     <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineDirectBuffer.h" />
     <ClInclude Include="GameEngineEnum.h" />
+    <ClInclude Include="GameEngineFSM.h" />
     <ClInclude Include="GameEngineGUI.h" />
     <ClInclude Include="GameEngineIndexBuffer.h" />
     <ClInclude Include="GameEngineInputLayOut.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="GameEngineSprite.h" />
     <ClInclude Include="GameEngineSpriteRenderer.h" />
     <ClInclude Include="GameEngineTexture.h" />
+    <ClInclude Include="GameEngineTileMapRenderer.h" />
     <ClInclude Include="GameEngineTransform.h" />
     <ClInclude Include="GameEngineVertex.h" />
     <ClInclude Include="GameEngineVertexBuffer.h" />
@@ -230,6 +232,7 @@
     <ClCompile Include="GameEngineDepthState.cpp" />
     <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineDirectBuffer.cpp" />
+    <ClCompile Include="GameEngineFSM.cpp" />
     <ClCompile Include="GameEngineGUI.cpp" />
     <ClCompile Include="GameEngineIndexBuffer.cpp" />
     <ClCompile Include="GameEngineInputLayOut.cpp" />
@@ -250,6 +253,7 @@
     <ClCompile Include="GameEngineSprite.cpp" />
     <ClCompile Include="GameEngineSpriteRenderer.cpp" />
     <ClCompile Include="GameEngineTexture.cpp" />
+    <ClCompile Include="GameEngineTileMapRenderer.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />
     <ClCompile Include="GameEngineVertex.cpp" />
     <ClCompile Include="GameEngineVertexBuffer.cpp" />

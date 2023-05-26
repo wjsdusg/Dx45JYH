@@ -18,20 +18,24 @@ GameEngineRenderer::~GameEngineRenderer()
 {
 }
 
-
-void GameEngineRenderer::Render(float _Delta)
+void GameEngineRenderer::Start()
 {
-	std::shared_ptr<GameEngineCamera> MainCamera = GetLevel()->GetMainCamera();
+	GetLevel()->GetMainCamera()->PushRenderer(DynamicThis<GameEngineRenderer>());
+}
 
-	if (nullptr == MainCamera)
+void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
+{
+	if (nullptr == _Camera)
 	{
 		assert(false);
 		return;
 	}
 
-	GetTransform()->SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
+	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
+}
 
-
+void GameEngineRenderer::Render(float _Delta)
+{
 	// GameEngineDevice::GetContext()->VSSetConstantBuffers();
 	// GameEngineDevice::GetContext()->PSSetConstantBuffers();
 

@@ -5,6 +5,8 @@
 // Ό³Έν :
 class GameEngineRenderer : public GameEngineComponent
 {
+	friend class GameEngineCamera;
+
 public:
 	// constrcuter destructer
 	GameEngineRenderer();
@@ -27,7 +29,10 @@ public:
 		return ShaderResHelper;
 	}
 
+
 protected:
+	void Start();
+
 	void Render(float _Delta) override;
 
 private:
@@ -36,5 +41,7 @@ private:
 	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
 
 	GameEngineShaderResHelper ShaderResHelper;
+
+	void RenderTransformUpdate(GameEngineCamera* _Camera);
 };
 
