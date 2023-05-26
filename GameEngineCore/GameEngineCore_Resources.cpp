@@ -119,6 +119,26 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
+		std::vector<GameEngineVertex> ArrVertex;
+		ArrVertex.resize(4);
+
+		// 0   1
+		// 3   2
+		// 앞면
+		ArrVertex[0] = { { -1.0f, 1.0f, 0.0f }, {0.0f, 0.0f} };
+		ArrVertex[1] = { { 1.0f, 1.0f, 0.0f }, {1.0f, 0.0f} };
+		ArrVertex[2] = { { 1.0f, -1.0f, 0.0f }, {1.0f, 1.0f} };
+		ArrVertex[3] = { { -1.0f, -1.0f, 0.0f }, {0.0f, 1.0f} };
+
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 2, 3 };
+
+		GameEngineVertexBuffer::Create("FullRect", ArrVertex);
+		GameEngineIndexBuffer::Create("FullRect", ArrIndex);
+
+	}
+
+
+	{
 		// 블랜드
 		D3D11_BLEND_DESC Desc = { 0, };
 
@@ -166,6 +186,17 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineDepthState::Create("EngineDepth", Desc);
 	}
+
+	{
+		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_ALWAYS;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		Desc.StencilEnable = false;
+
+		GameEngineDepthState::Create("AlwayDepth", Desc);
+	}
+
 
 
 	{
@@ -217,11 +248,11 @@ void GameEngineCore::CoreResourcesInit()
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
-		std::shared_ptr<GameEngineVertexShader> VertexShader = GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
+		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Merge_VS");
+		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Merge_PS");
 
-
-		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
-
+		GameEngineVertexShader::Load(Files[1].GetFullPath(), "Texture_VS");
+		GameEnginePixelShader::Load(Files[1].GetFullPath(), "Texture_PS");
 		//for (size_t i = 0; i < Files.size(); i++)
 		//{
 		//}
@@ -285,6 +316,20 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetBlendState("AlphaBlend");
 			Pipe->SetDepthState("EngineDepth");
 		}
+
+		{
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Merge");
+			Pipe->SetVertexBuffer("FullRect");
+			Pipe->SetIndexBuffer("FullRect");
+			Pipe->SetVertexShader("MergeShader.hlsl");
+			Pipe->SetRasterizer("Engine2DBase");
+			Pipe->SetPixelShader("MergeShader.hlsl");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("AlwayDepth");
+
+			GameEngineRenderTarget::RenderTargetUnitInit();
+		}
+
 	}
 }
 

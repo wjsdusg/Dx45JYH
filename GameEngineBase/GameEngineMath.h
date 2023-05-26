@@ -294,6 +294,12 @@ public:
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
 
+	float MaxFloat() const
+	{
+		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
+	}
+
+
 	float4 RotaitonXDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;

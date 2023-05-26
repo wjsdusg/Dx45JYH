@@ -1,9 +1,11 @@
 #pragma once
 #include "GameEngineTexture.h"
+#include "GameEngineRenderer.h"
 
 // Ό³Έν :
 class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
 {
+	friend class GameEngineCore;
 public:
 	// constrcuter destructer
 	GameEngineRenderTarget();
@@ -28,7 +30,7 @@ public:
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
 
-		NewRenderTarget->ResCreate(_Color);
+		NewRenderTarget->ResCreate(_Format, _Scale, _Color);
 
 		return NewRenderTarget;
 	}
@@ -39,20 +41,26 @@ public:
 
 	void Reset();
 
-	void CreateDepthTexture();
+	void CreateDepthTexture(int _Index = 0);
+
+	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 
 protected:
 
 private:
+	static void RenderTargetUnitInit();
+	static GameEngineRenderUnit MergeUnit;
+
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	std::shared_ptr<GameEngineTexture> Texture;
+	std::vector<std::shared_ptr<GameEngineTexture>> Textures;
+	std::vector<ID3D11RenderTargetView*> RTVs;
 
 	std::shared_ptr<GameEngineTexture> DepthTexture;
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 
-	void ResCreate(float4 _Color);
+	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
 
 };
 

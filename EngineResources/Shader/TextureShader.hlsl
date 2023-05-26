@@ -91,6 +91,14 @@ cbuffer ColorOption : register(b0)
 Texture2D DiffuseTex : register(t0);
 SamplerState WRAPSAMPLER : register(s0);
 
+struct OutColor
+{
+    float4 Color0 : SV_Target0;
+    float4 Color1 : SV_Target1;
+    float4 Color2 : SV_Target2;
+    float4 Color3 : SV_Target3;
+};
+
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);

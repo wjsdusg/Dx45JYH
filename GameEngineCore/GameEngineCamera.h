@@ -6,8 +6,10 @@
 
 // Ό³Έν :
 class GameEngineRenderer;
+class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineActor
 {
+	friend GameEngineLevel;
 	friend GameEngineRenderer;
 
 public:
@@ -53,11 +55,21 @@ public:
 
 	void CameraTransformUpdate();
 
+	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
+	{
+		return CamTarget;
+	}
+
+	bool IsView(const TransformData& _TransData);
+
+
 protected:
 	void Start() override;
 
 private:
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
+
+	DirectX::BoundingOrientedBox Box;
 
 	bool FreeCamera = false;
 
@@ -78,7 +90,8 @@ private:
 	float Near = 0.1f;
 	float Far = 10000.0f;
 
-
 	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
+
+	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 };
 

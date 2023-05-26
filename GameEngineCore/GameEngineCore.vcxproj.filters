@@ -142,6 +142,9 @@
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineFSM.h" />
+    <ClInclude Include="GameEngineUIRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -279,6 +282,9 @@
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineFSM.cpp" />
+    <ClCompile Include="GameEngineUIRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

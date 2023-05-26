@@ -25,7 +25,6 @@ GameEngineLevel::~GameEngineLevel()
 
 void GameEngineLevel::Start()
 {
-	CameraTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
 
 }
 
@@ -82,6 +81,15 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
 	}
+
+	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
+	{
+		std::shared_ptr<GameEngineCamera> Camera = Pair.second;
+		std::shared_ptr<GameEngineRenderTarget> Target = Camera->GetCamTarget();
+
+		GameEngineDevice::GetBackBufferTarget()->Merge(Target);
+	}
+
 
 	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
@@ -209,4 +217,32 @@ void GameEngineLevel::LevelChangeStart()
 void GameEngineLevel::LevelChangeEnd()
 {
 
+}
+
+
+void GameEngineLevel::PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder)
+{
+	std::shared_ptr<GameEngineCamera> FindCamera = GetCamera(_CameraOrder);
+
+	if (nullptr == FindCamera)
+	{
+		MsgAssert("존재하지 않는 카메라에 랜더러를 넣을수는 없습니다.");
+		return;
+	}
+
+	FindCamera->PushRenderer(_Renderer);
+}
+
+std::shared_ptr<GameEngineCamera> GameEngineLevel::GetCamera(int _CameraOrder)
+{
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator FindIter = Cameras.find(_CameraOrder);
+
+	if (FindIter == Cameras.end())
+	{
+		return nullptr;
+	}
+
+	std::shared_ptr<GameEngineCamera> Camera = FindIter->second;
+
+	return Camera;
 }
