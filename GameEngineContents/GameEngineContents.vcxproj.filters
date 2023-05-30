@@ -10,6 +10,9 @@
     <Filter Include="Unit">
       <UniqueIdentifier>{1e7e79ed-9e35-4b6d-b49c-d0feeb648749}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{d86bbaa0-6f53-40c1-8245-19ac12fc3929}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -33,6 +36,9 @@
     </ClInclude>
     <ClInclude Include="Ksword.h">
       <Filter>Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeEffect.h">
+      <Filter>PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,5 +64,9 @@
     <ClCompile Include="Ksword.cpp">
       <Filter>Unit</Filter>
     </ClCompile>
+    <ClCompile Include="FadeEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents_Resources.cpp" />
   </ItemGroup>
 </Project>

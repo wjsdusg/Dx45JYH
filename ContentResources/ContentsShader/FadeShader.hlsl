@@ -12,7 +12,7 @@ struct OutPut
     float4 UV : TEXCOORD;
 };
 
-OutPut Merge_VS(Input _Value)
+OutPut Fade_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut) 0;
     OutPutValue.Pos = _Value.Pos;
@@ -22,15 +22,22 @@ OutPut Merge_VS(Input _Value)
     return OutPutValue;
 }
 
+
+cbuffer FadeData : register(b1)
+{
+    // 상수버퍼는 
+    float4 FadeValue;
+}
+
+
 Texture2D DiffuseTex : register(t0);
 SamplerState WRAPSAMPLER : register(s0);
 
-float4 Merge_PS(OutPut _Value) : SV_Target0
+float4 Fade_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
-    
-    Color.a = saturate(Color.a);
-    
-  
+    float Value = FadeValue.x;
+    Value = saturate(Value);
+    Color.xyz *= Value;
     return Color;
 }
