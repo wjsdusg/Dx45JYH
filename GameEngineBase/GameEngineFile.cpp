@@ -85,3 +85,20 @@ void GameEngineFile::LoadBin(GameEngineSerializer& _Data)
 		fclose(FilePtr);
 	}
 }
+
+std::string GameEngineFile::GetString()
+{
+	std::string AllString;
+
+	uintmax_t size = GetFileSize();
+	GameEngineSerializer Ser;
+	Ser.BufferResize(size);
+	LoadBin(Ser);
+
+	return "";
+}
+
+uintmax_t GameEngineFile::GetFileSize()
+{
+	return std::filesystem::file_size(Path.Path);
+}
