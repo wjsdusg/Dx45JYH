@@ -86,19 +86,6 @@ void GameEngineCore::EngineUpdate()
 		// 레퍼런스 카운트 관리해볼것이다.
 
 		// Prev레벨에서 사용한 텍스처들
-
-
-		// 그냥 텍스처 자체를 지우지는 않을 것이다.
-		if (nullptr != PrevLevel)
-		{
-			PrevLevel->TextureUnLoad(MainLevel.get());
-		}
-
-		if (nullptr != MainLevel)
-		{
-			MainLevel->TextureRealLoad(PrevLevel.get());
-		}
-
 		NextLevel = nullptr;
 		GameEngineTime::GlobalTime.Reset();
 	}
@@ -128,12 +115,6 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	CurLoadLevel = nullptr;
-	MainLevel->TextureRealLoad(nullptr);
-
-	if (nullptr != MainLevel)
-	{
-		MainLevel->TextureRealLoad(nullptr);
-	}
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
 	if (State != GameEngineVideo::VideoState::Running)
