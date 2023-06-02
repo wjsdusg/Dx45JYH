@@ -9,7 +9,7 @@ public:
 	Player();
 	~Player();
 
-	// delete Function
+	// delete Functi
 	Player(const Player& _Other) = delete;
 	Player(Player&& _Other) noexcept = delete;
 	Player& operator=(const Player& _Other) = delete;

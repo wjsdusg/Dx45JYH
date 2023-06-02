@@ -37,6 +37,10 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
 		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
 		GameEngineInput::CreateKey("ProjectionModeChange", 'O');
+		GameEngineInput::CreateKey("Left", VK_LEFT);
+		GameEngineInput::CreateKey("Right", VK_RIGHT);
+		GameEngineInput::CreateKey("Up",VK_UP);
+		GameEngineInput::CreateKey("Down",VK_DOWN);
 	}
 
 	// float _Width, float _Height, float _Left, float _Right, float _ZMin = 0.0f, float _ZMax = 1.0f
@@ -86,12 +90,12 @@ void GameEngineCamera::Update(float _DeltaTime)
 			GetTransform()->SetTransformData(OldData);
 		}
 	}
-
+	float Speed = 300.0f;
 	if (true == FreeCamera)
 	{
 		float RotSpeed = 180.0f;
 
-		float Speed = 200.0f;
+		
 
 		if (true == GameEngineInput::IsPress("SpeedBoost"))
 		{
@@ -136,6 +140,22 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 	}
 
+	if (true == GameEngineInput::IsPress("Left"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("Right"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("Up"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("Down"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
+	}
 }
 
 

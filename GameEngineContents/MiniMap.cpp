@@ -17,9 +17,9 @@ void MiniMap::Update(float _DeltaTime)
 {
 	float4 m = { 1280.f,720.f};
 	Render1->GetTransform()->SetLocalScale(m * MiniViewRatio);
-
-	//Render1->GetTransform()->SetLocalScale({100,100});
-
+	Render1->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition() * MiniViewRatio);
+	
+	
 	float4 s = Render1->GetTransform()->GetLocalScale();
 
 }

@@ -18,7 +18,7 @@ class GameEngineLevel : public GameEngineObject
 	friend class GameEngineCore;
 	friend class GameEngineActor;
 	friend class GameEngineTexture;
-
+	
 public:
 	GameEngineTimeEvent TimeEvent;
 
