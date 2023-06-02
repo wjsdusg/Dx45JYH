@@ -37,7 +37,7 @@ void Map::Start()
 	//Render0->SetScaleToTexture("background.png");
 	
 	Render0->SetTexture("background.png");
-	Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x * 4), (GameEngineWindow::GetScreenSize().y * 4), 0.f, 1.f });
+	//Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x * 4), (GameEngineWindow::GetScreenSize().y * 4), 0.f, 1.f });
 	
 	
 	//Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x ), (GameEngineWindow::GetScreenSize().y ), 0.f, 0.f });

@@ -2,8 +2,10 @@
 #include <GameEngineCore/GameEngineActor.h>
 
 // Ό³Έν :
+class GameEngineUIRenderer;
 class MiniMap : public GameEngineActor
 {
+	friend class PlayLevel;
 public:
 	// constrcuter destructer
 	MiniMap();
@@ -14,7 +16,7 @@ public:
 	MiniMap(MiniMap&& _Other) noexcept = delete;
 	MiniMap& operator=(const MiniMap& _Other) = delete;
 	MiniMap& operator=(MiniMap&& _Other) noexcept = delete;
-
+	static float4 MiniViewRatio;
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -22,10 +24,10 @@ protected:
 
 
 private:
+	std::shared_ptr<class GameEngineUIRenderer> Render0;
+	std::shared_ptr<class GameEngineUIRenderer> Render1;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
-
-
+	
 
 };
 

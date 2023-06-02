@@ -1,15 +1,8 @@
 #include "PrecompileHeader.h"
 #include "MiniMap.h"
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include <GameEnginePlatform/GameEngineWindow.h>
-#include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
-#include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
-#include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineVideo.h>
-#include <GameEngineCore/GameEngineSprite.h>
-#include "TestObject.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
 
 MiniMap::MiniMap()
 {
@@ -18,28 +11,37 @@ MiniMap::MiniMap()
 MiniMap::~MiniMap()
 {
 }
-
+float4 MiniMap::MiniViewRatio;
 
 void MiniMap::Update(float _DeltaTime)
 {
+	float4 m = { 1280.f,720.f};
+	Render1->GetTransform()->SetLocalScale(m * MiniViewRatio);
 
+	//Render1->GetTransform()->SetLocalScale({100,100});
 
-
-
-
+	float4 s = Render1->GetTransform()->GetLocalScale();
 
 }
 
 void MiniMap::Start()
 {
-	Render0 = CreateComponent<GameEngineSpriteRenderer>();
+
+
 	
-	//Render0->SetTexture("background.png");
-	Render0->SetTexture("hero.bmp");
-	Render0->GetTransform()->SetLocalScale({ (200.f), 150.f});
-	//Render0->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x,-GameEngineWindow::GetScreenSize().y });
-	//Render0->SetOrder(50);
-	int s =Render0->GetOrder();
+	Render0 = CreateComponent<GameEngineUIRenderer>();
+	
+	Render0->SetTexture("backgroundMini.png");
+	
+	Render0->GetTransform()->SetLocalScale({ (290.f), 120.f });
+	
+	Render1 = CreateComponent<GameEngineUIRenderer>();
+	
+	
+	float4 a = GetTransform()->GetLocalScale();
+	float4 b = Render1->GetTransform()->GetLocalScale();
+	
+	
 }
 
 // 이건 디버깅용도나 

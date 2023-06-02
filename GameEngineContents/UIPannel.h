@@ -23,10 +23,7 @@ protected:
 	
 private:
 	float Angle = 0.0f;
-	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	
-
-	std::shared_ptr<class GameEngineCollision> Collsion;
 
 };
 

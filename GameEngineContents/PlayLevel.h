@@ -15,9 +15,7 @@ public:
 	PlayLevel& operator=(const PlayLevel& _Other) = delete;
 	PlayLevel& operator=(PlayLevel&& _Other) noexcept = delete;
 
-	std::shared_ptr<class GameEngineVideo> Video;
-	std::shared_ptr<class TestObject> Object3;
-
+	
 protected:
 	void Update(float _DeltaTime) override;
 	void Start() override;

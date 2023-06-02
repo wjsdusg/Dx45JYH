@@ -8,6 +8,7 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineVideo.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "Map.h"
 #include "UIPannel.h"
 #include "MiniMap.h"
@@ -36,10 +37,7 @@ void PlayLevel::Update(float _DeltaTime)
 
 void PlayLevel::PlayerCreate(/*Playlevel* this*/)
 {
-	if (nullptr != Object1)
-	{
-		RenderTest->GetTransform()->SetParent(Object3->GetTransform());
-	}
+	
 
 }
 
@@ -70,10 +68,14 @@ void PlayLevel::Start()
 
 	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
 	Map1 = CreateActor<Map>(-30);
-	
+	Map1->GetTransform()->SetLocalScale({ 11520.f,5960.f, 1.f, 1.f });
 	NewUIPannel = CreateActor<UIPannel>(-20);
 
 	NewMiniMap = CreateActor<MiniMap>(0);
+	MiniMap::MiniViewRatio = NewMiniMap->Render0->GetTransform()->GetLocalScale() / Map1->GetTransform()->GetLocalScale();
+	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
+	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
+
 	NewKsword = CreateActor<Ksword>(10);
 }
 void PlayLevel::LevelChangeStart()
