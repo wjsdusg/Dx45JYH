@@ -1,15 +1,9 @@
 #include "PrecompileHeader.h"
 #include "Map.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include <GameEnginePlatform/GameEngineWindow.h>
-#include <GameEngineCore/GameEngineLevel.h>
-#include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
-#include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineVideo.h>
-#include <GameEngineCore/GameEngineSprite.h>
-#include "TestObject.h"
+#include "ContentsEnum.h"
 
 Map::Map()
 {
@@ -19,7 +13,7 @@ Map::~Map()
 {
 }
 
-
+extern float4 MapSize;
 void Map::Update(float _DeltaTime)
 {
 
@@ -37,6 +31,8 @@ void Map::Start()
 	//Render0->SetScaleToTexture("background.png");
 	
 	Render0->SetTexture("background.png");
+	Render0->SetScaleToTexture("background.png");
+	MapSize = Render0->GetTransform()->GetLocalScale();
 	//Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x * 4), (GameEngineWindow::GetScreenSize().y * 4), 0.f, 1.f });
 	
 	

@@ -140,22 +140,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 	}
 
-	if (true == GameEngineInput::IsPress("Left"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("Right"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("Up"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("Down"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
-	}
+	
 }
 
 

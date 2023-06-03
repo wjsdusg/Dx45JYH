@@ -13,6 +13,9 @@
     <Filter Include="PostEffect">
       <UniqueIdentifier>{d86bbaa0-6f53-40c1-8245-19ac12fc3929}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enum">
+      <UniqueIdentifier>{535d3b28-9212-4c9b-8444-9138953bbaf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -39,6 +42,9 @@
     </ClInclude>
     <ClInclude Include="FadeEffect.h">
       <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h">
+      <Filter>Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,5 +74,8 @@
       <Filter>PostEffect</Filter>
     </ClCompile>
     <ClCompile Include="Contents_Resources.cpp" />
+    <ClCompile Include="ContentsEnum.cpp">
+      <Filter>Enum</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

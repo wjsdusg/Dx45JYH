@@ -27,10 +27,29 @@ PlayLevel::PlayLevel()
 PlayLevel::~PlayLevel()
 {
 }
+extern float4 MapSize;
+extern float4 MiniMapSize;
+extern float4 MiniViewRatio;
 
 void PlayLevel::Update(float _DeltaTime)
 {
-
+	float Speed = 500.f;
+	if (true == GameEngineInput::IsPress("Left"))
+	{
+		GetMainCamera()->GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("Right"))
+	{
+		GetMainCamera()->GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("Up"))
+	{
+		GetMainCamera()->GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("Down"))
+	{
+		GetMainCamera()->GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
+	}
 
 	
 }
@@ -67,12 +86,15 @@ void PlayLevel::Start()
 
 
 	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+
 	Map1 = CreateActor<Map>(-30);
-	Map1->GetTransform()->SetLocalScale({ 11520.f,5960.f, 1.f, 1.f });
+
+
 	NewUIPannel = CreateActor<UIPannel>(-20);
 
 	NewMiniMap = CreateActor<MiniMap>(0);
-	MiniMap::MiniViewRatio = NewMiniMap->Render0->GetTransform()->GetLocalScale() / Map1->GetTransform()->GetLocalScale();
+
+	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
 

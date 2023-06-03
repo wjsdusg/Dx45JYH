@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "MiniMap.h"
+#include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
@@ -11,12 +12,12 @@ MiniMap::MiniMap()
 MiniMap::~MiniMap()
 {
 }
-float4 MiniMap::MiniViewRatio;
-
+extern float4 MiniViewRatio;
+extern float4 MiniMapSize;
 void MiniMap::Update(float _DeltaTime)
 {
-	float4 m = { 1280.f,720.f};
-	Render1->GetTransform()->SetLocalScale(m * MiniViewRatio);
+	
+	Render1->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize() * MiniViewRatio);
 	Render1->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition() * MiniViewRatio);
 	
 	
@@ -34,6 +35,8 @@ void MiniMap::Start()
 	Render0->SetTexture("backgroundMini.png");
 	
 	Render0->GetTransform()->SetLocalScale({ (290.f), 120.f });
+	
+	MiniMapSize = Render0->GetTransform()->GetLocalScale();
 	
 	Render1 = CreateComponent<GameEngineUIRenderer>();
 	

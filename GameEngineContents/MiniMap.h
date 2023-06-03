@@ -16,7 +16,7 @@ public:
 	MiniMap(MiniMap&& _Other) noexcept = delete;
 	MiniMap& operator=(const MiniMap& _Other) = delete;
 	MiniMap& operator=(MiniMap&& _Other) noexcept = delete;
-	static float4 MiniViewRatio;
+	
 protected:
 	void Start();
 	void Update(float _Delta) override;
