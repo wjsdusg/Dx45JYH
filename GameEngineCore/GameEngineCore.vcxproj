@@ -170,6 +170,7 @@
     <ClInclude Include="EngineContentRenderingStruct.h" />
     <ClInclude Include="GameEngineActor.h" />
     <ClInclude Include="GameEngineBlend.h" />
+    <ClInclude Include="GameEngineButton.h" />
     <ClInclude Include="GameEngineCamera.h" />
     <ClInclude Include="GameEngineCollision.h" />
     <ClInclude Include="GameEngineComponent.h" />
@@ -223,6 +224,7 @@
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp" />
     <ClCompile Include="GameEngineBlend.cpp" />
+    <ClCompile Include="GameEngineButton.cpp" />
     <ClCompile Include="GameEngineCamera.cpp" />
     <ClCompile Include="GameEngineCollision.cpp" />
     <ClCompile Include="GameEngineComponent.cpp" />
