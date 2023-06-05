@@ -14,6 +14,10 @@ Map::~Map()
 }
 
 extern float4 MapSize;
+extern float4 MapRightP;
+extern float4 MapLeftP;
+extern float4 MapUpP;
+extern float4 MapDownP;
 void Map::Update(float _DeltaTime)
 {
 
@@ -27,17 +31,14 @@ void Map::Update(float _DeltaTime)
 void Map::Start()
 {
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->SetScaleRatio(10.0f);
-	//Render0->SetScaleToTexture("background.png");
 	
 	Render0->SetTexture("background.png");
 	Render0->SetScaleToTexture("background.png");
 	MapSize = Render0->GetTransform()->GetLocalScale();
-	//Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x * 4), (GameEngineWindow::GetScreenSize().y * 4), 0.f, 1.f });
-	
-	
-	//Render0->GetTransform()->SetLocalScale({ (GameEngineWindow::GetScreenSize().x ), (GameEngineWindow::GetScreenSize().y ), 0.f, 0.f });
-
+	MapRightP = { MapSize.x / 2.f,0.f,1.f };
+	MapLeftP = { -MapSize.x / 2.f,0.f,1.f };
+	MapUpP = { 0.f,MapSize.y / 2.f,1.f };
+	MapDownP = { 0.f,-MapSize.y / 2.f,1.f };
 
 }
 

@@ -187,6 +187,9 @@ public:
 	float4 QuaternionToEulerDeg();
 	float4 QuaternionToEulerRad();
 
+	float XYDistance(float4 _Value);
+	float XYZDistance(float4 _Value);
+
 	int ix() const
 	{
 		return static_cast<int>(x);
