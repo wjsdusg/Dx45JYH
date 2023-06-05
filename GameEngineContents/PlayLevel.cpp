@@ -43,12 +43,7 @@ extern float4 MovePointRightOnLine(float4 _PrePos, float _Speed, float _DeltaTim
 void PlayLevel::Update(float _DeltaTime)
 {
 
-	float dis = MapRightP.XYDistance(MapUpP);
-	float rcos = MapRightP.x / dis;
-	float deg2 = acosf(rcos) * GameEngineMath::RadToDeg;
-
-	float a = (MapUpP.y - MapRightP.y) / (MapUpP.x - MapRightP.y);
-	float b = MapRightP.y - a * MapRightP.y;
+	
 	//y>= a*x+b 이면 x,y점이 닿거나 위에있다.
 	float Speed = 1000.f;
 
@@ -176,7 +171,12 @@ void PlayLevel::Start()
 		}
 	}
 
-
+	{
+		GameEngineInput::CreateKey("Left", VK_LEFT);
+		GameEngineInput::CreateKey("Right", VK_RIGHT);
+		GameEngineInput::CreateKey("Up", VK_UP);
+		GameEngineInput::CreateKey("Down", VK_DOWN);
+	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });

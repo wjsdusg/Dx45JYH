@@ -42,7 +42,7 @@ void Ksword::Start()
 		// TestAnimation.png
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("kword").GetFullPath());
-
+	
 	
 	}
 

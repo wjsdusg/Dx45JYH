@@ -153,7 +153,7 @@ void GameEngineTexture::VSReset(UINT _Slot)
 {
 	static ID3D11ShaderResourceView* Nullptr = nullptr;
 
-	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &Nullptr);
+	GameEngineDevice::GetContext()->VSSetShaderResources(_Slot, 1, &Nullptr);
 }
 void GameEngineTexture::PSReset(UINT _Slot)
 {
@@ -529,4 +529,24 @@ void GameEngineTexture::Release()
 		Texture2D->Release();
 		Texture2D = nullptr;
 	}
+}
+
+void GameEngineTexture::ReLoad()
+{
+	if (nullptr != Texture2D)
+	{
+		return;
+	}
+
+	if (nullptr != SRV)
+	{
+		return;
+	}
+
+	if ("" == GetPath())
+	{
+		return;
+	}
+
+	ResLoad(GetPath());
 }
