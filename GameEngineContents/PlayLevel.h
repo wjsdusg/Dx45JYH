@@ -22,9 +22,10 @@ protected:
 
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
-
+	
 
 private:
+	void OutlineCheck(float4& _Pos);
 	void PlayerCreate();
 
 

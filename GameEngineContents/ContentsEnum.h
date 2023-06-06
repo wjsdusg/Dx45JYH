@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineBase/GameEngineMath.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
  float4 MapSize;
  float4 MiniMapSize;
  float4 MiniViewRatio;
@@ -16,7 +17,7 @@
 	 float a = (Point1.y - Point2.y) / (Point1.x - Point2.x);
 	 float b = Point2.y - a * Point2.x;
 	 Slope = a;
-	 b -= 250.f;
+	 b -= GameEngineWindow::GetScreenSize().y / 2;
 	 Y_intercept = b;
 	
 	 bool check = CheckPoint.y >= a * CheckPoint.x + b;
@@ -28,6 +29,7 @@
 	 float a = (Point1.y - Point2.y) / (Point1.x - Point2.x);
 	 float b = Point2.y - a * Point2.x;
 	 Slope = a;
+	 b += GameEngineWindow::GetScreenSize().y / 2;
 	 Y_intercept = b;
 
 	 bool check = CheckPoint.y <= a * CheckPoint.x + b;
