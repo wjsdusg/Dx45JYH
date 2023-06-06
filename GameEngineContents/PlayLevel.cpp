@@ -9,6 +9,7 @@
 #include <GameEngineCore/GameEngineVideo.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineButton.h>
 #include "Map.h"
 #include "UIPannel.h"
 #include "MiniMap.h"
@@ -62,10 +63,10 @@ void PlayLevel::Update(float _DeltaTime)
 	if (
 		true == GameEngineInput::IsPress("Left")
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
-		/*||
-			(
+		||
+		(
 			(Mouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)) && (Mouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
-			)*/
+			)
 		)
 	{
 		if (true == CheckPointOnUpLine(MapUpP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
@@ -85,17 +86,17 @@ void PlayLevel::Update(float _DeltaTime)
 			float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime;
 			OutlineCheck(Pos);
 			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			
+
 
 		}
 	}
 	if (
 		true == GameEngineInput::IsPress("Right")
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
-		/*||
-			(
+		||
+		(
 			(Mouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20)) && (Mouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
-			)*/
+			)
 		)
 	{
 		if (true == CheckPointOnUpLine(MapUpP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
@@ -121,11 +122,11 @@ void PlayLevel::Update(float _DeltaTime)
 	if (
 		true == GameEngineInput::IsPress("Up")
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().y <= (MapSize.y / 2 - (GameEngineWindow::GetScreenSize().y / 2))
-		/*||
-			(
+		||
+		(
 			Mouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20) && Mouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
-			)*/
-		
+			)
+
 		)
 	{
 		if (true == CheckPointOnUpLine(MapUpP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
@@ -146,7 +147,7 @@ void PlayLevel::Update(float _DeltaTime)
 			float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldUpVector() * Speed * _DeltaTime;
 			OutlineCheck(Pos);
 			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			
+
 
 		}
 
@@ -155,10 +156,10 @@ void PlayLevel::Update(float _DeltaTime)
 	if (
 		true == GameEngineInput::IsPress("Down")
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
-		/*||
-			(
+		||
+		(
 			Mouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20) && Mouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
-			)*/
+			)
 		)
 	{
 		if (true == CheckPointOnDownLine(MapDownP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
@@ -180,14 +181,14 @@ void PlayLevel::Update(float _DeltaTime)
 			OutlineCheck(Pos);
 			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 
-			
+
 
 		}
 	}
 
 	//if(true==GetMainCamera()->GetTransform()->GetLocalPosition())
 
-	
+
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -256,12 +257,23 @@ void PlayLevel::Start()
 
 	NewUIPannel = CreateActor<UIPannel>(-20);
 
-	NewMiniMap = CreateActor<MiniMap>(0);
+	NewMiniMap = CreateActor<MiniMap>(10);
 
 	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
 
+	{
+		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>(-10000);
+		Button->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition());
+		Button->GetTransform()->SetLocalScale(NewMiniMap->Render0->GetTransform()->GetLocalScale());
+
+		Button->SetEvent([this]()
+			{
+				int a = 0;
+				//GetMainCamera()->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition() * 1 / MiniViewRatio);
+			});
+	}
 	NewKsword = CreateActor<Ksword>(10);
 }
 void PlayLevel::LevelChangeStart()

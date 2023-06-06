@@ -17,6 +17,7 @@ void GameEngineButton::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>();
 	// Collision = CreateComponent<GameEngineCollision>();
+	Render->SetOrder(-100);
 }
 
 void GameEngineButton::Update(float _Delta)
