@@ -27,7 +27,7 @@ protected:
 private:
 	void OutlineCheck(float4& _Pos);
 	void PlayerCreate();
-
+	float4 Mouse;
 
 };
 

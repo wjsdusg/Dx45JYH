@@ -43,19 +43,21 @@ extern float4 MovePointRightOnLine(float4 _PrePos, float _Speed, float _DeltaTim
 
 void PlayLevel::Update(float _DeltaTime)
 {
-	std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
+	
+	{
+		std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
 
-	// 랜더러 
-	float4x4 ViewPort = Camera->GetViewPort();
-	float4x4 Proj = Camera->GetProjection();
-	float4x4 View = Camera->GetView();
+		// 랜더러 
+		float4x4 ViewPort = Camera->GetViewPort();
+		float4x4 Proj = Camera->GetProjection();
+		float4x4 View = Camera->GetView();
 
-	float4 Mouse = GameEngineInput::GetMousePosition();
+		Mouse = GameEngineInput::GetMousePosition();
 
-	Mouse *= ViewPort.InverseReturn();
-	Mouse *= Proj.InverseReturn();
-	Mouse *= View.InverseReturn();
-
+		Mouse *= ViewPort.InverseReturn();
+		Mouse *= Proj.InverseReturn();
+		Mouse *= View.InverseReturn();
+	}
 
 	//y>= a*x+b 이면 x,y점이 닿거나 위에있다.
 	float Speed = 1000.f;
@@ -188,7 +190,7 @@ void PlayLevel::Update(float _DeltaTime)
 
 	//if(true==GetMainCamera()->GetTransform()->GetLocalPosition())
 
-
+	float4 Pos =  Mouse;
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -222,6 +224,7 @@ void PlayLevel::PlayerCreate(/*Playlevel* this*/)
 
 void PlayLevel::Start()
 {
+	
 
 	{
 		GameEngineDirectory NewDir;
@@ -255,27 +258,36 @@ void PlayLevel::Start()
 	Map1 = CreateActor<Map>(-30);
 
 
-	NewUIPannel = CreateActor<UIPannel>(-20);
+	NewUIPannel = CreateActor<UIPannel>();
+	NewMiniMap = CreateActor<MiniMap>();
 
-	NewMiniMap = CreateActor<MiniMap>(10);
 
 	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
 
 	{
-		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>(-10000);
+		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>();
 		Button->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition());
 		Button->GetTransform()->SetLocalScale(NewMiniMap->Render0->GetTransform()->GetLocalScale());
-
+		Button->GetTransform()->AddLocalPosition({ 0,0,1.f });
 		Button->SetEvent([this]()
 			{
+			
+				float4 Pos = this->Mouse - NewMiniMap->GetTransform()->GetLocalPosition();
+				Pos.z = -1.f;
+				NewMiniMap->Render1->GetTransform()->SetLocalPosition(Pos);
+				float4 pp = NewMiniMap->Render1->GetTransform()->GetLocalPosition() * 1 / MiniViewRatio;
+				pp.z = 1.f;
+				GetMainCamera()->GetTransform()->SetLocalPosition(pp);
 				int a = 0;
-				//GetMainCamera()->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition() * 1 / MiniViewRatio);
 			});
 	}
 	NewKsword = CreateActor<Ksword>(10);
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
+	GetCamera(100)->SetSortType(0, SortType::ZSort);
 }
+
 void PlayLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
