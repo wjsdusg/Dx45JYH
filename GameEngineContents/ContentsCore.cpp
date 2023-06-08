@@ -22,7 +22,7 @@ void ContentsCore::GameStart()
 
 	new int();
 
-	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
+	//GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 
 
 	ContentsResourcesCreate();
