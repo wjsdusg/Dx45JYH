@@ -52,3 +52,9 @@
 	 return Pos;
  }
 
+
+ void MovePointToLine(float4& _PrePos)
+ {
+	 _PrePos.y = Slope * _PrePos.x + Y_intercept;
+	 
+ }

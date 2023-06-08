@@ -1,7 +1,6 @@
 #include "PrecompileHeader.h"
 #include "PlayLevel.h"
 #include "Player.h"
-#include "TestObject.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -15,8 +14,8 @@
 #include "MiniMap.h"
 #include "Ksword.h"
 std::shared_ptr<Player> Object0 = nullptr;
-std::shared_ptr<TestObject> Object1 = nullptr;
-std::shared_ptr<GameEngineSpriteRenderer> RenderTest = nullptr;
+
+
 std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
 std::shared_ptr<MiniMap> NewMiniMap = nullptr;
@@ -40,6 +39,7 @@ extern  bool CheckPointOnUpLine(float4 Point1, float4 Point2, float4 CheckPoint)
 extern  bool CheckPointOnDownLine(float4 Point1, float4 Point2, float4 CheckPoint);
 extern float4 MovePointLeftOnLine(float4 _PrePos, float _Speed, float _DeltaTime);
 extern float4 MovePointRightOnLine(float4 _PrePos, float _Speed, float _DeltaTime);
+extern void MovePointToLine(float4& _PrePos);
 
 void PlayLevel::Update(float _DeltaTime)
 {
@@ -67,7 +67,10 @@ void PlayLevel::Update(float _DeltaTime)
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
 		||
 		(
-			(Mouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)) && (Mouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
+			(
+				Mouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)) 
+			&& (Mouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
+			&& Mouse.y >= -(GameEngineWindow::GetScreenSize().y/2-NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
 			)
 		)
 	{
@@ -97,7 +100,9 @@ void PlayLevel::Update(float _DeltaTime)
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
 		||
 		(
-			(Mouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20)) && (Mouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
+			(
+				Mouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20)) 
+			&& (Mouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
 			)
 		)
 	{
@@ -126,7 +131,8 @@ void PlayLevel::Update(float _DeltaTime)
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().y <= (MapSize.y / 2 - (GameEngineWindow::GetScreenSize().y / 2))
 		||
 		(
-			Mouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20) && Mouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
+			Mouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20)
+			&& Mouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
 			)
 
 		)
@@ -160,7 +166,9 @@ void PlayLevel::Update(float _DeltaTime)
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
 		||
 		(
-			Mouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20) && Mouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+			Mouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
+			&& Mouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+			&& Mouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
 			)
 		)
 	{
@@ -275,12 +283,47 @@ void PlayLevel::Start()
 			{
 			
 				float4 Pos = this->Mouse - NewMiniMap->GetTransform()->GetLocalPosition();
-				Pos.z = -1.f;
-				NewMiniMap->Render1->GetTransform()->SetLocalPosition(Pos);
-				float4 pp = NewMiniMap->Render1->GetTransform()->GetLocalPosition() * 1 / MiniViewRatio;
-				pp.z = 1.f;
-				GetMainCamera()->GetTransform()->SetLocalPosition(pp);
-				int a = 0;
+				Pos.z = 0.f;
+			/*	NewMiniMap->Render1->GetTransform()->SetLocalPosition(Pos);
+
+				float4 MPos = NewMiniMap->Render1->GetTransform()->GetLocalPosition() * 1 / MiniViewRatio;*/
+				float4 MPos = Pos * 1 / MiniViewRatio;
+				MPos.z = 0.f;
+				if (true == CheckPointOnUpLine(MapUpP, MapRightP, MPos))
+				{
+					MovePointToLine(MPos);
+					OutlineCheck(MPos);
+					NewMiniMap->Render1->GetTransform()->SetLocalPosition(MPos);
+					GetMainCamera()->GetTransform()->SetLocalPosition(MPos);
+					
+				}
+				else if (true == CheckPointOnUpLine(MapUpP, MapLeftP, MPos))
+				{
+					MovePointToLine(MPos);
+					OutlineCheck(MPos);
+					NewMiniMap->Render1->GetTransform()->SetLocalPosition(MPos);
+					GetMainCamera()->GetTransform()->SetLocalPosition(MPos);
+				}
+				else if (true == CheckPointOnDownLine(MapDownP, MapRightP, MPos))
+				{
+					MovePointToLine(MPos);
+					OutlineCheck(MPos);
+					NewMiniMap->Render1->GetTransform()->SetLocalPosition(MPos);
+					GetMainCamera()->GetTransform()->SetLocalPosition(MPos);
+				}
+				else if (true == CheckPointOnDownLine(MapDownP, MapLeftP, MPos))
+				{
+					MovePointToLine(MPos);
+					OutlineCheck(MPos);
+					NewMiniMap->Render1->GetTransform()->SetLocalPosition(MPos);
+					GetMainCamera()->GetTransform()->SetLocalPosition(MPos);
+				}
+				else
+				{
+					GetMainCamera()->GetTransform()->SetLocalPosition(MPos);
+				}
+				
+				
 			});
 	}
 	NewKsword = CreateActor<Ksword>(10);
