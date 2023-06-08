@@ -15,7 +15,7 @@ GameEngineTileMapRenderer::~GameEngineTileMapRenderer()
 void GameEngineTileMapRenderer::Start()
 {
 	GameEngineRenderer::Start();
-
+	SetMesh("Rect");
 	SetPipeLine("2DTexture");
 
 	AtlasData.x = 0.0f;

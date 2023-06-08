@@ -16,6 +16,9 @@
     <Filter Include="Enum">
       <UniqueIdentifier>{535d3b28-9212-4c9b-8444-9138953bbaf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{31b4df73-3597-4065-ae6d-e9ba46948fd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -28,15 +31,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="TestObject.h" />
-    <ClInclude Include="UIPannel.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniMap.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="Ksword.h">
       <Filter>Unit</Filter>
     </ClInclude>
@@ -45,6 +39,18 @@
     </ClInclude>
     <ClInclude Include="ContentsEnum.h">
       <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPannel.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MapOverlay.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,15 +64,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="TestObject.cpp" />
-    <ClCompile Include="UIPannel.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniMap.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="Ksword.cpp">
       <Filter>Unit</Filter>
     </ClCompile>
@@ -76,6 +73,18 @@
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="ContentsEnum.cpp">
       <Filter>Enum</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="UIPannel.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MapOverlay.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
