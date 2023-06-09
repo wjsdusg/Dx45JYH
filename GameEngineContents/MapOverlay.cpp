@@ -16,9 +16,9 @@ extern float4 MapDownP;
 extern float4 TIleScale;
 extern  bool CheckPointOnUpLine(float4 Point1, float4 Point2, float4 CheckPoint);
 extern  bool CheckPointOnDownLine(float4 Point1, float4 Point2, float4 CheckPoint);
-
 extern void MovePointToLine(float4& _PrePos);
-
+extern void MovePointToLineX(float4& _PrePos);
+extern  bool AddScreenSizeY;
 MapOverlay::MapOverlay()
 {
 }
@@ -37,26 +37,53 @@ void MapOverlay::Update(float _DeltaTime)
 //닿았으면 잴 작은 x에서 - 20을 해준다.
 void MapOverlay::Start()
 {
-	size_t tilenum = MapUpP.y * MapRightP.x * 2;
-	Renders.resize(tilenum);
-	size_t y = MapUpP.y;
-	size_t x = 0;
-	float4 Pos = { x,y };
-	size_t Minx = 0;
-	for (size_t i = 0; i <= tilenum; i++)
-	{
-		
-		if (true == CheckPointOnUpLine(MapLeftP, MapUpP, Pos))
-		{
+	AddScreenSizeY = false;
 
+	float tilenum = MapUpP.y * MapRightP.x * 2/TIleScale.x/TIleScale.y;
+	Renders.resize(tilenum);
+	float y = MapUpP.y;
+	float x = 0;
+	float4 Pos = { x,y };
+
+	bool LeftLineCheck = true;
+	for (float i = 0; i <= tilenum; i++)
+	{
+		if (Pos.y <= 0)
+		{
+			break;
 		}
-		CheckPointOnUpLine(MapRightP, MapUpP, Pos);
+		if (true == LeftLineCheck)
+		{
+			CheckPointOnUpLine(MapLeftP, MapUpP, Pos);
+			MovePointToLineX(Pos);
+			LeftLineCheck = false;
+			std::shared_ptr<class GameEngineSpriteRenderer> NewRender = CreateComponent<GameEngineSpriteRenderer>();
+			NewRender->GetTransform()->SetLocalScale(TIleScale);
+			NewRender->GetTransform()->SetLocalPosition(Pos);
+			NewRender->SetTexture("Black.png");
+			NewRender->CameraCullingOn();
+			Renders.push_back(NewRender);
+		}
+		else
+		{
+			std::shared_ptr<class GameEngineSpriteRenderer> NewRender = CreateComponent<GameEngineSpriteRenderer>();
+			NewRender->GetTransform()->SetLocalScale(TIleScale);
+			NewRender->GetTransform()->SetLocalPosition(Pos);
+			NewRender->SetTexture("Black.png");
+			NewRender->CameraCullingOn();
+			Renders.push_back(NewRender);
+		}
+		if (true == CheckPointOnUpLine(MapRightP, MapUpP, Pos))
+		{
+			LeftLineCheck = true;
+			Pos.y -= TIleScale.y;
+			continue;
+		}
+
+		Pos.x += TIleScale.x;
 	}
 
-	/*Render0 = CreateComponent<GameEngineRenderer>();
-	
-	Render0->SetTexture("Black.png");
-	Render0->GetTransform()->SetLocalScale({ 40.f,40.f });*/
+	AddScreenSizeY = true;
 
 	/*TileMap = CreateComponent<GameEngineTileMapRenderer>();
 	TileMap->CreateTileMap(1, 1, { 40,40 });

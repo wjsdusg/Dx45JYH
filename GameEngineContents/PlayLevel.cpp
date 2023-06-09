@@ -43,7 +43,8 @@ extern  bool CheckPointOnDownLine(float4 Point1, float4 Point2, float4 CheckPoin
 extern float4 MovePointLeftOnLine(float4 _PrePos, float _Speed, float _DeltaTime);
 extern float4 MovePointRightOnLine(float4 _PrePos, float _Speed, float _DeltaTime);
 extern void MovePointToLine(float4& _PrePos);
-
+extern float4 UIMouse;
+extern float4 MainMouse;
 void PlayLevel::Update(float _DeltaTime)
 {
 
@@ -55,13 +56,28 @@ void PlayLevel::Update(float _DeltaTime)
 		float4x4 Proj = Camera->GetProjection();
 		float4x4 View = Camera->GetView();
 
-		Mouse = GameEngineInput::GetMousePosition();
+		UIMouse = GameEngineInput::GetMousePosition();
 
-		Mouse *= ViewPort.InverseReturn();
-		Mouse *= Proj.InverseReturn();
-		Mouse *= View.InverseReturn();
+		UIMouse *= ViewPort.InverseReturn();
+		UIMouse *= Proj.InverseReturn();
+		UIMouse *= View.InverseReturn();
 	}
+	{
+		{
+			std::shared_ptr<GameEngineCamera> Camera = GetMainCamera();
 
+			// 랜더러 
+			float4x4 ViewPort = Camera->GetViewPort();
+			float4x4 Proj = Camera->GetProjection();
+			float4x4 View = Camera->GetView();
+
+			MainMouse = GameEngineInput::GetMousePosition();
+
+			MainMouse *= ViewPort.InverseReturn();
+			MainMouse *= Proj.InverseReturn();
+			MainMouse *= View.InverseReturn();
+		}
+	}
 	//y>= a*x+b 이면 x,y점이 닿거나 위에있다.
 	float Speed = 1000.f;
 
@@ -71,9 +87,9 @@ void PlayLevel::Update(float _DeltaTime)
 		||
 		(
 			(
-				Mouse.x >= -(GameEngineWindow::GetScreenSize().x / 2))
-			&& (Mouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
-			&& Mouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
+				UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2))
+			&& (UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
+			&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
 			)
 		)
 	{
@@ -105,8 +121,8 @@ void PlayLevel::Update(float _DeltaTime)
 		||
 		(
 			(
-				Mouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
-			&& (Mouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
+				UIMouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
+			&& (UIMouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
 			)
 		)
 	{
@@ -135,8 +151,8 @@ void PlayLevel::Update(float _DeltaTime)
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().y <= (MapSize.y / 2 - (GameEngineWindow::GetScreenSize().y / 2))
 		||
 		(
-			Mouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20)
-			&& Mouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
+			UIMouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20)
+			&& UIMouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
 			)
 
 		)
@@ -170,9 +186,9 @@ void PlayLevel::Update(float _DeltaTime)
 		&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
 		||
 		(
-			Mouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
-			&& Mouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
-			&& Mouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
+			UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
+			&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+			&& UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
 			)
 		)
 	{
@@ -202,7 +218,7 @@ void PlayLevel::Update(float _DeltaTime)
 
 	//if(true==GetMainCamera()->GetTransform()->GetLocalPosition())
 
-	float4 Pos = Mouse;
+	float4 Pos = UIMouse;
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -287,7 +303,7 @@ void PlayLevel::Start()
 		Button->SetEvent([this]()
 			{
 
-				float4 Pos = this->Mouse - NewMiniMap->GetTransform()->GetLocalPosition();
+				float4 Pos = UIMouse - NewMiniMap->GetTransform()->GetLocalPosition();
 				Pos.z = 0.f;
 				/*	NewMiniMap->Render1->GetTransform()->SetLocalPosition(Pos);
 
@@ -331,7 +347,8 @@ void PlayLevel::Start()
 
 			});
 	}
-	//NewKsword = CreateActor<Ksword>(10);
+	NewKsword = CreateActor<Ksword>();
+	
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 }

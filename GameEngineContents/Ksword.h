@@ -1,8 +1,9 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include "Unit.h"
 
 // Ό³Έν :
-class Ksword : public GameEngineActor
+
+class Ksword : public Unit
 {
 public:
 	// constrcuter destructer
@@ -23,7 +24,7 @@ protected:
 
 private:
 
-	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+	float Speed = 40.f;
 
 
 

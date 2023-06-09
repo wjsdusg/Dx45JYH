@@ -20,6 +20,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	float4 ss3= ss.RotaitonZDegReturn(30.f);
 	float g=float4::GetAngleVectorToVectorDeg(ss, ss2);
 	
+	
 	float sda = acosf(float(0.5))*GameEngineMath::RadToDeg;
 	GameEngineCore::Start(hInstance,
 		ContentsCore::GameStart,

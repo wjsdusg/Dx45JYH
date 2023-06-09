@@ -7,9 +7,6 @@
     <Filter Include="UI">
       <UniqueIdentifier>{05b3deaf-6a18-4623-a4e0-44d702436399}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Unit">
-      <UniqueIdentifier>{1e7e79ed-9e35-4b6d-b49c-d0feeb648749}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PostEffect">
       <UniqueIdentifier>{d86bbaa0-6f53-40c1-8245-19ac12fc3929}</UniqueIdentifier>
     </Filter>
@@ -18,6 +15,12 @@
     </Filter>
     <Filter Include="Map">
       <UniqueIdentifier>{31b4df73-3597-4065-ae6d-e9ba46948fd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{297da677-498d-4b9d-9433-80bbd589dccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit">
+      <UniqueIdentifier>{1e7e79ed-9e35-4b6d-b49c-d0feeb648749}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,7 +35,7 @@
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="Ksword.h">
-      <Filter>Unit</Filter>
+      <Filter>Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="FadeEffect.h">
       <Filter>PostEffect</Filter>
@@ -52,6 +55,12 @@
     <ClInclude Include="MapOverlay.h">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -65,7 +74,7 @@
     <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="Ksword.cpp">
-      <Filter>Unit</Filter>
+      <Filter>Object\Unit</Filter>
     </ClCompile>
     <ClCompile Include="FadeEffect.cpp">
       <Filter>PostEffect</Filter>
@@ -85,6 +94,12 @@
     </ClCompile>
     <ClCompile Include="MapOverlay.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>Object\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
