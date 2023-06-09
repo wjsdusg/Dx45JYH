@@ -57,7 +57,7 @@ void Ksword::Update(float _DeltaTime)
 	if (true==IsMove )
 	{
 		
-		//GetTransform()->SetLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
+		
 
 		GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
 	}
