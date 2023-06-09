@@ -10,8 +10,9 @@
  float4 MapDownP;
  float Slope;
  float Y_intercept;
- //y>= a*x+b 이면 x,y점이 닿거나 위에있다.
 
+ //y>= a*x+b 이면 x,y점이 닿거나 위에있다.
+ float4 TIleScale = { 40.f,40.f };
  bool CheckPointOnUpLine(float4 Point1,float4 Point2,float4 CheckPoint)
  {
 	 float a = (Point1.y - Point2.y) / (Point1.x - Point2.x);
