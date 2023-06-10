@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="DragBox.h" />
     <ClInclude Include="FadeEffect.h" />
     <ClInclude Include="Ksword.h" />
     <ClInclude Include="Map.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="ContentsEnum.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
+    <ClCompile Include="DragBox.cpp" />
     <ClCompile Include="FadeEffect.cpp" />
     <ClCompile Include="Ksword.cpp" />
     <ClCompile Include="Map.cpp" />

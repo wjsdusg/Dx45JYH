@@ -37,7 +37,7 @@ void Ksword::Update(float _DeltaTime)
 			if (nullptr == SelectionCircle)
 			{
 				SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
-				//SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f,1.f });
+				SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f});
 				
 				SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });								
 			}

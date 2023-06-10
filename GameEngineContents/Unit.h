@@ -1,7 +1,4 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
-#include <GameEngineCore/GameEngineFSM.h>
-#include <GameEngineCore/GameEngineButton.h>
 #include "Object.h"
 // Ό³Έν :
 

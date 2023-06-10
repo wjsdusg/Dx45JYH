@@ -14,9 +14,10 @@
 #include "MiniMap.h"
 #include "MapOverlay.h"
 #include "Ksword.h"
+#include "DragBox.h"
 std::shared_ptr<Player> Object0 = nullptr;
 
-
+std::shared_ptr<DragBox> NewDragBox = nullptr;
 std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
 std::shared_ptr<MiniMap> NewMiniMap = nullptr;
@@ -219,6 +220,23 @@ void PlayLevel::Update(float _DeltaTime)
 	//if(true==GetMainCamera()->GetTransform()->GetLocalPosition())
 
 	float4 Pos = UIMouse;
+	if (true == GameEngineInput::IsPress("EngineMouseLeft"))
+	{
+		if (nullptr == NewDragBox)
+		{
+			NewDragBox = CreateActor<DragBox>();
+			NewDragBox->SetMousePos(MainMouse);
+		}
+		NewDragBox->SetMouseMovePos(MainMouse);
+	}
+	if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+	{
+		if (nullptr != NewDragBox)
+		{
+			NewDragBox->Death();
+			NewDragBox = nullptr;
+		}
+	}
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
