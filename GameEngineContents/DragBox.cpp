@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include "ContentsEnum.h"
 #include "Unit.h"
+extern float4 TIleScale;
 DragBox::DragBox()
 {
 
@@ -43,7 +44,7 @@ void DragBox::AllCollision()
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
 			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-			if (nullptr != NewUnit)
+			if (nullptr != NewUnit&&TIleScale.x* TIleScale.y<GetTransform()->GetLocalScale().x* GetTransform()->GetLocalScale().y)
 			{
 				NewUnit->IsClick = true;
 			}

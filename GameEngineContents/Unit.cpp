@@ -7,10 +7,13 @@ extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 
 std::vector<std::shared_ptr<Unit>> Unit::Units;
+float Unit::DoubleClickTimer = 0.f;
 
+int num = 0;
 Unit::Unit()
 {
-
+	Id = num;
+	num++;
 }
 
 Unit::~Unit()
@@ -36,24 +39,50 @@ void Unit::Update(float _DeltaTime)
 			}
 		}
 	}
+	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
+	{
+		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+		{
+			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
+			if (NewUnit == DynamicThis<Unit>())
+			{
+				continue;
+			}
+			IsMove = false;
+		}
+	}
 	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
 	MouseData.SPHERE.Radius = 0.0f;
-	//À¯´Ö ºÎµ÷«‰´Ù´Â°É ¾Ë°í½ÍÀºµ¥
-	//if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), Æ÷°ýÀûÀÎ À¯´ÖÀÇ·»´õ Æ®·£½ºÆû)
-
+	
 	if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
 	{
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 		{
-			for (int i = 0; i < Units.size(); i++)
+			if (true == IsClick && DoubleClickTimer < 0.5f)
 			{
-				Units[i]->IsClick = false;
+				for (int i = 0; i < Units.size(); i++)
+				{
+					Units[i]->IsClick = true;
+				}
+				
 			}
-			IsClick = true;
+			else
+			{
+				for (int i = 0; i < Units.size(); i++)
+				{
+					Units[i]->IsClick = false;
+				}
 
+				IsClick = true;
+			}
+			DoubleClickTimer = 0.f;
 		}
 	}
-
+	if (IsClick == true)
+	{
+		DoubleClickTimer += _DeltaTime;
+	}
+	
 
 }
 void Unit::Start()

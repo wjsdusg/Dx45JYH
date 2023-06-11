@@ -28,6 +28,7 @@ protected:
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
 	CollisionData MouseData;
+	int Id;
 private:
 
 

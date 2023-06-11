@@ -26,7 +26,7 @@ protected:
 private:
 	
 	static std::vector<std::shared_ptr<Unit>> Units;
-
+	static float DoubleClickTimer;
 
 };
 

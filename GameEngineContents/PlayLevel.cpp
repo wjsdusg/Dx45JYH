@@ -91,7 +91,14 @@ void PlayLevel::Update(float _DeltaTime)
 			(
 				UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2))
 			&& (UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
-			&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
+			&& (
+				UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
+				|| 
+					(
+					UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+					&& UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2-40)
+					)
+				)
 			)
 		)
 	{
@@ -125,6 +132,7 @@ void PlayLevel::Update(float _DeltaTime)
 			(
 				UIMouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
 			&& (UIMouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
+			&& UIMouse.y >= GameEngineWindow::GetScreenSize().y / 2
 			)
 		)
 	{
@@ -190,8 +198,15 @@ void PlayLevel::Update(float _DeltaTime)
 		(
 			UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
 			&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
-			&& UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
-			)
+			&&(
+				UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
+				||
+				(
+					UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)
+					&& UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 60)
+					)
+				)
+				)
 		)
 	{
 		if (true == CheckPointOnDownLine(MapDownP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
@@ -238,6 +253,10 @@ void PlayLevel::Update(float _DeltaTime)
 			NewDragBox->Death();
 			NewDragBox = nullptr;
 		}
+	}
+	if (true == GameEngineInput::IsUp("Space"))
+	{
+		GetMainCamera()->GetTransform()->SetLocalPosition({ 0,0 });
 	}
 }
 
@@ -295,6 +314,7 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("Right", VK_RIGHT);
 		GameEngineInput::CreateKey("Up", VK_UP);
 		GameEngineInput::CreateKey("Down", VK_DOWN);
+		GameEngineInput::CreateKey("Space", VK_SPACE);
 	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
