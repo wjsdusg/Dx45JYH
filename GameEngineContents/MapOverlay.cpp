@@ -5,7 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
-
+#include "ContentsEnum.h"
 extern float4 MapSize;
 extern float4 MiniMapSize;
 extern float4 MiniViewRatio;
@@ -33,14 +33,13 @@ void MapOverlay::Update(float _DeltaTime)
 
 
 }
-//처음출발할때 왼쪽 라인 채크한다. 만들고 오른쪽 라인에 닿았는지 확인한다
-//닿았으면 잴 작은 x에서 - 20을 해준다.
+
 void MapOverlay::Start()
 {
 	AddScreenSizeY = false;
 
 	float tilenum = MapUpP.y * MapRightP.x * 2/TIleScale.x/TIleScale.y;
-	Renders.resize(tilenum);
+	
 	float y = MapUpP.y;
 	float x = 0;
 	float4 Pos = { x,y };
@@ -57,21 +56,30 @@ void MapOverlay::Start()
 			CheckPointOnUpLine(MapLeftP, MapUpP, Pos);
 			MovePointToLineX(Pos);
 			LeftLineCheck = false;
+
+			std::shared_ptr<class GameEngineCollision> NewCollision = CreateComponent<GameEngineCollision>();
+			NewCollision->GetTransform()->SetLocalScale(TIleScale);
+			NewCollision->GetTransform()->SetLocalPosition(Pos);
+			NewCollision->SetOrder(static_cast<int>(ColEnum::MapOverlay));
 			std::shared_ptr<class GameEngineSpriteRenderer> NewRender = CreateComponent<GameEngineSpriteRenderer>();
 			NewRender->GetTransform()->SetLocalScale(TIleScale);
 			NewRender->GetTransform()->SetLocalPosition(Pos);
 			NewRender->SetTexture("Black.png");
 			NewRender->CameraCullingOn();
-			Renders.push_back(NewRender);
+			ColNRenders[NewCollision] = NewRender;
 		}
 		else
 		{
+			std::shared_ptr<class GameEngineCollision> NewCollision = CreateComponent<GameEngineCollision>();
+			NewCollision->GetTransform()->SetLocalScale(TIleScale);
+			NewCollision->GetTransform()->SetLocalPosition(Pos);
+			NewCollision->SetOrder(static_cast<int>(ColEnum::MapOverlay));
 			std::shared_ptr<class GameEngineSpriteRenderer> NewRender = CreateComponent<GameEngineSpriteRenderer>();
 			NewRender->GetTransform()->SetLocalScale(TIleScale);
 			NewRender->GetTransform()->SetLocalPosition(Pos);
 			NewRender->SetTexture("Black.png");
 			NewRender->CameraCullingOn();
-			Renders.push_back(NewRender);
+			ColNRenders[NewCollision] = NewRender;
 		}
 		if (true == CheckPointOnUpLine(MapRightP, MapUpP, Pos))
 		{

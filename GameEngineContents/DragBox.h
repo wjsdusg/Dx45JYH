@@ -23,6 +23,7 @@ public:
 	{
 		MouseMovePos = _Pos;
 	}
+	void AllCollision();
 protected:
 	void Start();
 	void Update(float _DeltaTime);
@@ -30,6 +31,7 @@ protected:
 		
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+	std::shared_ptr<class GameEngineCollision> Collision;
 	float4 MousePos;
 	float4 MouseMovePos;
 

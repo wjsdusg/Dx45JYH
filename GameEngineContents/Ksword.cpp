@@ -1,15 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Ksword.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include <GameEnginePlatform/GameEngineWindow.h>
-#include <GameEngineCore/GameEngineLevel.h>
-#include <GameEngineCore/GameEngineCamera.h>
-#include <GameEngineCore/GameEngineRenderer.h>
-#include <GameEngineCore/GameEngineCollision.h>
-#include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineVideo.h>
-#include <GameEngineCore/GameEngineSprite.h>
-#include "TestObject.h"
+#include "ContentsEnum.h"
+#include "MapOverlay.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 Ksword::Ksword()
@@ -23,24 +16,28 @@ Ksword::~Ksword()
 
 void Ksword::Update(float _DeltaTime)
 {
+	Unit::Update(_DeltaTime);
+
 	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
 	MouseData.SPHERE.Radius = 0.0f;
-
-	
+	//À¯´Ö ºÎµ÷«‰´Ù´Â°É ¾Ë°í½ÍÀºµ¥
+	//if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), Æ÷°ýÀûÀÎ À¯´ÖÀÇ·»´õ Æ®·£½ºÆû)
 
 	if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
 	{
-		
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 		{
-			IsClick = true;
-			if (nullptr == SelectionCircle)
-			{
-				SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
-				SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f});
-				
-				SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });								
-			}
+			IsClick = true;			
+		}
+	}
+	if (true == IsClick)
+	{
+		if (nullptr == SelectionCircle)
+		{
+			SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
+			SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f });
+
+			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
 	}
 	if (true == GameEngineInput::IsUp("EngineMouseRight")&&true==IsClick)
@@ -55,13 +52,12 @@ void Ksword::Update(float _DeltaTime)
 		IsMove = false;
 	}
 	if (true==IsMove )
-	{
-		
-		
-
+	{			
 		GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
 	}
-		
+
+	
+
 }
 
 void Ksword::Start()
@@ -81,6 +77,9 @@ void Ksword::Start()
 	Render0->GetTransform()->SetLocalScale({ 40.f,40.f });
 	Render0->CreateAnimation({ .AnimationName = "Run", .SpriteName = "kword", .ScaleToTexture = false });
 	Render0->ChangeAnimation("Run");		
+	Collision = CreateComponent<GameEngineCollision>();
+	Collision->GetTransform()->SetLocalScale({ 40.f,40.f });
+	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 }
 
 // ÀÌ°Ç µð¹ö±ë¿ëµµ³ª 

@@ -24,7 +24,7 @@ protected:
 
 private:
 
-	float Speed = 40.f;
+	float Speed = 400.f;
 
 
 

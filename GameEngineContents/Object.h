@@ -15,6 +15,7 @@ public:
 	Object(Object&& _Other) noexcept = delete;
 	Object& operator=(const Object& _Other) = delete;
 	Object& operator=(Object&& _Other) noexcept = delete;
+	bool IsClick = false;
 
 protected:
 	virtual void Start() {}
@@ -23,10 +24,9 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	float Angle = 0.0f;
-	std::shared_ptr<class GameEngineCollision> Collsion;
+	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
-	bool IsClick = false;
 	CollisionData MouseData;
 private:
 

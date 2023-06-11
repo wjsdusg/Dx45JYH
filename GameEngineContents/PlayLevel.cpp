@@ -233,6 +233,7 @@ void PlayLevel::Update(float _DeltaTime)
 	{
 		if (nullptr != NewDragBox)
 		{
+			NewDragBox->AllCollision();
 			NewDragBox->Death();
 			NewDragBox = nullptr;
 		}

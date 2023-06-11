@@ -193,6 +193,7 @@
     <ClCompile Include="Ksword.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapOverlay.cpp" />
+    <ClCompile Include="MathFuntion.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />

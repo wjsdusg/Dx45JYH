@@ -3,7 +3,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
-#include "ContentsEnum.h"
+
 
 Map::Map()
 {

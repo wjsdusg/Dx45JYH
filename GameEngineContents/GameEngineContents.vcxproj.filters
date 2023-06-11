@@ -107,5 +107,8 @@
     <ClCompile Include="DragBox.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="MathFuntion.cpp">
+      <Filter>Enum</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

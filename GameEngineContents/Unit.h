@@ -17,7 +17,7 @@ public:
 
 protected:
 	virtual void Start() {}
-	virtual void Update(float _DeltaTime) {}
+	void Update(float _DeltaTime);
 	virtual void Render(float _DeltaTime) {}
 	float4 MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta);
 
