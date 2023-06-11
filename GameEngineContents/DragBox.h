@@ -34,7 +34,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> Collision;
 	float4 MousePos;
 	float4 MouseMovePos;
-
+	bool check = false;
 
 };
 

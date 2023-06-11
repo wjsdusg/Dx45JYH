@@ -19,7 +19,7 @@ void DragBox::Update(float _DeltaTime)
 {
 	float4 Pos;
 	Pos.x = (MousePos.x + MouseMovePos.x) / 2.f;
-	Pos.y = (MousePos.y + MouseMovePos.y)/2.f;
+	Pos.y = (MousePos.y + MouseMovePos.y) / 2.f;
 	Render0->GetTransform()->SetLocalPosition(Pos);
 	Collision->GetTransform()->SetLocalPosition(Pos);
 	float4 Scale;
@@ -44,8 +44,17 @@ void DragBox::AllCollision()
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
 			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-			if (nullptr != NewUnit&&TIleScale.x* TIleScale.y<GetTransform()->GetLocalScale().x* GetTransform()->GetLocalScale().y)
+
+			if (nullptr != NewUnit && TIleScale.x * TIleScale.y < Render0->GetTransform()->GetLocalScale().x * Render0->GetTransform()->GetLocalScale().y)
 			{
+				if (false == check)
+				{
+					for (int i = 0; i < Unit::Units.size(); i++)
+					{
+						Unit::Units[i]->IsClick = false;
+					}
+					check = true;
+				}
 				NewUnit->IsClick = true;
 			}
 		}
