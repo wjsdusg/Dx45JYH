@@ -4,6 +4,9 @@
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
+extern float4 MainMouse;
+
+std::vector<std::shared_ptr<Unit>> Unit::Units;
 
 Unit::Unit()
 {
@@ -33,6 +36,29 @@ void Unit::Update(float _DeltaTime)
 			}
 		}
 	}
+	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
+	MouseData.SPHERE.Radius = 0.0f;
+	//À¯´Ö ºÎµ÷«‰´Ù´Â°É ¾Ë°í½ÍÀºµ¥
+	//if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), Æ÷°ýÀûÀÎ À¯´ÖÀÇ·»´õ Æ®·£½ºÆû)
+
+	if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
+	{
+		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+		{
+			for (int i = 0; i < Units.size(); i++)
+			{
+				Units[i]->IsClick = false;
+			}
+			IsClick = true;
+
+		}
+	}
+
+
+}
+void Unit::Start()
+{
+	Units.push_back(DynamicThis<Unit>());
 }
 
 float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed,float _Delta)

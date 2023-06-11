@@ -22,6 +22,7 @@ std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
 std::shared_ptr<MiniMap> NewMiniMap = nullptr;
 std::shared_ptr<Ksword> NewKsword = nullptr;
+std::shared_ptr<Ksword> NewKsword2 = nullptr;
 std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
 
 PlayLevel::PlayLevel()
@@ -367,7 +368,8 @@ void PlayLevel::Start()
 			});
 	}
 	NewKsword = CreateActor<Ksword>();
-	
+	NewKsword2 = CreateActor<Ksword>();
+	NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 }

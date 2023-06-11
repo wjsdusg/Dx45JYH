@@ -18,18 +18,7 @@ void Ksword::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
 
-	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
-	MouseData.SPHERE.Radius = 0.0f;
-	//À¯´Ö ºÎµ÷«‰´Ù´Â°É ¾Ë°í½ÍÀºµ¥
-	//if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), Æ÷°ýÀûÀÎ À¯´ÖÀÇ·»´õ Æ®·£½ºÆû)
-
-	if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
-	{
-		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
-		{
-			IsClick = true;			
-		}
-	}
+	
 	if (true == IsClick)
 	{
 		if (nullptr == SelectionCircle)
@@ -40,13 +29,22 @@ void Ksword::Update(float _DeltaTime)
 			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
 	}
+	if (false == IsClick)
+	{
+		if (nullptr != SelectionCircle)
+		{
+			SelectionCircle->Death();
+			SelectionCircle = nullptr;
+			
+		}
+	}
+
 	if (true == GameEngineInput::IsUp("EngineMouseRight")&&true==IsClick)
 	{
 		MousePickPos = MainMouse;
 		IsMove = true;
 	}
-	float aa = abs(MousePickPos.Size() - GetTransform()->GetLocalPosition().Size());
-	float gg = MousePickPos.XYDistance(GetTransform()->GetLocalPosition());
+	
 	if (MousePickPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
 	{
 		IsMove = false;
@@ -62,7 +60,8 @@ void Ksword::Update(float _DeltaTime)
 
 void Ksword::Start()
 {	
-	GetTransform()->SetLocalPosition({ 0.f,-200.f });
+	Unit::Start();
+	GetTransform()->AddLocalPosition({ 0.f,-200.f });
 	//MousePickPos = GetTransform()->GetLocalPosition();
 	if (nullptr == GameEngineSprite::Find("kword"))
 	{

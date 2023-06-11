@@ -16,7 +16,7 @@ public:
 	Unit& operator=(Unit&& _Other) noexcept = delete;
 
 protected:
-	virtual void Start() {}
+	void Start();
 	void Update(float _DeltaTime);
 	virtual void Render(float _DeltaTime) {}
 	float4 MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta);
@@ -24,8 +24,8 @@ protected:
 	float4 MousePickPos = { 0,0 };
 	bool IsMove = false;
 private:
-
-
+	
+	static std::vector<std::shared_ptr<Unit>> Units;
 
 
 };
