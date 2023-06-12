@@ -24,6 +24,7 @@ protected:
 
 	float4 MousePickPos = { 0,0 };
 	bool IsMove = false;
+	float Speed = 0;
 private:
 	
 	static std::vector<std::shared_ptr<Unit>> Units;

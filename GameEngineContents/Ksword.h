@@ -1,9 +1,9 @@
 #pragma once
-#include "Unit.h"
+#include "Minion.h"
 
 // Ό³Έν :
 
-class Ksword : public Unit
+class Ksword : public Minion
 {
 public:
 	// constrcuter destructer
@@ -24,7 +24,7 @@ protected:
 
 private:
 
-	float Speed = 400.f;
+	
 
 
 

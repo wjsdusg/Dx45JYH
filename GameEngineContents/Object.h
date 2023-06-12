@@ -2,6 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineButton.h>
+#include "ContentsEnum.h"
 // Ό³Έν :
 class Object : public GameEngineActor
 {
@@ -29,6 +30,7 @@ protected:
 	GameEngineFSM FSM;
 	CollisionData MouseData;
 	int Id;
+	Team MyTeam = Team::Max;
 private:
 
 
