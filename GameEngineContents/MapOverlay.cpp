@@ -13,7 +13,7 @@ extern float4 MapRightP;
 extern float4 MapLeftP;
 extern float4 MapUpP;
 extern float4 MapDownP;
-extern float4 TIleScale;
+extern float4 TileScale;
 extern  bool CheckPointOnUpLine(float4 Point1, float4 Point2, float4 CheckPoint);
 extern  bool CheckPointOnDownLine(float4 Point1, float4 Point2, float4 CheckPoint);
 extern void MovePointToLine(float4& _PrePos);
@@ -38,13 +38,13 @@ void MapOverlay::Start()
 {
 	AddScreenSizeY = false;
 
-	float tilenum = MapUpP.y * MapRightP.x * 2/TIleScale.x/TIleScale.y;
+	float tilenum = MapUpP.y * MapRightP.x * 2/TileScale.x/TileScale.y;
 	
 	float y = MapUpP.y;
 	float x = 0;
 	float4 Pos = { x,y };
 
-	bool LeftLineCheck = true;
+	/*bool LeftLineCheck = true;
 	for (float i = 0; i <= tilenum; i++)
 	{
 		if (Pos.y <= 0)
@@ -58,11 +58,11 @@ void MapOverlay::Start()
 			LeftLineCheck = false;
 
 			std::shared_ptr<class GameEngineCollision> NewCollision = CreateComponent<GameEngineCollision>();
-			NewCollision->GetTransform()->SetLocalScale(TIleScale);
+			NewCollision->GetTransform()->SetLocalScale(TileScale);
 			NewCollision->GetTransform()->SetLocalPosition(Pos);
 			NewCollision->SetOrder(static_cast<int>(ColEnum::MapOverlay));
 			std::shared_ptr<class GameEngineSpriteRenderer> NewRender = CreateComponent<GameEngineSpriteRenderer>();
-			NewRender->GetTransform()->SetLocalScale(TIleScale);
+			NewRender->GetTransform()->SetLocalScale(TileScale);
 			NewRender->GetTransform()->SetLocalPosition(Pos);
 			NewRender->SetTexture("Black.png");
 			NewRender->CameraCullingOn();
@@ -71,11 +71,11 @@ void MapOverlay::Start()
 		else
 		{
 			std::shared_ptr<class GameEngineCollision> NewCollision = CreateComponent<GameEngineCollision>();
-			NewCollision->GetTransform()->SetLocalScale(TIleScale);
+			NewCollision->GetTransform()->SetLocalScale(TileScale);
 			NewCollision->GetTransform()->SetLocalPosition(Pos);
 			NewCollision->SetOrder(static_cast<int>(ColEnum::MapOverlay));
 			std::shared_ptr<class GameEngineSpriteRenderer> NewRender = CreateComponent<GameEngineSpriteRenderer>();
-			NewRender->GetTransform()->SetLocalScale(TIleScale);
+			NewRender->GetTransform()->SetLocalScale(TileScale);
 			NewRender->GetTransform()->SetLocalPosition(Pos);
 			NewRender->SetTexture("Black.png");
 			NewRender->CameraCullingOn();
@@ -84,21 +84,44 @@ void MapOverlay::Start()
 		if (true == CheckPointOnUpLine(MapRightP, MapUpP, Pos))
 		{
 			LeftLineCheck = true;
-			Pos.y -= TIleScale.y;
+			Pos.y -= TileScale.y;
 			continue;
 		}
 
-		Pos.x += TIleScale.x;
-	}
+		Pos.x += TileScale.x;
+	}*/
 
 	AddScreenSizeY = true;
+	if (nullptr == GameEngineSprite::Find("MapOverray"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("MapOverray").GetFullPath());
+	}
+	//TileMap = CreateComponent<GameEngineTileMapRenderer>();
+	//TileMap->CreateTileMap(MapRightP.x*2/TileScale.x, MapUpP.y * 2 / TileScale.y, TileScale);
 
-	/*TileMap = CreateComponent<GameEngineTileMapRenderer>();
-	TileMap->CreateTileMap(1, 1, { 40,40 });
-	TileMap->SetTile(0, 0, "kword");
-	TileMap->GetTransform()->SetLocalScale({ 40,40,1 });
-	TileMap->GetTransform()->SetLocalPosition({ 0,0 });
-	*/
+	//TileMap->TilemapCullingOn();
+	//TileMap->GetTransform()->SetLocalPosition({MapLeftP.x,MapDownP.y});
+	//float4 ss =TileMap->GetTransform()->GetLocalPosition();
+	//TileMap->GetTransform()->SetLocalScale({ 1.f,1.f });
+	//GetLevel()->GetMainCamera();
+	////TileMap->CalSortZ(GetLevel()->GetMainCamera());
+	//for (int i = 0; i < MapRightP.x * 2 / TileScale.x; i++)
+	//{
+	//	for (int j = 0; j < MapUpP.y * 2 / TileScale.y; j++)
+	//	{
+	//		TileMap->SetTile(i, j, "MapOverray");
+	//	}		
+	//}
+	
+
+	
+	
+
+	
 }
 
 // 이건 디버깅용도나 

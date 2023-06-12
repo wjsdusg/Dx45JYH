@@ -132,7 +132,7 @@ void PlayLevel::Update(float _DeltaTime)
 			(
 				UIMouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
 			&& (UIMouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
-			&& UIMouse.y >= GameEngineWindow::GetScreenSize().y / 2
+			&& UIMouse.y >= -GameEngineWindow::GetScreenSize().y / 2
 			)
 		)
 	{
