@@ -21,10 +21,11 @@ protected:
 	void Update(float _DeltaTime);
 	virtual void Render(float _DeltaTime) {}
 	float4 MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta);
-
 	float4 MousePickPos = { 0,0 };
 	bool IsMove = false;
-	float Speed = 0;
+	bool IsFlip = false;
+	float Speed = 100.f;
+	 void StateInit() override;
 private:
 	
 	static std::vector<std::shared_ptr<Unit>> Units;

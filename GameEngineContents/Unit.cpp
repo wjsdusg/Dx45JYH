@@ -21,7 +21,7 @@ Unit::~Unit()
 }
 void Unit::Update(float _DeltaTime)
 {
-	if (true == GameEngineTransform::AABB2DToAABB2D(Render0->GetTransform()->GetCollisionData(),MouseData))
+	if (true == GameEngineTransform::AABB2DToAABB2D(Render0->GetTransform()->GetCollisionData(), MouseData))
 	{
 		//GetLevel()
 	}
@@ -53,7 +53,7 @@ void Unit::Update(float _DeltaTime)
 	}
 	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
 	MouseData.SPHERE.Radius = 0.0f;
-	
+
 	if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
 	{
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
@@ -64,7 +64,7 @@ void Unit::Update(float _DeltaTime)
 				{
 					Units[i]->IsClick = true;
 				}
-				
+
 			}
 			else
 			{
@@ -82,15 +82,45 @@ void Unit::Update(float _DeltaTime)
 	{
 		DoubleClickTimer += _DeltaTime;
 	}
-	
+	if (true == IsClick)
+	{
+		if (nullptr == SelectionCircle)
+		{
+			SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
+			SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f });
+
+			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
+		}
+	}
+	if (false == IsClick)
+	{
+		if (nullptr != SelectionCircle)
+		{
+			SelectionCircle->Death();
+			SelectionCircle = nullptr;
+
+		}
+	}
+
+	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick)
+	{
+		MousePickPos = MainMouse;
+		
+		FSM.ChangeState("Move");
+	}
+
+
+
+	FSM.Update(_DeltaTime);
 
 }
 void Unit::Start()
 {
 	Units.push_back(DynamicThis<Unit>());
+	StateInit();
 }
 
-float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed,float _Delta)
+float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta)
 {
 	float degree = CalAngle1To2(_Pos1, _Pos2);
 	Angle = degree;
@@ -98,6 +128,114 @@ float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed,flo
 	float4 AddPos;
 	AddPos.x = _Speed * _Delta * cosf(radian);
 	AddPos.y = _Speed * _Delta * sinf(radian);
-	
+
 	return AddPos;
+}
+
+//FSM.CreateState(
+//	{ .Name = "Move",
+//	.Start = [this]() {},
+//	.Update = [this](float _DeltaTime) {},
+//	.End = []() {}
+//	}
+//);  fsm
+void Unit::StateInit()
+{
+	FSM.CreateState(
+		{ .Name = "Stay",
+		.Start = [this]() {},
+		.Update = [this](float _DeltaTime) {},
+		.End = []() {}
+		}
+	);
+
+	FSM.CreateState(
+		{ .Name = "Move",
+		.Start = [this]() {
+			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, 0);
+			if (Angle < 5 || Angle >= 355)
+			{
+				Render0->ChangeAnimation("LMove");
+				Render0->SetFlipX();
+				IsFlip = true;
+			}
+			if (Angle < 85 && Angle >= 5)
+			{
+				Render0->ChangeAnimation("LUp45Move");
+				Render0->SetFlipX();
+				IsFlip = true;
+			}
+
+			if (Angle < 95 && Angle >= 85)
+			{
+				Render0->ChangeAnimation("UpMove");
+
+			}
+			if (Angle < 175 && Angle >= 95)
+			{
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+				Render0->ChangeAnimation("LUp45Move");
+
+			}
+			if (Angle < 185 && Angle >= 175)
+			{
+				Render0->ChangeAnimation("LMove");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 265 && Angle >= 185)
+			{
+				Render0->ChangeAnimation("LDown45Move");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 275 && Angle >= 265)
+			{
+				Render0->ChangeAnimation("DownMove");
+
+			}
+			if (Angle < 355 && Angle >= 275)
+			{
+				Render0->ChangeAnimation("LDown45Move");
+				Render0->SetFlipX();
+			}
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
+			if (MousePickPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
+			{
+				FSM.ChangeState("Stay");
+			}
+			
+		},
+		.End = []() {}
+		}
+	);
+	FSM.CreateState(
+		{ .Name = "Fight",
+		.Start = [this]() {},
+		.Update = [this](float _DeltaTime) {},
+		.End = []() {}
+		}
+	);
+	FSM.CreateState(
+		{ .Name = "Die",
+		.Start = [this]() {},
+		.Update = [this](float _DeltaTime) {},
+		.End = []() {}
+		}
+	);
+
+	FSM.ChangeState("Stay");
 }

@@ -19,9 +19,9 @@ public:
 	bool IsClick = false;
 
 protected:
-	virtual void Start() {}
-	virtual void Update(float _DeltaTime) {}
-	virtual void Render(float _DeltaTime) {}
+	 void Start() {}
+	 void Update(float _DeltaTime) {}
+	 void Render(float _DeltaTime) {}
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	float Angle = 0.0f;
@@ -31,6 +31,7 @@ protected:
 	CollisionData MouseData;
 	int Id;
 	Team MyTeam = Team::Max;
+	virtual void StateInit() {};
 private:
 
 

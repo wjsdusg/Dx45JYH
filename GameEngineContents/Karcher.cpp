@@ -60,7 +60,7 @@ void Karcher::Update(float _DeltaTime)
 
 void Karcher::Start()
 {
-	Unit::Start();
+	
 	GetTransform()->AddLocalPosition({ 0.f,-200.f });
 	//MousePickPos = GetTransform()->GetLocalPosition();
 	if (nullptr == GameEngineSprite::Find("archerk"))
@@ -74,15 +74,35 @@ void Karcher::Start()
 	}
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 
-	Render0->GetTransform()->SetLocalScale({ 40.f,40.f });
+	Render0->GetTransform()->SetLocalScale({ 60.f,60.f });
 	//Render0->CreateAnimation({ .AnimationName = "Move", .SpriteName = "archerk.png", .ScaleToTexture = false });
-	Render0->CreateAnimation({ "Move", "archerk.png",0,5,0.1});
-	Render0->CreateAnimation({ "Attack", "archerk.png",6,11,0.1 });
-	Render0->ChangeAnimation("Move");
+	Render0->CreateAnimation({ "LDown45Stay", "archerk.png",0,7});
+	Render0->CreateAnimation({ "LStay", "archerk.png",8,15});
+	Render0->CreateAnimation({ "LUp45Stay", "archerk.png",16,23});
+	Render0->CreateAnimation({ "UpStay", "archerk.png",24,31});
+	Render0->CreateAnimation({ "DownStay", "archerk.png",32,39});
+
+	Render0->CreateAnimation({ "LDown45Move", "archerk.png",80,87});
+	Render0->CreateAnimation({ "LMove", "archerk.png",88,95});
+	Render0->CreateAnimation({ "LUp45Move", "archerk.png",96,103});
+	Render0->CreateAnimation({ "UpMove", "archerk.png",104,111});
+	Render0->CreateAnimation({ "DownMove", "archerk.png",112,114});
+
+	Render0->CreateAnimation({ "LDown45Attack", "archerk.png",120,127});
+	Render0->CreateAnimation({ "LAttack", "archerk.png",128,135});
+	Render0->CreateAnimation({ "LUp45Attack", "archerk.png",136,143});
+	Render0->CreateAnimation({ "UpAttack", "archerk.png",144,151});
+	Render0->CreateAnimation({ "DownAttack", "archerk.png",152,159});
+	
+	Render0->CreateAnimation({ "Die", "archerk.png",160,167});
+
+	Render0->ChangeAnimation("LStay");
 	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
+
+	Unit::Start();
 }
 
 // 이건 디버깅용도나 

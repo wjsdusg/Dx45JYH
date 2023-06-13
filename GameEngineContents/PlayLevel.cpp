@@ -15,6 +15,7 @@
 #include "MapOverlay.h"
 #include "Ksword.h"
 #include "DragBox.h"
+#include "Karcher.h"
 std::shared_ptr<Player> Object0 = nullptr;
 
 std::shared_ptr<DragBox> NewDragBox = nullptr;
@@ -24,7 +25,7 @@ std::shared_ptr<MiniMap> NewMiniMap = nullptr;
 std::shared_ptr<Ksword> NewKsword = nullptr;
 std::shared_ptr<Ksword> NewKsword2 = nullptr;
 std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
-
+std::shared_ptr<Karcher>NewKarcher = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -390,6 +391,8 @@ void PlayLevel::Start()
 	NewKsword = CreateActor<Ksword>();
 	NewKsword2 = CreateActor<Ksword>();
 	NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
+	NewKarcher = CreateActor<Karcher>();
+	NewKarcher->GetTransform()->SetLocalPosition({ -100.f,-100 });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 }

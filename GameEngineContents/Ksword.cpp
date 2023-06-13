@@ -19,68 +19,54 @@ void Ksword::Update(float _DeltaTime)
 	Unit::Update(_DeltaTime);
 
 	
-	if (true == IsClick)
-	{
-		if (nullptr == SelectionCircle)
-		{
-			SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
-			SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f });
-
-			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
-		}
-	}
-	if (false == IsClick)
-	{
-		if (nullptr != SelectionCircle)
-		{
-			SelectionCircle->Death();
-			SelectionCircle = nullptr;
-			
-		}
-	}
-
-	if (true == GameEngineInput::IsUp("EngineMouseRight")&&true==IsClick)
-	{
-		MousePickPos = MainMouse;
-		IsMove = true;
-	}
-	
-	if (MousePickPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
-	{
-		IsMove = false;
-	}
-	if (true==IsMove )
-	{			
-		GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
-	}
-
 	
 
 }
-
+//
 void Ksword::Start()
 {	
-	Unit::Start();
-	GetTransform()->AddLocalPosition({ 0.f,-200.f });
-	//MousePickPos = GetTransform()->GetLocalPosition();
-	if (nullptr == GameEngineSprite::Find("kword"))
+	if (nullptr == GameEngineSprite::Find("swordk.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("kword").GetFullPath());
+		NewDir.Move("Unit");
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("swordk.png").GetFullPath(), 16, 12);
 	}
-	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	
-	Render0->GetTransform()->SetLocalScale({ 40.f,40.f });
-	Render0->CreateAnimation({ .AnimationName = "Run", .SpriteName = "kword", .ScaleToTexture = false });
-	Render0->ChangeAnimation("Run");		
+	GetTransform()->AddLocalPosition({ 0.f,-200.f });
+	//MousePickPos = GetTransform()->GetLocalPosition();
+	
+	Render0 = CreateComponent<GameEngineSpriteRenderer>();
+	Render0->GetTransform()->SetLocalScale({ 60.f,60.f });
+	Render0->CreateAnimation({ "LDown45Stay", "swordk.png",128,137});
+	Render0->CreateAnimation({ "LStay", "swordk.png",138,147});
+	Render0->CreateAnimation({ "LUp45Stay", "swordk.png",148,157});
+	Render0->CreateAnimation({ "UpStay", "swordk.png",158,167});
+	Render0->CreateAnimation({ "DownStay", "swordk.png",168,177});
+
+	Render0->CreateAnimation({ "LDown45Move", "swordk.png",0,7});
+	Render0->CreateAnimation({ "LMove", "swordk.png",8,15 });
+	Render0->CreateAnimation({ "LUp45Move", "swordk.png",16,23});
+	Render0->CreateAnimation({ "UpMove", "swordk.png",24,31});
+	Render0->CreateAnimation({ "DownMove", "swordk.png",32,39});
+
+	Render0->CreateAnimation({ "LDown45Attack", "swordk.png",48,55});
+	Render0->CreateAnimation({ "LAttack", "swordk.png",56,63});
+	Render0->CreateAnimation({ "LUp45Attack", "swordk.png",64,71});
+	Render0->CreateAnimation({ "UpAttack", "swordk.png",72,79 });
+	Render0->CreateAnimation({ "DownAttack", "swordk.png",80,87});
+
+	Render0->CreateAnimation({ "Die", "swordk.png",40,47});
+
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 	
-	Speed = 400.f;
+	Render0->ChangeAnimation("LStay");
+
+	Unit::Start();
 }
 
 // 이건 디버깅용도나 
