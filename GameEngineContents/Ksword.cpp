@@ -39,7 +39,7 @@ void Ksword::Start()
 	//MousePickPos = GetTransform()->GetLocalPosition();
 	
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->GetTransform()->SetLocalScale({ 60.f,60.f });
+	Render0->GetTransform()->SetLocalScale({ 60.f,60.f,1.f });
 	Render0->CreateAnimation({ "LDown45Stay", "swordk.png",128,137});
 	Render0->CreateAnimation({ "LStay", "swordk.png",138,147});
 	Render0->CreateAnimation({ "LUp45Stay", "swordk.png",148,157});
@@ -61,7 +61,7 @@ void Ksword::Start()
 	Render0->CreateAnimation({ "Die", "swordk.png",40,47});
 
 	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 40.f,40.f });
+	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 	
 	Render0->ChangeAnimation("LStay");

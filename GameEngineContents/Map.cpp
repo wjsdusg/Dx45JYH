@@ -35,10 +35,10 @@ void Map::Start()
 	Render0->SetTexture("background.png");
 	Render0->SetScaleToTexture("background.png");
 	MapSize = Render0->GetTransform()->GetLocalScale();
-	MapRightP = { MapSize.x / 2.f,0.f,1.f };
-	MapLeftP = { -MapSize.x / 2.f,0.f,1.f };
-	MapUpP = { 0.f,MapSize.y / 2.f,1.f };
-	MapDownP = { 0.f,-MapSize.y / 2.f,1.f };
+	MapRightP = { MapSize.x / 2.f,0.f };
+	MapLeftP = { -MapSize.x / 2.f,0.f };
+	MapUpP = { 0.f,MapSize.y / 2.f };
+	MapDownP = { 0.f,-MapSize.y / 2.f };
 
 }
 

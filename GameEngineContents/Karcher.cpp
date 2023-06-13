@@ -17,50 +17,13 @@ Karcher::~Karcher()
 void Karcher::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
-
-
-	if (true == IsClick)
-	{
-		if (nullptr == SelectionCircle)
-		{
-			SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
-			SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f });
-
-			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
-		}
-	}
-	if (false == IsClick)
-	{
-		if (nullptr != SelectionCircle)
-		{
-			SelectionCircle->Death();
-			SelectionCircle = nullptr;
-
-		}
-	}
-
-	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick)
-	{
-		MousePickPos = MainMouse;
-		IsMove = true;
-	}
-
-	if (MousePickPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
-	{
-		IsMove = false;
-	}
-	if (true == IsMove)
-	{
-		GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
-	}
-
-
-
+	
 }
 
 void Karcher::Start()
 {
 	
+
 	GetTransform()->AddLocalPosition({ 0.f,-200.f });
 	//MousePickPos = GetTransform()->GetLocalPosition();
 	if (nullptr == GameEngineSprite::Find("archerk"))
@@ -74,7 +37,7 @@ void Karcher::Start()
 	}
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 
-	Render0->GetTransform()->SetLocalScale({ 60.f,60.f });
+	Render0->GetTransform()->SetLocalScale({ 60.f,60.f,1.f });
 	//Render0->CreateAnimation({ .AnimationName = "Move", .SpriteName = "archerk.png", .ScaleToTexture = false });
 	Render0->CreateAnimation({ "LDown45Stay", "archerk.png",0,7});
 	Render0->CreateAnimation({ "LStay", "archerk.png",8,15});
@@ -99,7 +62,7 @@ void Karcher::Start()
 	Render0->ChangeAnimation("LStay");
 	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
 	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 40.f,40.f });
+	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 
 	Unit::Start();

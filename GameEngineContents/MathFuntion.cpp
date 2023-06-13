@@ -86,3 +86,22 @@ float CalAngle1To2(float4 _Pos1, float4 _Pos2)
 	return AngleInDegrees;
 }
 
+int gcd(int a, int b) {
+	if (b == 0) return a;
+	return gcd(b, a % b);
+}
+
+int CalculateSideRhombusCount()
+{
+	int s = gcd(MapUpP.y, MapRightP.x);
+	float y = MapUpP.y / s;
+	float x = MapRightP.x / s;
+	x /= 2;
+	y /= 2;
+	float _Big = sqrtf(pow(MapUpP.y, 2) + pow(MapRightP.x, 2));
+	float _Small = sqrtf(pow(y, 2) + pow(x, 2));
+	int num = static_cast<int>(_Big / _Small);
+	num++;
+	return num;
+}
+

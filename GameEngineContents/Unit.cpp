@@ -14,6 +14,10 @@ Unit::Unit()
 {
 	Id = num;
 	num++;
+	if (false == GameEngineInput::IsKey("G"))
+	{
+		GameEngineInput::CreateKey("G",'G');
+	}
 }
 
 Unit::~Unit()
@@ -21,6 +25,8 @@ Unit::~Unit()
 }
 void Unit::Update(float _DeltaTime)
 {
+	
+	
 	if (true == GameEngineTransform::AABB2DToAABB2D(Render0->GetTransform()->GetCollisionData(), MouseData))
 	{
 		//GetLevel()
@@ -148,7 +154,6 @@ void Unit::StateInit()
 		.End = []() {}
 		}
 	);
-
 	FSM.CreateState(
 		{ .Name = "Move",
 		.Start = [this]() {
@@ -156,20 +161,25 @@ void Unit::StateInit()
 			if (Angle < 5 || Angle >= 355)
 			{
 				Render0->ChangeAnimation("LMove");
-				Render0->SetFlipX();
-				IsFlip = true;
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
 			}
 			if (Angle < 85 && Angle >= 5)
 			{
 				Render0->ChangeAnimation("LUp45Move");
-				Render0->SetFlipX();
-				IsFlip = true;
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
 			}
 
 			if (Angle < 95 && Angle >= 85)
 			{
 				Render0->ChangeAnimation("UpMove");
-
 			}
 			if (Angle < 175 && Angle >= 95)
 			{
@@ -179,7 +189,6 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 				Render0->ChangeAnimation("LUp45Move");
-
 			}
 			if (Angle < 185 && Angle >= 175)
 			{
@@ -207,7 +216,11 @@ void Unit::StateInit()
 			if (Angle < 355 && Angle >= 275)
 			{
 				Render0->ChangeAnimation("LDown45Move");
-				Render0->SetFlipX();
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
 			}
 		},
 		.Update = [this](float _DeltaTime)

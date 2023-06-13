@@ -5,7 +5,7 @@
 
 class MapOverlay : public GameEngineActor
 {
-
+	friend class Object;
 public:
 	// constrcuter destructer
 	MapOverlay();

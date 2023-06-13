@@ -3,7 +3,9 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineButton.h>
 #include "ContentsEnum.h"
+#include "MapOverlay.h"
 // Ό³Έν :
+
 class Object : public GameEngineActor
 {
 public:
@@ -17,6 +19,7 @@ public:
 	Object& operator=(const Object& _Other) = delete;
 	Object& operator=(Object&& _Other) noexcept = delete;
 	bool IsClick = false;
+	static std::shared_ptr<MapOverlay> NewMapOverlay;
 
 protected:
 	 void Start() {}

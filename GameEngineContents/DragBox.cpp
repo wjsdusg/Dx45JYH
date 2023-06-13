@@ -4,7 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include "ContentsEnum.h"
 #include "Unit.h"
-extern float4 TileScale;
+
 DragBox::DragBox()
 {
 
@@ -45,7 +45,7 @@ void DragBox::AllCollision()
 		{
 			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
 
-			if (nullptr != NewUnit && TileScale.x * TileScale.y < Render0->GetTransform()->GetLocalScale().x * Render0->GetTransform()->GetLocalScale().y)
+			if (nullptr != NewUnit && 150.f < Render0->GetTransform()->GetLocalScale().x * Render0->GetTransform()->GetLocalScale().y)
 			{
 				if (false == check)
 				{

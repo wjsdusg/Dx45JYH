@@ -9,6 +9,7 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineButton.h>
+#include "Object.h"
 #include "Map.h"
 #include "UIPannel.h"
 #include "MiniMap.h"
@@ -46,6 +47,8 @@ extern  bool CheckPointOnDownLine(float4 Point1, float4 Point2, float4 CheckPoin
 extern float4 MovePointLeftOnLine(float4 _PrePos, float _Speed, float _DeltaTime);
 extern float4 MovePointRightOnLine(float4 _PrePos, float _Speed, float _DeltaTime);
 extern void MovePointToLine(float4& _PrePos);
+extern int CalculateSideRhombusCount();
+extern int gcd(int a, int b);
 extern float4 UIMouse;
 extern float4 MainMouse;
 void PlayLevel::Update(float _DeltaTime)
@@ -290,6 +293,9 @@ void PlayLevel::PlayerCreate(/*Playlevel* this*/)
 
 }
 
+
+
+
 void PlayLevel::Start()
 {
 
@@ -326,7 +332,7 @@ void PlayLevel::Start()
 
 	Map1 = CreateActor<Map>();
 
-
+	//Map1->Off();
 	NewUIPannel = CreateActor<UIPannel>();
 	NewMiniMap = CreateActor<MiniMap>();
 
@@ -334,8 +340,14 @@ void PlayLevel::Start()
 	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
-	NewMapOverlay = CreateActor<MapOverlay>(10);
+	NewMapOverlay = CreateActor<MapOverlay>();
+	//Object::NewMapOverlay = NewMapOverlay;
 
+	float4 _Pos2 = MapUpP;
+	_Pos2.y -= 50.f;
+	
+	NewMapOverlay->GetTransform()->SetLocalPosition(_Pos2);
+	
 	{
 		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>();
 		Button->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition());
@@ -395,6 +407,8 @@ void PlayLevel::Start()
 	NewKarcher->GetTransform()->SetLocalPosition({ -100.f,-100 });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
+	
+
 }
 
 void PlayLevel::LevelChangeStart()

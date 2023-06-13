@@ -118,7 +118,8 @@ void GameEngineSpriteRenderer::SetFlipX()
 	float4 LocalScale = GetTransform()->GetLocalScale();
 	LocalScale.x = -LocalScale.x;
 	GetTransform()->SetLocalScale(LocalScale);
-	
+	float4 aa = GetTransform()->GetLocalScale();
+	float4 ss = GetTransform()->GetWorldScale();
 }
 
 void GameEngineSpriteRenderer::SetFlipY()
