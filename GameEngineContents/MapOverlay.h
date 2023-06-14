@@ -6,6 +6,7 @@
 class MapOverlay : public GameEngineActor
 {
 	friend class Object;
+	friend class Unit;
 public:
 	// constrcuter destructer
 	MapOverlay();
@@ -16,10 +17,7 @@ public:
 	MapOverlay(MapOverlay&& _Other) noexcept = delete;
 	MapOverlay& operator=(const MapOverlay& _Other) = delete;
 	MapOverlay& operator=(MapOverlay&& _Other) noexcept = delete;
-	std::map<std::shared_ptr<class GameEngineCollision>, std::shared_ptr<class GameEngineSpriteRenderer>> GetColNRenders()
-	{
-		return ColNRenders;
-	}
+	static MapOverlay* MainMapOverlay;
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -30,7 +28,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
 	 
-	std::map<std::shared_ptr<class GameEngineCollision>, std::shared_ptr<class GameEngineSpriteRenderer>> ColNRenders;
+	
 
 	
 };

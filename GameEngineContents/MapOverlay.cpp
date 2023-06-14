@@ -21,8 +21,11 @@ extern void MovePointToLineX(float4& _PrePos);
 extern  bool AddScreenSizeY;
 extern int CalculateSideRhombusCount();
 extern int gcd(int a, int b);
+extern float4 IsoTileScale;
+MapOverlay* MapOverlay::MainMapOverlay = nullptr;
 MapOverlay::MapOverlay()
 {
+	MainMapOverlay = this;
 }
 
 MapOverlay::~MapOverlay()
@@ -49,11 +52,11 @@ void MapOverlay::Start()
 	}	
 
 	int s = gcd(MapUpP.y, MapRightP.x);
-	float y = MapUpP.y / s;
-	float x = MapRightP.x / s;
-	float4 Pos = { x,y };
+	IsoTileScale.y = MapUpP.y / s/2;
+	IsoTileScale.x = MapRightP.x / s/2;
+	
 	TileMap = CreateComponent<GameEngineTileMapRenderer>();
-	TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(), Pos, TileMapMode::Iso);
+	TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(), IsoTileScale, TileMapMode::Iso);
 	TileMap->TilemapCullingOn();
 	for (size_t y = 0; y < TileMap->GetCount().y; y++)
 	{

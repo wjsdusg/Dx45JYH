@@ -2,7 +2,7 @@
 #include "Object.h"
 
 
-static std::shared_ptr<MapOverlay> NewMapOverlay=nullptr;
+std::shared_ptr<MapOverlay> Object::NewMapOverlay=nullptr;
 Object::Object()
 {
 	

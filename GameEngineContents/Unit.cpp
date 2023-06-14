@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Unit.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineTileMapRenderer.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
@@ -37,12 +38,12 @@ void Unit::Update(float _DeltaTime)
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
-			std::shared_ptr<MapOverlay> NewMapOverlay = Col->GetActor()->DynamicThis<MapOverlay>();
+			/*std::shared_ptr<MapOverlay> NewMapOverlay = Col->GetActor()->DynamicThis<MapOverlay>();
 			if (nullptr != NewMapOverlay)
 			{
 				NewMapOverlay->GetColNRenders()[Col]->Death();
 				Col->Death();
-			}
+			}*/
 		}
 	}
 	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
@@ -118,7 +119,12 @@ void Unit::Update(float _DeltaTime)
 
 
 	FSM.Update(_DeltaTime);
-
+	
+	float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
+	NewMapOverlay->TileMap->SetTile(Render0->GetTransform()->GetWorldPosition()-Pos, "FOGWAR.png", 2);
+    //	MapOverlay::MainMapOverlay->TileMap->SetTile(Render0->GetTransform()->GetWorldPosition()-Pos, "FOGWAR.png", 2);
+	
+	//if()
 }
 void Unit::Start()
 {

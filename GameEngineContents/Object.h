@@ -35,6 +35,7 @@ protected:
 	int Id;
 	Team MyTeam = Team::Max;
 	virtual void StateInit() {};
+	float FOV = 300.f;
 private:
 
 

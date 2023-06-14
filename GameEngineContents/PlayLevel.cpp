@@ -287,35 +287,21 @@ void PlayLevel::OutlineCheck(float4& _Pos)
 		_Pos.y = 0.f;
 	}
 }
-void PlayLevel::PlayerCreate(/*Playlevel* this*/)
-{
-
-
-}
-
-
-
 
 void PlayLevel::Start()
 {
-
-
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
 		NewDir.Move("Test");
-
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png",".Bmp" });
-
-
 		for (size_t i = 0; i < File.size(); i++)
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-
 	{
 		GameEngineInput::CreateKey("Left", VK_LEFT);
 		GameEngineInput::CreateKey("Right", VK_RIGHT);
@@ -323,25 +309,19 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("Down", VK_DOWN);
 		GameEngineInput::CreateKey("Space", VK_SPACE);
 	}
-
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
-
-
 	//std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
-
 	Map1 = CreateActor<Map>();
-
 	//Map1->Off();
 	NewUIPannel = CreateActor<UIPannel>();
 	NewMiniMap = CreateActor<MiniMap>();
-
 
 	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
 	NewMapOverlay = CreateActor<MapOverlay>();
-	//Object::NewMapOverlay = NewMapOverlay;
+	
 
 	float4 _Pos2 = MapUpP;
 	_Pos2.y -= 50.f;
@@ -408,7 +388,7 @@ void PlayLevel::Start()
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	
-
+	Object::NewMapOverlay = NewMapOverlay;
 }
 
 void PlayLevel::LevelChangeStart()

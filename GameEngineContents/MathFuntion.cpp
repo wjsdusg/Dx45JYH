@@ -16,7 +16,7 @@ float4 UIMouse;
 float4 MainMouse;
 //y>= a*x+b 이면 x,y점이 닿거나 위에있다.
 float4 TileScale = { 40.f,40.f };
-
+float4 IsoTileScale = {};
 
 bool CheckPointOnUpLine(float4 Point1, float4 Point2, float4 CheckPoint)
 {
@@ -93,13 +93,14 @@ int gcd(int a, int b) {
 
 int CalculateSideRhombusCount()
 {
-	int s = gcd(MapUpP.y, MapRightP.x);
-	float y = MapUpP.y / s;
-	float x = MapRightP.x / s;
-	x /= 2;
-	y /= 2;
+	float4 Pos;
+	Pos.x = IsoTileScale.x;
+	Pos.y = IsoTileScale.y;
+	Pos.x /= 2;
+	Pos.y /= 2;
+	//IsoTileScale /= 10.f;
 	float _Big = sqrtf(pow(MapUpP.y, 2) + pow(MapRightP.x, 2));
-	float _Small = sqrtf(pow(y, 2) + pow(x, 2));
+	float _Small = sqrtf(pow(Pos.y, 2) + pow(Pos.x, 2));
 	int num = static_cast<int>(_Big / _Small);
 	num++;
 	return num;
