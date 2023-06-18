@@ -350,7 +350,7 @@ public:
 
 		float Result = acosf(AngleCheck.x);
 
-		if (AngleCheck.y > 0)
+		if (AngleCheck.y < 0)
 		{
 			Result = GameEngineMath::PIE2 - Result;
 		}

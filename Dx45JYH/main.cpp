@@ -18,7 +18,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	float sddd = ss.GetAnagleDegZ();
 	float4 ss2 = float4::AngleToDirection2DToDeg(0.f);
 	float4 ss3= ss.RotaitonZDegReturn(30.f);
-	float g=float4::GetAngleVectorToVectorDeg(ss, ss2);
+	float g=float4::GetAngleVectorToVectorDeg(ss3, ss2);
 	
 	
 	float sda = acosf(float(0.5))*GameEngineMath::RadToDeg;

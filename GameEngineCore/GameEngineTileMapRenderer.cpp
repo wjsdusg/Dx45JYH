@@ -29,13 +29,22 @@ void GameEngineTileMapRenderer::Start()
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+	//GetShaderResHelper().SetConstantBufferLink("ClipData", Clip);
 }
 
-void GameEngineTileMapRenderer::CreateTileMap(int _X, int _Y, const float4& _TileSize, TileMapMode _Mode)
+void GameEngineTileMapRenderer::CreateTileMap(int _X, int _Y, const float4& _TileSize, const float4& _RenderSize, TileMapMode _Mode)
 {
 	TileSize = _TileSize;
 	TileSize.z = 1.0f;
 	TileSizeH = TileSize.half();
+
+	if (_RenderSize == float4::Zero)
+	{
+		RenderSize = TileSize;
+	}
+	else {
+		RenderSize = _RenderSize;
+	}
 
 	MapCount.x = static_cast<float>(_X);
 	MapCount.y = static_cast<float>(_Y);
@@ -55,7 +64,7 @@ void GameEngineTileMapRenderer::Clear()
 	Tiles.clear();
 }
 
-void GameEngineTileMapRenderer::SetTile(int _X, int _Y, const std::string_view& _SpriteName, int _Index)
+void GameEngineTileMapRenderer::SetTile(int _X, int _Y, const std::string_view& _SpriteName, size_t _Index)
 {
 	if (true == Tiles.empty())
 	{
@@ -133,7 +142,7 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 					break;
 				}
 
-				Scale.Scale(TileSize);
+				Scale.Scale(RenderSize);
 				Pos.Pos(vPos);
 				TileTransData.WorldViewProjectionMatrix = Scale * Pos * TransData.WorldMatrix;
 
@@ -173,7 +182,7 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 }
 
 
-void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_view& _SpriteName, int _Index)
+void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_view& _SpriteName, size_t _Index)
 {
 	int X = -1;
 	int Y = -1;
@@ -182,12 +191,12 @@ void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_vi
 	switch (Mode)
 	{
 	case TileMapMode::Rect:
-		X = _Pos.x / TileSize.x;
-		Y = _Pos.y / TileSize.y;
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
 		break;
 	case TileMapMode::Iso:
-		X = (_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2;
-		Y = (-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2;
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
 		break;
 	default:
 		break;
@@ -195,3 +204,111 @@ void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_vi
 
 	SetTile(X, Y, _SpriteName, _Index);
 }
+
+size_t GameEngineTileMapRenderer::GetTIleIndex(const float4& _Pos)
+{
+	int X = -1;
+	int Y = -1;
+
+
+	switch (Mode)
+	{
+	case TileMapMode::Rect:
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
+		break;
+	case TileMapMode::Iso:
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
+		break;
+	default:
+		break;
+	}
+	if (true == Tiles.empty())
+	{
+		MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
+		return -1;
+	}
+
+	// 인덱스 오버
+	if (true == IsOver(X, Y))
+	{
+		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
+		return -1;
+	}
+	if (nullptr == Tiles[X][Y].Sprite)
+	{
+		MsgAssert("타일맵이 존재하지 않습니다");
+		return -1;
+	}
+	return Tiles[X][Y].Index;
+}
+
+
+float4 GameEngineTileMapRenderer::PosToTilePos(float4 _Pos)
+{
+	int X = -1;
+	int Y = -1;
+
+
+	switch (Mode)
+	{
+	case TileMapMode::Rect:
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
+		break;
+	case TileMapMode::Iso:
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
+		break;
+	default:
+		break;
+	}
+	float4 ReturnPos;
+	switch (Mode)
+	{
+	case TileMapMode::Rect:
+		ReturnPos = { TileSize.x * X, TileSize.y * Y, 1.0f };
+		break;
+	case TileMapMode::Iso:
+		ReturnPos.x = (X * TileSizeH.x) - (Y * TileSizeH.x);
+		ReturnPos.y = -(X * TileSizeH.y) - (Y * TileSizeH.y);
+		ReturnPos.y -= TileSizeH.y;
+		break;
+	default:
+		break;
+	}
+
+	return ReturnPos;
+
+}
+
+//float GameEngineTileMapRenderer::IsoBetweenDegree()
+//{
+//	int _X = 2;
+//	int _Y = 1;
+//	if (true == Tiles.empty())
+//	{
+//		MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
+//	}
+//
+//	// 인덱스 오버
+//	if (true == IsOver(_X, _Y))
+//	{
+//		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
+//		return;
+//	}
+//
+//	switch (Mode)
+//	{
+//	case TileMapMode::Rect:
+//		return -1;
+//		break;
+//	case TileMapMode::Iso:
+//
+//		break;
+//	default:
+//		break;
+//	}
+//}
+//float4::GetAngleVectorToVectorDeg  	
