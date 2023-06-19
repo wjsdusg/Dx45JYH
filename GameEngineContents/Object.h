@@ -19,11 +19,11 @@ public:
 	Object& operator=(const Object& _Other) = delete;
 	Object& operator=(Object&& _Other) noexcept = delete;
 	bool IsClick = false;
-	static std::shared_ptr<MapOverlay> NewMapOverlay;
+
 
 protected:
-	 void Start() {}
-	 void Update(float _DeltaTime) {}
+	void Start();
+	 void Update(float _DeltaTime);
 	 void Render(float _DeltaTime) {}
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
@@ -36,9 +36,11 @@ protected:
 	Team MyTeam = Team::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
+	void TileFOV(float4 _OldPos, float4 _NewPos);
+	void CreateTileFOV(float4 _NewPos);
 private:
-
-
+	static std::vector<std::shared_ptr<Object>> Objects;
+	void ObjectsSetTile();
 
 
 };

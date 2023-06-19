@@ -283,32 +283,121 @@ float4 GameEngineTileMapRenderer::PosToTilePos(float4 _Pos)
 
 }
 
-//float GameEngineTileMapRenderer::IsoBetweenDegree()
-//{
-//	int _X = 2;
-//	int _Y = 1;
-//	if (true == Tiles.empty())
-//	{
-//		MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
-//	}
-//
-//	// 인덱스 오버
-//	if (true == IsOver(_X, _Y))
-//	{
-//		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
-//		return;
-//	}
-//
-//	switch (Mode)
-//	{
-//	case TileMapMode::Rect:
-//		return -1;
-//		break;
-//	case TileMapMode::Iso:
-//
-//		break;
-//	default:
-//		break;
-//	}
-//}
-//float4::GetAngleVectorToVectorDeg  	
+void GameEngineTileMapRenderer::AddCount(float4 _Pos)
+{
+	int X = -1;
+	int Y = -1;
+
+	switch (Mode)
+	{
+	case TileMapMode::Rect:
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
+		Tiles[X][Y].count++;
+		break;
+	case TileMapMode::Iso:
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
+		Tiles[X][Y].count++;
+		break;
+	default:
+		break;
+	}
+
+	if (true == Tiles.empty())
+	{
+		MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
+	}
+
+	// 인덱스 오버
+	if (true == IsOver(X, Y))
+	{
+		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
+	}
+	if (nullptr == Tiles[X][Y].Sprite)
+	{
+		MsgAssert("타일맵이 존재하지 않습니다");
+	}
+}
+
+void GameEngineTileMapRenderer::SubCount(float4 _Pos)
+{
+	int X = -1;
+	int Y = -1;
+
+	switch (Mode)
+	{
+	case TileMapMode::Rect:
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
+		Tiles[X][Y].count--;
+		break;
+	case TileMapMode::Iso:
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
+		Tiles[X][Y].count--;
+		if (0 > Tiles[X][Y].count)
+		{
+			Tiles[X][Y].count = 0;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (true == Tiles.empty())
+	{
+		MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
+	}
+
+	// 인덱스 오버
+	if (true == IsOver(X, Y))
+	{
+		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
+	}
+	if (nullptr == Tiles[X][Y].Sprite)
+	{
+		MsgAssert("타일맵이 존재하지 않습니다");
+	}
+}
+
+int GameEngineTileMapRenderer::GetCount(float4 _Pos)
+{
+	int X = -1;
+	int Y = -1;
+
+	switch (Mode)
+	{
+	case TileMapMode::Rect:
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
+		
+		break;
+	case TileMapMode::Iso:
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
+		
+		break;
+	default:
+		break;
+	}
+
+	if (true == Tiles.empty())
+	{
+		MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
+		return -1;
+	}
+
+	// 인덱스 오버
+	if (true == IsOver(X, Y))
+	{
+		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
+		return -1;
+	}
+	if (nullptr == Tiles[X][Y].Sprite)
+	{
+		MsgAssert("타일맵이 존재하지 않습니다");
+		return -1;
+	}
+	return Tiles[X][Y].count;
+}

@@ -27,6 +27,7 @@ std::shared_ptr<Ksword> NewKsword = nullptr;
 std::shared_ptr<Ksword> NewKsword2 = nullptr;
 std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
 std::shared_ptr<Karcher>NewKarcher = nullptr;
+std::shared_ptr<Object>NewObject = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -380,15 +381,15 @@ void PlayLevel::Start()
 
 			});
 	}
-	NewKsword = CreateActor<Ksword>();
-	//NewKsword2 = CreateActor<Ksword>();
+	//NewKsword = CreateActor<Ksword>();
+	NewKsword2 = CreateActor<Ksword>();
 	//NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
 	NewKarcher = CreateActor<Karcher>();
-	NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
+	//NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	
-	Object::NewMapOverlay = NewMapOverlay;
+	NewObject = CreateActor<Object>(1);
 }
 
 void PlayLevel::LevelChangeStart()

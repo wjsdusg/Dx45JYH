@@ -131,24 +131,11 @@ void Unit::Update(float _DeltaTime)
 			}
 		}
 	}
-
+	//float4 OldPos = GetTransform()->GetWorldPosition();
 	FSM.Update(_DeltaTime);
-
-	{
-		float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
-		for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
-		{
-			for (float j = GetTransform()->GetWorldPosition().x - FOV; j <= GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x/2)
-			{
-				float4 Pos2{ j,i };
-				if (FOV >= Pos2.XYDistance(GetTransform()->GetWorldPosition()))
-				{
-					MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 2);
-				}
-			}
-		}
-	}
-   
+	//float4 NewPos = GetTransform()->GetWorldPosition();
+	
+	//TileFOV(OldPos, NewPos);
 	
 	
 	//{
@@ -174,6 +161,8 @@ void Unit::Start()
 {
 	Units.push_back(DynamicThis<Unit>());
 	StateInit();
+	Object::Start();
+	//CreateTileFOV(GetTransform()->GetLocalPosition());
 }
 
 float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta)

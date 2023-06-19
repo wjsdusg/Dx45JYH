@@ -15,6 +15,7 @@ class Tile
 public:
 	GameEngineSprite* Sprite;
 	size_t Index = 0;
+	int count = 0;
 };
 
 // Ό³Έν :
@@ -47,8 +48,6 @@ public:
 
 	bool IsOver(int _X, int _Y) const;
 
-	//float IsoBetweenDegree();
-
 	inline float4 GetCount() const
 	{
 		return MapCount;
@@ -63,7 +62,11 @@ public:
 	{
 		IsTilemapCulling = false;
 	}
+	void AddCount(float4 _Pos);
 
+	void SubCount(float4 _Pos);
+
+	int GetCount(float4 _Pos);
 protected:
 	void Render(float _Delta) override;
 
