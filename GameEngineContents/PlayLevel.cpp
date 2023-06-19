@@ -320,7 +320,7 @@ void PlayLevel::Start()
 
 	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
-	NewMiniMap->GetTransform()->AddLocalPosition({ -490.f,-30.f });
+	NewMiniMap->GetTransform()->AddLocalPosition({ -458.f,-27.f });
 	NewMapOverlay = CreateActor<MapOverlay>();
 	
 
@@ -385,7 +385,7 @@ void PlayLevel::Start()
 	NewKsword2 = CreateActor<Ksword>();
 	//NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
 	NewKarcher = CreateActor<Karcher>();
-	//NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
+	NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	

@@ -18,6 +18,7 @@ extern float4 MapRightP;
 extern float4 MapLeftP;
 extern float4 MapUpP;
 extern float4 MapDownP;
+extern float MapRatio;
 void Map::Update(float _DeltaTime)
 {
 
@@ -39,6 +40,8 @@ void Map::Start()
 	MapLeftP = { -MapSize.x / 2.f,0.f };
 	MapUpP = { 0.f,MapSize.y / 2.f };
 	MapDownP = { 0.f,-MapSize.y / 2.f };
+	MapRatio = MapSize.x / MapSize.y;
+	
 
 }
 

@@ -42,7 +42,7 @@ void MapOverlay::Update(float _DeltaTime)
 void MapOverlay::Start()
 {
 
-	if (nullptr == GameEngineSprite::Find("MapOverray"))
+	if (nullptr == GameEngineSprite::Find("FOGWAR.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");

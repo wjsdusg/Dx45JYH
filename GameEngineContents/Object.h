@@ -36,8 +36,7 @@ protected:
 	Team MyTeam = Team::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
-	void TileFOV(float4 _OldPos, float4 _NewPos);
-	void CreateTileFOV(float4 _NewPos);
+	
 private:
 	static std::vector<std::shared_ptr<Object>> Objects;
 	void ObjectsSetTile();

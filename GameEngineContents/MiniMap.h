@@ -6,6 +6,7 @@ class GameEngineUIRenderer;
 class MiniMap : public GameEngineActor
 {
 	friend class PlayLevel;
+	friend class Object;
 public:
 	// constrcuter destructer
 	MiniMap();
@@ -16,7 +17,7 @@ public:
 	MiniMap(MiniMap&& _Other) noexcept = delete;
 	MiniMap& operator=(const MiniMap& _Other) = delete;
 	MiniMap& operator=(MiniMap&& _Other) noexcept = delete;
-	
+	static  MiniMap* MainMiniMap;
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -26,8 +27,8 @@ protected:
 private:
 	std::shared_ptr<class GameEngineUIRenderer> Render0;
 	std::shared_ptr<class GameEngineUIRenderer> Render1;
-
-	
+	std::shared_ptr<class GameEngineUIRenderer> MiniMapOverlay;
+	std::vector<std::shared_ptr<class GameEngineUIRenderer>> MiniPoints;
 
 };
 

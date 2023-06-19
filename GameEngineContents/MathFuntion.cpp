@@ -8,6 +8,7 @@ float4 MapRightP;
 float4 MapLeftP;
 float4 MapUpP;
 float4 MapDownP;
+float MapRatio;
 float Slope;
 float Y_intercept;
 bool AddScreenSizeY = true;
