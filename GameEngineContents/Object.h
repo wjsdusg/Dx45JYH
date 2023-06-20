@@ -29,6 +29,7 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	float Angle = 0.0f;
 	std::shared_ptr<class GameEngineCollision> Collision;
+	std::shared_ptr<class GameEngineCollision> FOVCollision;
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
 	CollisionData MouseData;
@@ -36,7 +37,7 @@ protected:
 	Team MyTeam = Team::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
-	
+	float FightFOV = 200.f;
 	static std::list<std::shared_ptr<Object>> Objects;
 private:
 	void ObjectsSetTile();

@@ -63,7 +63,7 @@ void Monster_01::Start()
 	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 80.f,80.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
+	Collision->SetOrder(static_cast<int>(ColEnum::Monster));
 
 	Unit::Start();
 	MyTeam = Team::Enemy;

@@ -1,9 +1,9 @@
 #pragma once
-#include "Unit.h"
+#include "Minion.h"
 
 // Ό³Έν :
 
-class Monster_01 : public Unit
+class Monster_01 : public Minion
 {
 public:
 	// constrcuter destructer

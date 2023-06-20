@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
+#include "Minion.h"
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 extern float4 IsoTileScale;
@@ -112,7 +113,7 @@ void Unit::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick)
 	{
 		MousePickPos = MainMouse;
-		
+		TargetPos = MainMouse;
 		FSM.ChangeState("Move");
 	}
 
@@ -226,14 +227,27 @@ void Unit::StateInit()
 				}
 			}
 		},
-		.Update = [this](float _DeltaTime) {},
+		.Update = [this](float _DeltaTime)
+		{
+			/*std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+
+			if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Monster), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
+			{
+				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				{
+					std::shared_ptr<Minion> NewUnit = Col->GetActor()->DynamicThis<Minion>();
+					
+					FSM.ChangeState("Fight");
+				}
+			}*/
+		},
 		.End = []() {}
 		}
 	);
 	FSM.CreateState(
 		{ .Name = "Move",
 		.Start = [this]() {
-			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, 0);
+			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
 			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LMove");
@@ -301,7 +315,7 @@ void Unit::StateInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, _DeltaTime));
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
 			if (MousePickPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
 			{
 				FSM.ChangeState("Stay");

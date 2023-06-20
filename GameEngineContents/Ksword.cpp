@@ -63,8 +63,11 @@ void Ksword::Start()
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
+	FOVCollision = CreateComponent<GameEngineCollision>();
+	FOVCollision->GetTransform()->SetLocalScale({ FightFOV,FightFOV,1.f });
+	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));
+
 	
-	Render0->ChangeAnimation("LStay");
 
 	Unit::Start();
 	MyTeam = Team::Ally;

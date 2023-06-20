@@ -6,8 +6,12 @@ enum class ColEnum
 {
 	MapOverlay = 10,
 	Unit,
-	Minion,
+	Monster,
 	Hero,
+	Player,
+	UnitFOV,
+	MonsterFOV,
+	HeroFOV,
 	Max
 };
 

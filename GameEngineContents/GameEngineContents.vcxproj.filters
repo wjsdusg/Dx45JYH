@@ -31,6 +31,9 @@
     <Filter Include="Object\Unit\Minion\Monster">
       <UniqueIdentifier>{359fcf40-18d9-4c4a-b1aa-09bc3c84431e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Unit\Minion\Unit">
+      <UniqueIdentifier>{127db879-812e-4e64-98d3-f91cb207e23c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -70,20 +73,20 @@
     <ClInclude Include="DragBox.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Minion.h">
-      <Filter>Object\Unit\Minion</Filter>
-    </ClInclude>
-    <ClInclude Include="Ksword.h">
-      <Filter>Object\Unit\Minion</Filter>
-    </ClInclude>
     <ClInclude Include="Hero.h">
       <Filter>Object\Unit\Heros</Filter>
     </ClInclude>
-    <ClInclude Include="Karcher.h">
-      <Filter>Object\Unit\Minion</Filter>
-    </ClInclude>
     <ClInclude Include="Monster_01.h">
       <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Minion.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Ksword.h">
+      <Filter>Object\Unit\Minion\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="Karcher.h">
+      <Filter>Object\Unit\Minion\Unit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,20 +131,20 @@
     <ClCompile Include="MathFuntion.cpp">
       <Filter>Enum</Filter>
     </ClCompile>
-    <ClCompile Include="Ksword.cpp">
-      <Filter>Object\Unit\Minion</Filter>
-    </ClCompile>
-    <ClCompile Include="Minion.cpp">
-      <Filter>Object\Unit\Minion</Filter>
-    </ClCompile>
     <ClCompile Include="Hero.cpp">
       <Filter>Object\Unit\Heros</Filter>
     </ClCompile>
-    <ClCompile Include="Karcher.cpp">
-      <Filter>Object\Unit\Minion</Filter>
-    </ClCompile>
     <ClCompile Include="Monster_01.cpp">
       <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Minion.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Ksword.cpp">
+      <Filter>Object\Unit\Minion\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="Karcher.cpp">
+      <Filter>Object\Unit\Minion\Unit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
