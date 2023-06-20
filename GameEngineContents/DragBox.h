@@ -5,6 +5,7 @@
 
 class DragBox : public GameEngineActor
 {
+	friend class PlayLevel;
 public:
 	// constrcuter destructer
 	DragBox();

@@ -66,6 +66,7 @@ void Karcher::Start()
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 
 	Unit::Start();
+	MyTeam = Team::Ally;
 }
 
 // 이건 디버깅용도나 

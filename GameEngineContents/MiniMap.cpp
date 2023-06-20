@@ -53,17 +53,20 @@ void MiniMap::Start()
 	
 	Render0->SetTexture("backgroundMini.png");
 	
-	Render0->GetTransform()->SetLocalScale({ 270.f, 120.f });
+	Render0->GetTransform()->SetLocalScale({ 270.f, 120.f,1.f });
 	
 	MiniMapSize = Render0->GetTransform()->GetLocalScale();
 	
 	Render1 = CreateComponent<GameEngineUIRenderer>();
 	
-	//MiniMapOverlay = CreateComponent<GameEngineUIRenderer>();
-	//
-	////MiniMapOverlay->GetTransform()->SetParent(Render0->GetTransform());
-	//MiniMapOverlay->GetTransform()->SetLocalScale({ 270.f, 120.f });
-	//MiniMapOverlay->SetTexture("BlackMini.png");
+	MiniMapOverlay = CreateComponent<GameEngineUIRenderer>();
+	
+	
+	MiniMapOverlay->GetTransform()->SetParent(Render0->GetTransform());
+	//MiniMapOverlay->GetTransform()->SetLocalScale({ 270.f, 120.f,1.f });
+	MiniMapOverlay->GetTransform()->SetLocalScale({ 1.f, 1.f,1.f });
+	
+	MiniMapOverlay->SetTexture("BlackMini.png");
 	
 }
 

@@ -37,8 +37,8 @@ protected:
 	virtual void StateInit() {};
 	float FOV = 300.f;
 	
+	static std::list<std::shared_ptr<Object>> Objects;
 private:
-	static std::vector<std::shared_ptr<Object>> Objects;
 	void ObjectsSetTile();
 
 

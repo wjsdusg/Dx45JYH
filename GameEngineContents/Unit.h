@@ -25,10 +25,11 @@ protected:
 	bool IsMove = false;
 	bool IsFlip = false;
 	float Speed = 100.f;
+	float FightFOV = 200.f;
 	 void StateInit() override;
+	static std::vector<std::shared_ptr<Unit>> Units;
 private:
 	
-	static std::vector<std::shared_ptr<Unit>> Units;
 	static float DoubleClickTimer;
 
 };

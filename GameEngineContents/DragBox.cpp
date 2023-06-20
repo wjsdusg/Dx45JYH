@@ -25,6 +25,7 @@ void DragBox::Update(float _DeltaTime)
 	float4 Scale;
 	Scale.x = abs(MousePos.x - MouseMovePos.x);
 	Scale.y = abs(MousePos.y - MouseMovePos.y);
+	Scale.z = 1;
 	Render0->GetTransform()->SetLocalScale(Scale);
 	Collision->GetTransform()->SetLocalScale(Scale);
 }
@@ -39,13 +40,13 @@ void DragBox::AllCollision()
 {
 	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
-	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
+	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
 			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
 
-			if (nullptr != NewUnit && 150.f < Render0->GetTransform()->GetLocalScale().x * Render0->GetTransform()->GetLocalScale().y)
+			if (nullptr != NewUnit && 120.f < Render0->GetTransform()->GetLocalScale().x * Render0->GetTransform()->GetLocalScale().y)
 			{
 				if (false == check)
 				{
@@ -59,6 +60,7 @@ void DragBox::AllCollision()
 			}
 		}
 	}
+	Death();
 }
 
 void DragBox::Render(float _DeltaTime)

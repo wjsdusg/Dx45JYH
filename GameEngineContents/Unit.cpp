@@ -32,21 +32,17 @@ void Unit::Update(float _DeltaTime)
 	{
 		//GetLevel()
 	}
+
 	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
 	if (Collision->CollisionAll(static_cast<int>(ColEnum::MapOverlay), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
-			/*std::shared_ptr<MapOverlay> NewMapOverlay = Col->GetActor()->DynamicThis<MapOverlay>();
-			if (nullptr != NewMapOverlay)
-			{
-				NewMapOverlay->GetColNRenders()[Col]->Death();
-				Col->Death();
-			}*/
+			
 		}
 	}
-	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
+	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
@@ -55,7 +51,7 @@ void Unit::Update(float _DeltaTime)
 			{
 				continue;
 			}
-			IsMove = false;
+			NewUnit->FSM.ChangeState("Stay");
 		}
 	}
 	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
@@ -67,17 +63,21 @@ void Unit::Update(float _DeltaTime)
 		{
 			if (true == IsClick && DoubleClickTimer < 0.5f)
 			{
-				for (int i = 0; i < Units.size(); i++)
+				/*for (int i = 0; i < Units.size(); i++)
 				{
 					Units[i]->IsClick = true;
+				}*/
+				for (auto Start = Units.begin(); Start!=Units.end(); Start++)
+				{
+					(*Start)->IsClick = true;
 				}
 
 			}
 			else
 			{
-				for (int i = 0; i < Units.size(); i++)
+				for (auto Start = Units.begin(); Start != Units.end(); Start++)
 				{
-					Units[i]->IsClick = false;
+					(*Start)->IsClick = false;
 				}
 
 				IsClick = true;
@@ -131,31 +131,8 @@ void Unit::Update(float _DeltaTime)
 			}
 		}
 	}
-	//float4 OldPos = GetTransform()->GetWorldPosition();
+	
 	FSM.Update(_DeltaTime);
-	//float4 NewPos = GetTransform()->GetWorldPosition();
-	
-	//TileFOV(OldPos, NewPos);
-	
-	
-	//{
-	//	float4 _Pos2 = Render0->GetTransform()->GetWorldPosition();
-	//	float sddd = _Pos2.GetAnagleDegZ();
-	//	float4 sddd2 = _Pos2.RotaitonZDegReturn(20);
-	//	sddd = sddd2.GetAnagleDegZ();
-
-	//	//Render0->GetTransform()->SetLocalPosition();
-	//	
-
-	//	float4 ss = float4::AngleToDirection2DToDeg(30.f);
-	//	sddd = ss.GetAnagleDegZ();
-	//	
-	//	float4 ss3 = ss.RotaitonZDegReturn(30.f);
-	//	float g = float4::GetAngleVectorToVectorDeg(ss3, _Pos2);
-	//
-	//	int a = 0;
-	//}
-
 }
 void Unit::Start()
 {
@@ -177,18 +154,78 @@ float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, fl
 	return AddPos;
 }
 
-//FSM.CreateState(
-//	{ .Name = "Move",
-//	.Start = [this]() {},
-//	.Update = [this](float _DeltaTime) {},
-//	.End = []() {}
-//	}
-//);  fsm
 void Unit::StateInit()
 {
 	FSM.CreateState(
 		{ .Name = "Stay",
-		.Start = [this]() {},
+		.Start = [this]() 
+		{
+			
+			if (Angle < 10 || Angle >= 350)
+			{
+				Render0->ChangeAnimation("LStay");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			if (Angle < 80 && Angle >= 10)
+			{
+				Render0->ChangeAnimation("LUp45Stay");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+
+			if (Angle < 100 && Angle >= 80)
+			{
+				Render0->ChangeAnimation("UpStay");
+			}
+			if (Angle < 170 && Angle >= 100)
+			{
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+				Render0->ChangeAnimation("LUp45Stay");
+			}
+			if (Angle < 190 && Angle >= 170)
+			{
+				Render0->ChangeAnimation("LStay");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 260 && Angle >= 190)
+			{
+				Render0->ChangeAnimation("LDown45Stay");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 280 && Angle >= 260)
+			{
+				Render0->ChangeAnimation("DownStay");
+
+			}
+			if (Angle < 350 && Angle >= 280)
+			{
+				Render0->ChangeAnimation("LDown45Stay");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+		},
 		.Update = [this](float _DeltaTime) {},
 		.End = []() {}
 		}
@@ -197,7 +234,7 @@ void Unit::StateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), MousePickPos, Speed, 0);
-			if (Angle < 5 || Angle >= 355)
+			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LMove");
 				if (false == IsFlip)
@@ -206,7 +243,7 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
-			if (Angle < 85 && Angle >= 5)
+			if (Angle < 80 && Angle >= 10)
 			{
 				Render0->ChangeAnimation("LUp45Move");
 				if (false == IsFlip)
@@ -216,11 +253,11 @@ void Unit::StateInit()
 				}
 			}
 
-			if (Angle < 95 && Angle >= 85)
+			if (Angle < 100 && Angle >= 80)
 			{
 				Render0->ChangeAnimation("UpMove");
 			}
-			if (Angle < 175 && Angle >= 95)
+			if (Angle < 170 && Angle >= 100)
 			{
 				if (true == IsFlip)
 				{
@@ -229,7 +266,7 @@ void Unit::StateInit()
 				}
 				Render0->ChangeAnimation("LUp45Move");
 			}
-			if (Angle < 185 && Angle >= 175)
+			if (Angle < 190 && Angle >= 170)
 			{
 				Render0->ChangeAnimation("LMove");
 				if (true == IsFlip)
@@ -238,7 +275,7 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 			}
-			if (Angle < 265 && Angle >= 185)
+			if (Angle < 260 && Angle >= 190)
 			{
 				Render0->ChangeAnimation("LDown45Move");
 				if (true == IsFlip)
@@ -247,12 +284,12 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 			}
-			if (Angle < 275 && Angle >= 265)
+			if (Angle < 280 && Angle >= 260)
 			{
 				Render0->ChangeAnimation("DownMove");
 
 			}
-			if (Angle < 355 && Angle >= 275)
+			if (Angle < 350 && Angle >= 280)
 			{
 				Render0->ChangeAnimation("LDown45Move");
 				if (false == IsFlip)

@@ -178,6 +178,7 @@
     <ClInclude Include="MapOverlay.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Minion.h" />
+    <ClInclude Include="Monster_01.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayLevel.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="MathFuntion.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Minion.cpp" />
+    <ClCompile Include="Monster_01.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayLevel.cpp" />

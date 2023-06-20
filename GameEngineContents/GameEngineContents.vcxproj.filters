@@ -28,6 +28,9 @@
     <Filter Include="Object\Unit\Heros">
       <UniqueIdentifier>{9315c83d-a216-4ce5-a6a0-cca71d9ad09a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Unit\Minion\Monster">
+      <UniqueIdentifier>{359fcf40-18d9-4c4a-b1aa-09bc3c84431e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -78,6 +81,9 @@
     </ClInclude>
     <ClInclude Include="Karcher.h">
       <Filter>Object\Unit\Minion</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_01.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="Karcher.cpp">
       <Filter>Object\Unit\Minion</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_01.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -67,6 +67,7 @@ void Ksword::Start()
 	Render0->ChangeAnimation("LStay");
 
 	Unit::Start();
+	MyTeam = Team::Ally;
 }
 
 // 이건 디버깅용도나 

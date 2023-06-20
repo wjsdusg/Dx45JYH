@@ -7,7 +7,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 extern float4 IsoTileScale;
 extern float4 MiniViewRatio;
-std::vector<std::shared_ptr<Object>> Object::Objects;
+std::list<std::shared_ptr<Object>> Object::Objects;
 Object::Object()
 {
 	
@@ -40,6 +40,7 @@ void Object::Update(float _DeltaTime)
 		NewPoint->GetTransform()->SetLocalPosition(NewObject->GetTransform()->GetWorldPosition()* MiniViewRatio);
 		MiniMap::MainMiniMap->MiniPoints.push_back(NewPoint);
 	}
+
 }
 
 void Object::Start()

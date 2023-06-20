@@ -17,6 +17,7 @@
 #include "Ksword.h"
 #include "DragBox.h"
 #include "Karcher.h"
+#include "Monster_01.h"
 std::shared_ptr<Player> Object0 = nullptr;
 
 std::shared_ptr<DragBox> NewDragBox = nullptr;
@@ -239,26 +240,33 @@ void PlayLevel::Update(float _DeltaTime)
 	}
 
 	//if(true==GetMainCamera()->GetTransform()->GetLocalPosition())
-
-	float4 Pos = UIMouse;
-	if (true == GameEngineInput::IsPress("EngineMouseLeft"))
 	{
-		if (nullptr == NewDragBox)
+		
+		if (nullptr!= NewDragBox &&true == NewDragBox->IsDeath())
 		{
-			NewDragBox = CreateActor<DragBox>();
-			NewDragBox->SetMousePos(MainMouse);
-		}
-		NewDragBox->SetMouseMovePos(MainMouse);
-	}
-	if (true == GameEngineInput::IsUp("EngineMouseLeft"))
-	{
-		if (nullptr != NewDragBox)
-		{
-			NewDragBox->AllCollision();
-			NewDragBox->Death();
 			NewDragBox = nullptr;
 		}
+		if (true == GameEngineInput::IsPress("EngineMouseLeft"))
+		{
+			if (nullptr == NewDragBox)
+			{
+				NewDragBox = CreateActor<DragBox>();
+				NewDragBox->SetMousePos(MainMouse);
+			}
+			NewDragBox->SetMouseMovePos(MainMouse);
+		}
+		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+		{
+			if (nullptr != NewDragBox)
+			{
+				NewDragBox->AllCollision();
+				
+				/*NewDragBox->Death();
+				NewDragBox = nullptr;*/
+			}
+		}
 	}
+	
 	if (true == GameEngineInput::IsUp("Space"))
 	{
 		GetMainCamera()->GetTransform()->SetLocalPosition({ 0,0 });
@@ -381,14 +389,15 @@ void PlayLevel::Start()
 
 			});
 	}
-	//NewKsword = CreateActor<Ksword>();
+	NewKsword = CreateActor<Ksword>();
 	NewKsword2 = CreateActor<Ksword>();
-	//NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
+	NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
 	NewKarcher = CreateActor<Karcher>();
 	NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	
+	CreateActor<Monster_01>();
 	NewObject = CreateActor<Object>(1);
 }
 
