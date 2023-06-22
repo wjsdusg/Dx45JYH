@@ -16,10 +16,7 @@ Unit::Unit()
 {
 	Id = num;
 	num++;
-	if (false == GameEngineInput::IsKey("G"))
-	{
-		GameEngineInput::CreateKey("G",'G');
-	}
+	
 }
 
 Unit::~Unit()
@@ -229,17 +226,23 @@ void Unit::StateInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{
-			/*std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-
-			if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Monster), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
+			
+			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Monster,ColType::SPHERE2D,ColType::AABBBOX2D))
 			{
-				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-				{
-					std::shared_ptr<Minion> NewUnit = Col->GetActor()->DynamicThis<Minion>();
-					
-					FSM.ChangeState("Fight");
-				}
-			}*/
+				float4 thisColScale = FOVCollision->GetTransform()->GetWorldScale();
+				float4 thisColPos = FOVCollision->GetTransform()->GetWorldPosition();
+
+
+				std::shared_ptr<GameEngineCollision> TargetCol = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D);
+				std::shared_ptr<Unit> NewUnit = TargetCol->GetActor()->DynamicThis<Unit>();
+				float4 OtherColScale = NewUnit->Collision->GetTransform()->GetWorldScale();
+				float4 OtherColPos = NewUnit->Collision->GetTransform()->GetWorldPosition();
+				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
+				float4 pos = GetTransform()->GetLocalPosition();
+
+				float distance = thisColPos.XYDistance(OtherColPos);
+				FSM.ChangeState("Chase");
+			}
 		},
 		.End = []() {}
 		}
@@ -326,6 +329,99 @@ void Unit::StateInit()
 		}
 	);
 	FSM.CreateState(
+		{ .Name = "Chase",
+		.Start = [this]() {
+			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+			if (Angle < 10 || Angle >= 350)
+			{
+				Render0->ChangeAnimation("LMove");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			if (Angle < 80 && Angle >= 10)
+			{
+				Render0->ChangeAnimation("LUp45Move");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+
+			if (Angle < 100 && Angle >= 80)
+			{
+				Render0->ChangeAnimation("UpMove");
+			}
+			if (Angle < 170 && Angle >= 100)
+			{
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+				Render0->ChangeAnimation("LUp45Move");
+			}
+			if (Angle < 190 && Angle >= 170)
+			{
+				Render0->ChangeAnimation("LMove");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 260 && Angle >= 190)
+			{
+				Render0->ChangeAnimation("LDown45Move");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 280 && Angle >= 260)
+			{
+				Render0->ChangeAnimation("DownMove");
+
+			}
+			if (Angle < 350 && Angle >= 280)
+			{
+				Render0->ChangeAnimation("LDown45Move");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			PreAngle = Angle;
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::Monster,ColType::SPHERE2D,ColType::AABBBOX2D))
+			{
+								
+				TargetPos = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
+				float4 pos = GetTransform()->GetLocalPosition();
+				
+			}
+			if (20.f <= abs(PreAngle - Angle))
+			{
+				FSM.ChangeState("Chase");
+			}
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
+			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
+			{
+				FSM.ChangeState("Fight");
+			}
+
+		},
+		.End = []() {}
+		}
+	);
+	FSM.CreateState(
 		{ .Name = "Fight",
 		.Start = [this]() {},
 		.Update = [this](float _DeltaTime) {},
@@ -339,6 +435,6 @@ void Unit::StateInit()
 		.End = []() {}
 		}
 	);
-
+	
 	FSM.ChangeState("Stay");
 }

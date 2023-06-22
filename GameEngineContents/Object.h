@@ -37,7 +37,7 @@ protected:
 	Team MyTeam = Team::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
-	float FightFOV = 200.f;
+	float FightFOV = 300.f;
 	static std::list<std::shared_ptr<Object>> Objects;
 private:
 	void ObjectsSetTile();

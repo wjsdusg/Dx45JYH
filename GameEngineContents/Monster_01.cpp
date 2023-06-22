@@ -67,6 +67,8 @@ void Monster_01::Start()
 
 	Unit::Start();
 	MyTeam = Team::Enemy;
+
+	GetTransform()->SetLocalPosition({ -300.f,-300.f });
 }
 
 // 이건 디버깅용도나 

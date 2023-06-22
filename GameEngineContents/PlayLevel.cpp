@@ -317,6 +317,9 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("Up", VK_UP);
 		GameEngineInput::CreateKey("Down", VK_DOWN);
 		GameEngineInput::CreateKey("Space", VK_SPACE);
+		GameEngineInput::CreateKey("G", 'G');
+		GameEngineInput::CreateKey("A", 'A');
+		GameEngineInput::CreateKey("S", 'S');
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
@@ -399,6 +402,7 @@ void PlayLevel::Start()
 	
 	CreateActor<Monster_01>();
 	NewObject = CreateActor<Object>(1);
+	
 }
 
 void PlayLevel::LevelChangeStart()

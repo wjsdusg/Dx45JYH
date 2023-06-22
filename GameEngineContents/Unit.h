@@ -27,7 +27,10 @@ protected:
 	bool IsFlip = false;
 	float Speed = 100.f;
 	float attackRange = 0;
-	 void StateInit() override;
+	float AngleBetween = 0;
+	float PreAngle = 0;
+	float AttackRange = 0;
+	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;
 private:
 	
