@@ -228,19 +228,9 @@ void Unit::StateInit()
 		{
 			
 			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Monster,ColType::SPHERE2D,ColType::AABBBOX2D))
-			{
-				float4 thisColScale = FOVCollision->GetTransform()->GetWorldScale();
-				float4 thisColPos = FOVCollision->GetTransform()->GetWorldPosition();
-
-
-				std::shared_ptr<GameEngineCollision> TargetCol = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D);
-				std::shared_ptr<Unit> NewUnit = TargetCol->GetActor()->DynamicThis<Unit>();
-				float4 OtherColScale = NewUnit->Collision->GetTransform()->GetWorldScale();
-				float4 OtherColPos = NewUnit->Collision->GetTransform()->GetWorldPosition();
+			{				
+				TargetCol = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
-				float4 pos = GetTransform()->GetLocalPosition();
-
-				float distance = thisColPos.XYDistance(OtherColPos);
 				FSM.ChangeState("Chase");
 			}
 		},
@@ -412,6 +402,8 @@ void Unit::StateInit()
 				FSM.ChangeState("Chase");
 			}
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
+
+			//TargetCol=
 			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
 			{
 				FSM.ChangeState("Fight");
