@@ -55,9 +55,9 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("DebugRect");
 		//Pipe->SetVertexBuffer("Rect");
 		//Pipe->SetIndexBuffer("Rect");
-		Pipe->SetVertexShader("CollisionDebugShader.hlsl");
+		Pipe->SetVertexShader("DebugMeshRender.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("CollisionDebugShader.hlsl");
+		Pipe->SetPixelShader("DebugMeshRender.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}

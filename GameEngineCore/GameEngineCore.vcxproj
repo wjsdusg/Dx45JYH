@@ -177,6 +177,7 @@
     <ClInclude Include="GameEngineConstantBuffer.h" />
     <ClInclude Include="GameEngineCore.h" />
     <ClInclude Include="GameEngineCoreWindow.h" />
+    <ClInclude Include="GameEngineDebug3D.h" />
     <ClInclude Include="GameEngineDepthState.h" />
     <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineDirectBuffer.h" />
@@ -232,6 +233,7 @@
     <ClCompile Include="GameEngineCore.cpp" />
     <ClCompile Include="GameEngineCoreWindow.cpp" />
     <ClCompile Include="GameEngineCore_Resources.cpp" />
+    <ClCompile Include="GameEngineDebug3D.cpp" />
     <ClCompile Include="GameEngineDepthState.cpp" />
     <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineDirectBuffer.cpp" />

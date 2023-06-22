@@ -148,6 +148,9 @@
     <ClInclude Include="GameEngineButton.h">
       <Filter>Content\UI</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineDebug3D.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -291,6 +294,9 @@
     <ClCompile Include="GameEngineButton.cpp">
       <Filter>Content\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineDebug3D.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -367,6 +373,9 @@
     </Filter>
     <Filter Include="Content\UI">
       <UniqueIdentifier>{1d74b280-9c1d-412f-9854-f732ff4a33dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{2e6f2842-e8af-404a-978b-29c77232eb8a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
