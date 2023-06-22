@@ -32,6 +32,7 @@ protected:
 	float AttackRange = 0;
 	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;
+	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
 private:
 	
 	static float DoubleClickTimer;

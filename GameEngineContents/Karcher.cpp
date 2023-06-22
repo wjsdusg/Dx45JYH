@@ -66,11 +66,12 @@ void Karcher::Start()
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 
 	FOVCollision = CreateComponent<GameEngineCollision>();
-	FOVCollision->GetTransform()->SetLocalScale({ FightFOV,FightFOV,1.f });
+	FOVCollision->GetTransform()->SetLocalScale({ 400,400,1.f });
 	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));
 
 	Unit::Start();
 	MyTeam = Team::Ally;
+	//FOVCollision->DebugOn();
 }
 
 // 이건 디버깅용도나 

@@ -64,7 +64,8 @@ void Monster_01::Start()
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 80.f,80.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Monster));
-
+	Collision->SetColType(ColType::AABBBOX2D);
+	Collision->DebugOn();
 	Unit::Start();
 	MyTeam = Team::Enemy;
 

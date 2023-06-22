@@ -423,8 +423,78 @@ void Unit::StateInit()
 	);
 	FSM.CreateState(
 		{ .Name = "Fight",
-		.Start = [this]() {},
-		.Update = [this](float _DeltaTime) {},
+		.Start = [this]() 
+		{
+			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+			if (Angle < 10 || Angle >= 350)
+			{
+				Render0->ChangeAnimation("LAttack");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			if (Angle < 80 && Angle >= 10)
+			{
+				Render0->ChangeAnimation("LUp45Attack");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+
+			if (Angle < 100 && Angle >= 80)
+			{
+				Render0->ChangeAnimation("UpAttack");
+			}
+			if (Angle < 170 && Angle >= 100)
+			{
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+				Render0->ChangeAnimation("LUp45Attack");
+			}
+			if (Angle < 190 && Angle >= 170)
+			{
+				Render0->ChangeAnimation("LAttack");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 260 && Angle >= 190)
+			{
+				Render0->ChangeAnimation("LDown45Attack");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 280 && Angle >= 260)
+			{
+				Render0->ChangeAnimation("DownAttack");
+
+			}
+			if (Angle < 350 && Angle >= 280)
+			{
+				Render0->ChangeAnimation("LDown45Attack");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+		},
+		.Update = [this](float _DeltaTime)
+		{
+
+		},
 		.End = []() {}
 		}
 	);
