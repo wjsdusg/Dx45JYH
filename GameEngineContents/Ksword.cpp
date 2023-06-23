@@ -52,11 +52,11 @@ void Ksword::Start()
 	Render0->CreateAnimation({ "UpMove", "swordk.png",24,31});
 	Render0->CreateAnimation({ "DownMove", "swordk.png",32,39});
 
-	Render0->CreateAnimation({ "LDown45Attack", "swordk.png",48,55});
-	Render0->CreateAnimation({ "LAttack", "swordk.png",56,63});
-	Render0->CreateAnimation({ "LUp45Attack", "swordk.png",64,71});
-	Render0->CreateAnimation({ "UpAttack", "swordk.png",72,79 });
-	Render0->CreateAnimation({ "DownAttack", "swordk.png",80,87});
+	Render0->CreateAnimation({ "LDown45Attack", "swordk.png",48,55,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "LAttack", "swordk.png",56,63,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "LUp45Attack", "swordk.png",64,71,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "UpAttack", "swordk.png",72,79,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "DownAttack", "swordk.png",80,87,AttackSpeed / 8.f });
 
 	Render0->CreateAnimation({ "Die", "swordk.png",40,47});
 

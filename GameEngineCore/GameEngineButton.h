@@ -8,6 +8,8 @@ class GameEngineCollision;
 class GameEngineButton : public GameEngineActor
 {
 public:
+	static GameEngineButton* SelectButton;
+
 	// constrcuter destructer
 	GameEngineButton();
 	~GameEngineButton();
@@ -18,7 +20,7 @@ public:
 	GameEngineButton& operator=(const GameEngineButton& _Other) = delete;
 	GameEngineButton& operator=(GameEngineButton&& _Other) noexcept = delete;
 
-	void SetEvent(std::function<void()> _Click) 
+	void SetEvent(std::function<void()> _Click)
 	{
 		Click = _Click;
 	}

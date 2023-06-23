@@ -119,18 +119,16 @@ bool GameEngineObject::IsUpdate()
 	return GameEngineObjectBase::IsUpdate();
 }
 
-void GameEngineObject::Death()
+void GameEngineObject::AllDestroy()
 {
-	GameEngineObjectBase::Death();
-
-	GameEngineTransform* Trans = GetTransform();
-
-	std::list<GameEngineTransform*>::iterator LoopIter = Trans->Child.begin();
-	std::list<GameEngineTransform*>::iterator EndIter = Trans->Child.end();
-
-	for (; LoopIter != EndIter; ++LoopIter)
+	if (true == IsDeath())
 	{
-		(*LoopIter)->GetMaster()->Death();
+		Destroy();
+	}
+
+	for (std::shared_ptr<GameEngineObject> Object : Childs)
+	{
+		Object->AllDestroy();
 	}
 }
 

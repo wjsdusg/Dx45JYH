@@ -32,6 +32,7 @@ protected:
 	float AngleBetween = 0;
 	float PreAngle = 0;
 	float AttackRange = 0;
+	float AttackSpeed = 1.f;
 	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;
 	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;

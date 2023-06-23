@@ -34,7 +34,7 @@ namespace GameEngineDebug
 		DebugDrawDatas[_Cam].push_back({ DebugDrawType::Box, _Trans, Color });
 	}
 
-	void DrawSphere(class GameEngineCamera* _Cam, class GameEngineTransform* _Trans, float4 Color) 
+	void DrawSphere(class GameEngineCamera* _Cam, class GameEngineTransform* _Trans, float4 Color)
 	{
 		if (DebugDrawDatas.end() == DebugDrawDatas.find(_Cam))
 		{
@@ -73,6 +73,8 @@ namespace GameEngineDebug
 				break;
 			}
 
+			CurData.Trans->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
+
 			static TransformData DrawData;
 			DrawData = CurData.Trans->GetTransDataRef();
 
@@ -83,24 +85,20 @@ namespace GameEngineDebug
 				break;
 			case GameEngineDebug::DebugDrawType::Sphere:
 				DebugRenderUnit.SetMesh("DebugSphere");
+				DrawData.Scale = { DrawData.Scale.x, DrawData.Scale.x, DrawData.Scale.x };
+				DrawData.LocalCalculation();
+				DrawData.WorldMatrix = DrawData.LocalWorldMatrix;
+				if (nullptr != CurData.Trans->GetParent())
 				{
-					float4 TempScale, TempRotation, TempPosition;
-					DrawData.WorldMatrix.Decompose(TempScale, TempRotation, TempPosition);
-					TempScale.y = TempScale.z = TempScale.x;
-
-					float4x4 MatScale, MatRot, MatPos;
-					MatScale.Scale(TempScale);
-					MatRot = TempRotation.QuaternionToRotationMatrix();
-					MatPos.Pos(TempPosition);
-					DrawData.WorldMatrix = MatScale * MatRot * MatPos;
+					DrawData.WorldCalculation(CurData.Trans->GetParent()->GetWorldMatrixRef(), CurData.Trans->IsAbsoluteScale(), CurData.Trans->IsAbsoluteRotation(), CurData.Trans->IsAbsolutePosition());
 				}
+				DrawData.SetViewAndProjection(_Camera->GetView(), _Camera->GetProjection());
 				break;
 			case GameEngineDebug::DebugDrawType::Point:
 				break;
 			default:
 				break;
 			}
-			DrawData.SetViewAndProjection(_Camera->GetView(), _Camera->GetProjection());
 
 
 			DebugRenderUnit.ShaderResHelper.SetConstantBufferLink("TransformData", DrawData);

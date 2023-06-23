@@ -51,11 +51,11 @@ void Monster_01::Start()
 	Render0->CreateAnimation({ "UpMove", "Monster_01.png",121,128 });
 	Render0->CreateAnimation({ "DownMove", "Monster_01.png",129,136 });
 
-	Render0->CreateAnimation({ "LDown45Attack", "Monster_01.png",32,39 });
-	Render0->CreateAnimation({ "LAttack", "Monster_01.png",0,7 });
-	Render0->CreateAnimation({ "LUp45Attack", "Monster_01.png",8,15 });
-	Render0->CreateAnimation({ "UpAttack", "Monster_01.png",15,23 });
-	Render0->CreateAnimation({ "DownAttack", "Monster_01.png",32,39 });
+	Render0->CreateAnimation({ "LDown45Attack", "Monster_01.png",32,39,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "LAttack", "Monster_01.png",0,7,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "LUp45Attack", "Monster_01.png",8,15,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "UpAttack", "Monster_01.png",15,23,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "DownAttack", "Monster_01.png",32,39,AttackSpeed / 8.f });
 
 	Render0->CreateAnimation({ "Die", "Monster_01.png",40,56 });
 

@@ -51,11 +51,11 @@ void Karcher::Start()
 	Render0->CreateAnimation({ "UpMove", "archerk.png",104,111});
 	Render0->CreateAnimation({ "DownMove", "archerk.png",112,114});
 
-	Render0->CreateAnimation({ "LDown45Attack", "archerk.png",120,127});
-	Render0->CreateAnimation({ "LAttack", "archerk.png",128,135});
-	Render0->CreateAnimation({ "LUp45Attack", "archerk.png",136,143});
-	Render0->CreateAnimation({ "UpAttack", "archerk.png",144,151});
-	Render0->CreateAnimation({ "DownAttack", "archerk.png",152,159});
+	Render0->CreateAnimation({ "LDown45Attack", "archerk.png",120,127,AttackSpeed/8.f});
+	Render0->CreateAnimation({ "LAttack", "archerk.png",128,135,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "LUp45Attack", "archerk.png",136,143,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "UpAttack", "archerk.png",144,151,AttackSpeed / 8.f });
+	Render0->CreateAnimation({ "DownAttack", "archerk.png",152,159,AttackSpeed / 8.f });
 	
 	Render0->CreateAnimation({ "Die", "archerk.png",160,167});
 
