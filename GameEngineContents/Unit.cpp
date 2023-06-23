@@ -212,9 +212,9 @@ void Unit::StateInit()
 		.Update = [this](float _DeltaTime)
 		{
 			
-			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Monster,ColType::SPHERE2D,ColType::AABBBOX2D))
+			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Enemy,ColType::SPHERE2D,ColType::AABBBOX2D))
 			{				
-				TargetCol = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D);
+				TargetCol = FOVCollision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
 				PrePos = GetTransform()->GetLocalPosition();
 				FSM.ChangeState("Chase");
@@ -376,34 +376,27 @@ void Unit::StateInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{
-			if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::Monster,ColType::SPHERE2D,ColType::AABBBOX2D))
-			{
-								
-				TargetPos = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
-				float4 pos = GetTransform()->GetLocalPosition();
-				
+			if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::EnemyFOV,ColType::SPHERE2D,ColType::SPHERE2D))
+			{							
+				TargetCol = FOVCollision->Collision(ColEnum::EnemyFOV, ColType::SPHERE2D, ColType::SPHERE2D);
+				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
 			}
 			if (20.f <= abs(PreAngle - Angle))
 			{
 				FSM.ChangeState("Chase");
-			}
-			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
-
-			//TargetCol=
-			
-			if (nullptr == FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D))
+			}									
+			if (nullptr == FOVCollision->Collision(ColEnum::EnemyFOV, ColType::SPHERE2D, ColType::SPHERE2D))
 			{
 				TargetCol = nullptr;
-			}
-			if (nullptr == TargetCol)
-			{
 				FSM.ChangeState("Stay");
 			}
+			//시야 범위 벗어나면 기존자리 복귀
 			if (FightFOV < GetTransform()->GetLocalPosition().XYDistance(TargetPos))
 			{
 				TargetPos = PrePos;
 				FSM.ChangeState("Move");
 			}
+			//적크기와같아지면 공격
 			if (
 				TargetPos.XYDistance(GetTransform()->GetLocalPosition()) 
 				<= (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
@@ -412,6 +405,7 @@ void Unit::StateInit()
 				FSM.ChangeState("Fight");
 			}
 
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
 		},
 		.End = []() {}
 		}

@@ -347,11 +347,14 @@ void GameEngineLevel::ActorRelease()
 
 void GameEngineLevel::Update(float _DeltaTime)
 {
-
+	int a = 0;
 }
 
 void GameEngineLevel::Render(float _DeltaTime)
 {
+	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisionsf = Collisions;
+	
+	int a = 0;
 }
 
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level)

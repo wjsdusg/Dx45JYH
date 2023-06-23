@@ -63,13 +63,17 @@ void Monster_01::Start()
 	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 80.f,80.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Monster));
+	Collision->SetOrder(static_cast<int>(ColEnum::Enemy));
 	Collision->SetColType(ColType::AABBBOX2D);
-	Collision->DebugOn();
-	Unit::Start();
-	MyTeam = Team::Enemy;
+	
 
+	MyTeam = Team::Enemy;
+	EnemyFOVCollision = CreateComponent<GameEngineCollision>();
+	EnemyFOVCollision->GetTransform()->SetLocalScale({FightFOV*2,FightFOV * 2,1.f });
+	Collision->SetOrder(static_cast<int>(ColEnum::EnemyFOV));
+	Speed = 250.f;
 	GetTransform()->SetLocalPosition({ -300.f,-300.f });
+	Unit::Start();
 }
 
 // 이건 디버깅용도나 

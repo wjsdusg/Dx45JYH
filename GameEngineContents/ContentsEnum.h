@@ -12,6 +12,8 @@ enum class ColEnum
 	UnitFOV,
 	MonsterFOV,
 	HeroFOV,
+	Enemy,
+	EnemyFOV,
 	Max
 };
 

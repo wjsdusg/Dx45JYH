@@ -33,6 +33,7 @@ protected:
 	float Angle = 0.0f;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
+	std::shared_ptr<class GameEngineCollision> EnemyFOVCollision;
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
 	int Id;
