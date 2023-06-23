@@ -70,7 +70,7 @@ void Monster_01::Start()
 	MyTeam = Team::Enemy;
 	EnemyFOVCollision = CreateComponent<GameEngineCollision>();
 	EnemyFOVCollision->GetTransform()->SetLocalScale({FightFOV*2,FightFOV * 2,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::EnemyFOV));
+	EnemyFOVCollision->SetOrder(static_cast<int>(ColEnum::EnemyFOV));
 	Speed = 250.f;
 	GetTransform()->SetLocalPosition({ -300.f,-300.f });
 	Unit::Start();

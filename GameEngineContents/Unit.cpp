@@ -295,7 +295,7 @@ void Unit::StateInit()
 		.Update = [this](float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
-			if (MousePickPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
+			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
 			{
 				FSM.ChangeState("Stay");
 			}
@@ -397,7 +397,8 @@ void Unit::StateInit()
 				FSM.ChangeState("Move");
 			}
 			//적크기와같아지면 공격
-			if (
+			if (nullptr!=TargetCol
+				&&
 				TargetPos.XYDistance(GetTransform()->GetLocalPosition()) 
 				<= (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
 				)

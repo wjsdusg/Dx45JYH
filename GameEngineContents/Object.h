@@ -26,8 +26,8 @@ public:
 	}
 protected:
 	void Start();
-	 void Update(float _DeltaTime);
-	 void Render(float _DeltaTime) {}
+	void Update(float _DeltaTime);
+	void Render(float _DeltaTime) {}
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	float Angle = 0.0f;
@@ -41,7 +41,7 @@ protected:
 	virtual void StateInit() {};
 	float FOV = 300.f;
 	float FightFOV = 300.f;
-    static CollisionData MouseData;
+	static CollisionData MouseData;
 	static std::list<std::shared_ptr<Object>> Objects;
 private:
 	void ObjectsSetTile();

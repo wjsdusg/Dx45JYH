@@ -402,7 +402,7 @@ void PlayLevel::Start()
 	
 	CreateActor<Monster_01>();
 	NewObject = CreateActor<Object>(1);
-	
+	//IsDebugSwitch();
 }
 
 void PlayLevel::LevelChangeStart()
