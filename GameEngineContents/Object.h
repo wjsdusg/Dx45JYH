@@ -20,7 +20,10 @@ public:
 	Object& operator=(Object&& _Other) noexcept = delete;
 	bool IsClick = false;
 
-
+	inline std::shared_ptr<class GameEngineCollision> GetCollsion()
+	{
+		return Collision;
+	}
 protected:
 	void Start();
 	 void Update(float _DeltaTime);
@@ -32,12 +35,12 @@ protected:
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
-	CollisionData MouseData;
 	int Id;
 	Team MyTeam = Team::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
 	float FightFOV = 300.f;
+    static CollisionData MouseData;
 	static std::list<std::shared_ptr<Object>> Objects;
 private:
 	void ObjectsSetTile();

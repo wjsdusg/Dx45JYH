@@ -68,7 +68,7 @@ public:
 	bool IsDeath() override;
 	bool IsUpdate() override;
 
-
+	void Death() override;
 
 protected:
 	virtual void Start() {}

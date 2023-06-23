@@ -28,17 +28,17 @@ public:
 		Order = _Order;
 	}
 
-	void On()
+	virtual void On()
 	{
 		UpdateValue = true;
 	}
 
-	void Off()
+	virtual void Off()
 	{
 		UpdateValue = false;
 	}
 
-	void Death()
+	virtual void Death()
 	{
 		DeathValue = true;
 	}
@@ -50,7 +50,7 @@ public:
 
 	virtual bool IsUpdate()
 	{
-		return UpdateValue;
+		return UpdateValue && (false == DeathValue);
 	}
 
 	void DebugOn()

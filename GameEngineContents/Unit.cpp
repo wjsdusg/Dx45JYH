@@ -24,22 +24,7 @@ Unit::~Unit()
 }
 void Unit::Update(float _DeltaTime)
 {
-	
-	
-	if (true == GameEngineTransform::AABB2DToAABB2D(Render0->GetTransform()->GetCollisionData(), MouseData))
-	{
-		//GetLevel()
-	}
-
-	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-
-	if (Collision->CollisionAll(static_cast<int>(ColEnum::MapOverlay), ColTest, ColType::SPHERE2D, ColType::SPHERE2D), 0 != ColTest.size())
-	{
-		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-		{
-			
-		}
-	}
+	/*std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -51,7 +36,7 @@ void Unit::Update(float _DeltaTime)
 			}
 			NewUnit->FSM.ChangeState("Stay");
 		}
-	}
+	}*/
 	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
 	MouseData.SPHERE.Radius = 0.0f;
 
@@ -231,6 +216,7 @@ void Unit::StateInit()
 			{				
 				TargetCol = FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
+				PrePos = GetTransform()->GetLocalPosition();
 				FSM.ChangeState("Chase");
 			}
 		},
@@ -404,7 +390,24 @@ void Unit::StateInit()
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
 
 			//TargetCol=
-			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 1.f)
+			
+			if (nullptr == FOVCollision->Collision(ColEnum::Monster, ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				TargetCol = nullptr;
+			}
+			if (nullptr == TargetCol)
+			{
+				FSM.ChangeState("Stay");
+			}
+			if (FightFOV < GetTransform()->GetLocalPosition().XYDistance(TargetPos))
+			{
+				TargetPos = PrePos;
+				FSM.ChangeState("Move");
+			}
+			if (
+				TargetPos.XYDistance(GetTransform()->GetLocalPosition()) 
+				<= (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
+				)
 			{
 				FSM.ChangeState("Fight");
 			}
@@ -482,10 +485,35 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
+			PreAngle = Angle;
 		},
 		.Update = [this](float _DeltaTime)
 		{
+			if (Render0->IsAnimationEnd())
+			{
+				//AnimationEnd = true;
+				MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+				if (20.f <= abs(PreAngle - Angle))
+				{
+					FSM.ChangeState("Fight");
+				}
+				if (nullptr == TargetCol)
+				{
+					FSM.ChangeState("Stay");
+				}
 
+
+				TargetPos = TargetCol->GetActor()->DynamicThis<Unit>()->GetTransform()->GetLocalPosition();
+				if (
+					TargetPos.XYDistance(GetTransform()->GetLocalPosition())
+			> (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
+					)
+				{
+					FSM.ChangeState("Chase");
+				}
+
+			}
+			
 		},
 		.End = []() {}
 		}
