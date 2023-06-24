@@ -96,9 +96,15 @@ void Unit::Update(float _DeltaTime)
 	{
 		MousePickPos = MainMouse;
 		TargetPos = MainMouse;
+		IsHold = false;
 		FSM.ChangeState("Move");
 	}
 
+	if (true == GameEngineInput::IsUp("H") && true == IsClick)
+	{
+		IsHold = true;
+		FSM.ChangeState("Stay");
+	}
 	{
 		float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
 		for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
@@ -212,12 +218,17 @@ void Unit::StateInit()
 		.Update = [this](float _DeltaTime)
 		{
 			
-			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Enemy,ColType::SPHERE2D,ColType::AABBBOX2D))
+			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Enemy,ColType::SPHERE2D,ColType::AABBBOX2D)&&false==IsHold)
 			{				
 				TargetCol = FOVCollision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
 				PrePos = GetTransform()->GetLocalPosition();
 				FSM.ChangeState("Chase");
+			}
+			if (true == IsHold && nullptr!= Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				TargetPos = Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
+				FSM.ChangeState("HoldAttack");
 			}
 		},
 		.End = []() {}
@@ -239,6 +250,7 @@ void Unit::StateInit()
 			if (Angle < 80 && Angle >= 10)
 			{
 				Render0->ChangeAnimation("LUp45Move");
+				
 				if (false == IsFlip)
 				{
 					Render0->SetFlipX();
@@ -378,14 +390,14 @@ void Unit::StateInit()
 		{
 			if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::EnemyFOV,ColType::SPHERE2D,ColType::SPHERE2D))
 			{							
-				TargetCol = FOVCollision->Collision(ColEnum::EnemyFOV, ColType::SPHERE2D, ColType::SPHERE2D);
+				TargetCol = FOVCollision->Collision(ColEnum::EnemyFOV, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
 			}
 			if (20.f <= abs(PreAngle - Angle))
 			{
 				FSM.ChangeState("Chase");
 			}									
-			if (nullptr == FOVCollision->Collision(ColEnum::EnemyFOV, ColType::SPHERE2D, ColType::SPHERE2D))
+			if (nullptr == FOVCollision->Collision(ColEnum::EnemyFOV, ColType::SPHERE2D, ColType::AABBBOX2D))
 			{
 				TargetCol = nullptr;
 				FSM.ChangeState("Stay");
@@ -403,7 +415,7 @@ void Unit::StateInit()
 				<= (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
 				)
 			{
-				FSM.ChangeState("Fight");
+				FSM.ChangeState("Attack");
 			}
 
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
@@ -411,8 +423,9 @@ void Unit::StateInit()
 		.End = []() {}
 		}
 	);
+	
 	FSM.CreateState(
-		{ .Name = "Fight",
+		{ .Name = "Attack",
 		.Start = [this]() 
 		{
 			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
@@ -487,28 +500,124 @@ void Unit::StateInit()
 			if (Render0->IsAnimationEnd())
 			{
 				//AnimationEnd = true;
+				//각도계산용
 				MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
-				if (20.f <= abs(PreAngle - Angle))
+
+				if (true==TargetCol->GetActor()->IsDeath())
 				{
-					FSM.ChangeState("Fight");
-				}
-				if (nullptr == TargetCol)
-				{
+					TargetCol=nullptr;
 					FSM.ChangeState("Stay");
 				}
-
-
-				TargetPos = TargetCol->GetActor()->DynamicThis<Unit>()->GetTransform()->GetLocalPosition();
-				if (
-					TargetPos.XYDistance(GetTransform()->GetLocalPosition())
-			> (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
-					)
+				else
 				{
-					FSM.ChangeState("Chase");
+					TargetPos = TargetCol->GetActor()->DynamicThis<Unit>()->GetTransform()->GetLocalPosition();
+					if (
+						TargetPos.XYDistance(GetTransform()->GetLocalPosition())
+						> (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
+						)
+					{
+						FSM.ChangeState("Chase");
+					}							
+				}
+
+				if (20.f <= abs(PreAngle - Angle))
+				{
+					FSM.ChangeState("Attack");
 				}
 
 			}
 			
+		},
+		.End = []() {}
+		}
+	);
+	FSM.CreateState(
+		{ .Name = "HoldAttack",
+		.Start = [this]() 
+		{
+			//각도계산용
+			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+			
+			if (Angle < 10 || Angle >= 350)
+			{
+				Render0->ChangeAnimation("LAttack");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			if (Angle < 80 && Angle >= 10)
+			{
+				Render0->ChangeAnimation("LUp45Attack");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+
+			if (Angle < 100 && Angle >= 80)
+			{
+				Render0->ChangeAnimation("UpAttack");
+			}
+			if (Angle < 170 && Angle >= 100)
+			{
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+				Render0->ChangeAnimation("LUp45Attack");
+			}
+			if (Angle < 190 && Angle >= 170)
+			{
+				Render0->ChangeAnimation("LAttack");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 260 && Angle >= 190)
+			{
+				Render0->ChangeAnimation("LDown45Attack");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			if (Angle < 280 && Angle >= 260)
+			{
+				Render0->ChangeAnimation("DownAttack");
+
+			}
+			if (Angle < 350 && Angle >= 280)
+			{
+				Render0->ChangeAnimation("LDown45Attack");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			PreAngle = Angle;
+		},
+		.Update = [this](float _DeltaTime) 
+		{
+			if (Render0->IsAnimationEnd())
+			{
+			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+				if (20.f <= abs(PreAngle - Angle))
+				{
+					FSM.ChangeState("HoldAttack");
+				}
+				if (nullptr == Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D))
+				{
+					FSM.ChangeState("Stay");
+				}
+			}
 		},
 		.End = []() {}
 		}

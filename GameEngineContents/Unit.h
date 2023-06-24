@@ -27,6 +27,7 @@ protected:
 	bool IsMove = false;
 	bool IsFlip = false;
 	bool AnimationEnd = false;
+	bool IsHold = false;
 	float Speed = 100.f;
 	float attackRange = 0;
 	float AngleBetween = 0;

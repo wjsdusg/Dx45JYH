@@ -29,6 +29,7 @@ std::shared_ptr<Ksword> NewKsword2 = nullptr;
 std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
 std::shared_ptr<Karcher>NewKarcher = nullptr;
 std::shared_ptr<Object>NewObject = nullptr;
+std::shared_ptr<Monster_01>NewMonster = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -55,7 +56,11 @@ extern float4 UIMouse;
 extern float4 MainMouse;
 void PlayLevel::Update(float _DeltaTime)
 {
-
+	if (true == GameEngineInput::IsUp("G"))
+	{
+		
+		NewMonster->Death();
+	}
 	{
 		std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
 
@@ -295,6 +300,7 @@ void PlayLevel::OutlineCheck(float4& _Pos)
 		_Pos.x = (MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2));
 		_Pos.y = 0.f;
 	}
+	
 }
 
 void PlayLevel::Start()
@@ -320,6 +326,7 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("G", 'G');
 		GameEngineInput::CreateKey("A", 'A');
 		GameEngineInput::CreateKey("S", 'S');
+		GameEngineInput::CreateKey("H", 'H');
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
@@ -400,7 +407,7 @@ void PlayLevel::Start()
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	
-	CreateActor<Monster_01>();
+	NewMonster =CreateActor<Monster_01>();
 	NewObject = CreateActor<Object>(1);
 	//IsDebugSwitch();
 }
