@@ -171,7 +171,11 @@
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="DragBox.h" />
     <ClInclude Include="FadeEffect.h" />
+    <ClInclude Include="Frog.h" />
+    <ClInclude Include="Gangsi.h" />
+    <ClInclude Include="Gatpha.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="HungryDemon.h" />
     <ClInclude Include="Karcher.h" />
     <ClInclude Include="Ksword.h" />
     <ClInclude Include="Map.h" />
@@ -180,13 +184,21 @@
     <ClInclude Include="Minion.h" />
     <ClInclude Include="Monster_01.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Onghwa.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayLevel.h" />
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="Raccoondog.h" />
+    <ClInclude Include="Snowdemon.h" />
+    <ClInclude Include="Snowwoman.h" />
+    <ClInclude Include="Starfish.h" />
+    <ClInclude Include="SwordPirate.h" />
     <ClInclude Include="TestObject.h" />
+    <ClInclude Include="Tiger.h" />
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="UIPannel.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="WeirdPlant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -194,7 +206,11 @@
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="DragBox.cpp" />
     <ClCompile Include="FadeEffect.cpp" />
+    <ClCompile Include="Frog.cpp" />
+    <ClCompile Include="Gangsi.cpp" />
+    <ClCompile Include="Gatpha.cpp" />
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="HungryDemon.cpp" />
     <ClCompile Include="Karcher.cpp" />
     <ClCompile Include="Ksword.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -204,6 +220,7 @@
     <ClCompile Include="Minion.cpp" />
     <ClCompile Include="Monster_01.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Onghwa.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayLevel.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
@@ -212,10 +229,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Raccoondog.cpp" />
+    <ClCompile Include="Snowdemon.cpp" />
+    <ClCompile Include="Snowwoman.cpp" />
+    <ClCompile Include="Starfish.cpp" />
+    <ClCompile Include="SwordPirate.cpp" />
     <ClCompile Include="TestObject.cpp" />
+    <ClCompile Include="Tiger.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="UIPannel.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="WeirdPlant.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

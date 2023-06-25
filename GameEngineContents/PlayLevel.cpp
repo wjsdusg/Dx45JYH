@@ -18,6 +18,18 @@
 #include "DragBox.h"
 #include "Karcher.h"
 #include "Monster_01.h"
+#include "Frog.h"
+#include "Gangsi.h"
+#include "Gatpha.h"
+#include "HungryDemon.h"
+#include "Onghwa.h"
+#include "Raccoondog.h"
+#include "Snowdemon.h"
+#include "Snowwoman.h"
+#include "Starfish.h"
+#include "Tiger.h"
+#include "WeirdPlant.h"
+#include "SwordPirate.h"
 std::shared_ptr<Player> Object0 = nullptr;
 
 std::shared_ptr<DragBox> NewDragBox = nullptr;
@@ -30,6 +42,20 @@ std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
 std::shared_ptr<Karcher>NewKarcher = nullptr;
 std::shared_ptr<Object>NewObject = nullptr;
 std::shared_ptr<Monster_01>NewMonster = nullptr;
+std::shared_ptr<Frog>NewForg = nullptr;
+
+std::shared_ptr<Gangsi> NewGangsi = nullptr;
+std::shared_ptr<Gatpha> NewGatpha = nullptr;
+std::shared_ptr<HungryDemon> NewHungryDemon = nullptr;
+std::shared_ptr<Onghwa> NewOnghwa = nullptr;
+std::shared_ptr<Raccoondog> NewRaccoondog = nullptr;
+std::shared_ptr<Snowdemon> NewSnowdemon = nullptr;
+std::shared_ptr<Snowwoman> NewSnowwoman = nullptr;
+//std::shared_ptr<Starfish> NewStarfish = nullptr;
+std::shared_ptr<Tiger> NewTiger = nullptr;
+std::shared_ptr<WeirdPlant> NewWeirdPlant = nullptr;
+std::shared_ptr<SwordPirate> NewSwordPirate = nullptr;
+
 PlayLevel::PlayLevel()
 {
 }
@@ -60,6 +86,7 @@ void PlayLevel::Update(float _DeltaTime)
 	{
 		
 		NewMonster->Death();
+		IsDebugSwitch();
 	}
 	{
 		std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
@@ -409,8 +436,30 @@ void PlayLevel::Start()
 	
 	NewMonster =CreateActor<Monster_01>();
 	NewObject = CreateActor<Object>(1);
-	//IsDebugSwitch();
-}
+	
+	NewForg = CreateActor<Frog>();
+	NewForg->GetTransform()->SetLocalPosition({ -100.f,-100 });
+	NewGangsi = CreateActor<Gangsi>();
+	NewGangsi->GetTransform()->SetLocalPosition({ -50.f,-100 });
+	NewGatpha = CreateActor<Gatpha>();
+	NewGatpha->GetTransform()->SetLocalPosition({ 0,-100 });
+	NewHungryDemon = CreateActor<HungryDemon>();
+	NewHungryDemon->GetTransform()->SetLocalPosition({ 50,-100 });
+	NewOnghwa = CreateActor<Onghwa>();
+	NewOnghwa->GetTransform()->SetLocalPosition({ 100,-100 });
+	NewRaccoondog = CreateActor<Raccoondog>();
+	NewRaccoondog->GetTransform()->SetLocalPosition({ 150,-100 });
+	NewSnowdemon = CreateActor<Snowdemon>();
+	NewSnowdemon->GetTransform()->SetLocalPosition({ 200,-100 });
+	NewSnowwoman = CreateActor<Snowwoman>();
+	NewSnowwoman->GetTransform()->SetLocalPosition({ 250,-100 });
+	NewSwordPirate = CreateActor<SwordPirate>();
+	NewSwordPirate->GetTransform()->SetLocalPosition({ 300,-100 });
+	NewTiger = CreateActor<Tiger>();
+	NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
+	NewWeirdPlant = CreateActor<WeirdPlant>();
+	NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
+}			
 
 void PlayLevel::LevelChangeStart()
 {

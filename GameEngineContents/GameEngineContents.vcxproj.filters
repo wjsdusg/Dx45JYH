@@ -31,7 +31,7 @@
     <Filter Include="Object\Unit\Minion\Monster">
       <UniqueIdentifier>{359fcf40-18d9-4c4a-b1aa-09bc3c84431e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Unit\Minion\Unit">
+    <Filter Include="Object\Unit\Units">
       <UniqueIdentifier>{127db879-812e-4e64-98d3-f91cb207e23c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -79,14 +79,50 @@
     <ClInclude Include="Monster_01.h">
       <Filter>Object\Unit\Minion\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Minion.h">
-      <Filter>Object\Unit\Minion\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="Ksword.h">
-      <Filter>Object\Unit\Minion\Unit</Filter>
+      <Filter>Object\Unit\Units</Filter>
     </ClInclude>
     <ClInclude Include="Karcher.h">
-      <Filter>Object\Unit\Minion\Unit</Filter>
+      <Filter>Object\Unit\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Gangsi.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Gatpha.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="HungryDemon.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Onghwa.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiger.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="WeirdPlant.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Raccoondog.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Snowdemon.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Snowwoman.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Starfish.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordPirate.h">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Minion.h">
+      <Filter>Object\Unit\Minion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,14 +173,50 @@
     <ClCompile Include="Monster_01.cpp">
       <Filter>Object\Unit\Minion\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Minion.cpp">
-      <Filter>Object\Unit\Minion\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="Ksword.cpp">
-      <Filter>Object\Unit\Minion\Unit</Filter>
+      <Filter>Object\Unit\Units</Filter>
     </ClCompile>
     <ClCompile Include="Karcher.cpp">
-      <Filter>Object\Unit\Minion\Unit</Filter>
+      <Filter>Object\Unit\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Gangsi.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Gatpha.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="HungryDemon.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Onghwa.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiger.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="WeirdPlant.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Raccoondog.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Snowdemon.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Snowwoman.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Starfish.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordPirate.cpp">
+      <Filter>Object\Unit\Minion\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Minion.cpp">
+      <Filter>Object\Unit\Minion</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
