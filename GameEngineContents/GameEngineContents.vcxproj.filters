@@ -203,6 +203,9 @@
     <ClInclude Include="YiYeosong.h">
       <Filter>Object\Unit\Heros\China</Filter>
     </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -365,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="YiYeosong.cpp">
       <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

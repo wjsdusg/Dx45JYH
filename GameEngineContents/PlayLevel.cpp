@@ -9,6 +9,7 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineButton.h>
+#include "Mouse.h"
 #include "Object.h"
 #include "Map.h"
 #include "UIPannel.h"
@@ -40,6 +41,7 @@
 #include "Ugida.h"
 #include "Wakizaka.h"
 
+std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
 std::shared_ptr<DragBox> NewDragBox = nullptr;
@@ -445,6 +447,8 @@ void PlayLevel::Start()
 
 			});
 	}
+
+	NewMouse = CreateActor<Mouse>();
 	//NewKsword = CreateActor<Ksword>();
 	NewKsword2 = CreateActor<Ksword>();
 	NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });

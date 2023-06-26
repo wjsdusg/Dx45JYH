@@ -195,6 +195,7 @@
     <ClInclude Include="Minion.h" />
     <ClInclude Include="Mitsunari.h" />
     <ClInclude Include="Monster_01.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Onghwa.h" />
     <ClInclude Include="Player.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="Minion.cpp" />
     <ClCompile Include="Mitsunari.cpp" />
     <ClCompile Include="Monster_01.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Onghwa.cpp" />
     <ClCompile Include="Player.cpp" />

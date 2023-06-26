@@ -14,6 +14,7 @@ enum class ColEnum
 	HeroFOV,
 	Enemy,
 	EnemyFOV,
+	Mouse,
 	Max
 };
 
