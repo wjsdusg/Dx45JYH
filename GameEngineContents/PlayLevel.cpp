@@ -39,6 +39,7 @@
 #include "Tokugawa.h"
 #include "Ugida.h"
 #include "Wakizaka.h"
+
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
 std::shared_ptr<DragBox> NewDragBox = nullptr;

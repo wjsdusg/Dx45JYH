@@ -136,7 +136,6 @@
     <ClInclude Include="Gonisi.h">
       <Filter>Object\Unit\Heros\Japan</Filter>
     </ClInclude>
-    <ClInclude Include="Mitsunari.h" />
     <ClInclude Include="Seisho.h">
       <Filter>Object\Unit\Heros\Japan</Filter>
     </ClInclude>
@@ -154,6 +153,55 @@
     </ClInclude>
     <ClInclude Include="Asako.h">
       <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Mitsunari.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="HeoJun.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="KimDeokryeong.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="KimSimin.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="KwakJaewoo.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="KwonYul.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="RyuSeongryong.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="Samyeongdaesa.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="YiSunsin.h">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClInclude>
+    <ClInclude Include="Iryeong.h">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClInclude>
+    <ClInclude Include="Jinlin.h">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClInclude>
+    <ClInclude Include="JoSeunghun.h">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClInclude>
+    <ClInclude Include="ShimYugyeong.h">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClInclude>
+    <ClInclude Include="SongEungchang.h">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClInclude>
+    <ClInclude Include="Yeoyeomun.h">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClInclude>
+    <ClInclude Include="YiYeosong.h">
+      <Filter>Object\Unit\Heros\China</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -252,7 +300,6 @@
     <ClCompile Include="Gonisi.cpp">
       <Filter>Object\Unit\Heros\Japan</Filter>
     </ClCompile>
-    <ClCompile Include="Mitsunari.cpp" />
     <ClCompile Include="Seisho.cpp">
       <Filter>Object\Unit\Heros\Japan</Filter>
     </ClCompile>
@@ -271,5 +318,56 @@
     <ClCompile Include="Asako.cpp">
       <Filter>Object\Unit\Heros\Japan</Filter>
     </ClCompile>
+    <ClCompile Include="Mitsunari.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="HeoJun.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="KimDeokryeong.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="KimSimin.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="KwakJaewoo.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="KwonYul.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="RyuSeongryong.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="Samyeongdaesa.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="YiSunsin.cpp">
+      <Filter>Object\Unit\Heros\Korea</Filter>
+    </ClCompile>
+    <ClCompile Include="Iryeong.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="Jinlin.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="JoSeunghun.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="ShimYugyeong.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="SongEungchang.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="Yeoyeomun.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+    <ClCompile Include="YiYeosong.cpp">
+      <Filter>Object\Unit\Heros\China</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameEngineContents.rc" />
   </ItemGroup>
 </Project>
