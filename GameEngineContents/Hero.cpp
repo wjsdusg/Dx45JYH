@@ -17,6 +17,6 @@ void Hero::Update(float _DeltaTime)
 }
 void Hero::Start()
 {
-	
+	MyTeam = Team::Ally;
 }
 

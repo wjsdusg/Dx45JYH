@@ -167,13 +167,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Asako.h" />
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="DragBox.h" />
     <ClInclude Include="FadeEffect.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Gangsi.h" />
+    <ClInclude Include="Gato.h" />
     <ClInclude Include="Gatpha.h" />
+    <ClInclude Include="Gonisi.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HungryDemon.h" />
     <ClInclude Include="Karcher.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="MapOverlay.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Minion.h" />
+    <ClInclude Include="Mitsunari.h" />
     <ClInclude Include="Monster_01.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Onghwa.h" />
@@ -189,6 +193,7 @@
     <ClInclude Include="PlayLevel.h" />
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="Raccoondog.h" />
+    <ClInclude Include="Seisho.h" />
     <ClInclude Include="Snowdemon.h" />
     <ClInclude Include="Snowwoman.h" />
     <ClInclude Include="Starfish.h" />
@@ -196,11 +201,15 @@
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="Tiger.h" />
     <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="Tokugawa.h" />
+    <ClInclude Include="Ugida.h" />
     <ClInclude Include="UIPannel.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="Wakizaka.h" />
     <ClInclude Include="WeirdPlant.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Asako.cpp" />
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="ContentsEnum.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
@@ -208,7 +217,9 @@
     <ClCompile Include="FadeEffect.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Gangsi.cpp" />
+    <ClCompile Include="Gato.cpp" />
     <ClCompile Include="Gatpha.cpp" />
+    <ClCompile Include="Gonisi.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="HungryDemon.cpp" />
     <ClCompile Include="Karcher.cpp" />
@@ -218,6 +229,7 @@
     <ClCompile Include="MathFuntion.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Minion.cpp" />
+    <ClCompile Include="Mitsunari.cpp" />
     <ClCompile Include="Monster_01.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Onghwa.cpp" />
@@ -230,6 +242,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Raccoondog.cpp" />
+    <ClCompile Include="Seisho.cpp" />
     <ClCompile Include="Snowdemon.cpp" />
     <ClCompile Include="Snowwoman.cpp" />
     <ClCompile Include="Starfish.cpp" />
@@ -237,8 +250,11 @@
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="Tiger.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="Tokugawa.cpp" />
+    <ClCompile Include="Ugida.cpp" />
     <ClCompile Include="UIPannel.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="Wakizaka.cpp" />
     <ClCompile Include="WeirdPlant.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

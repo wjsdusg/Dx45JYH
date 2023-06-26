@@ -34,6 +34,15 @@
     <Filter Include="Object\Unit\Units">
       <UniqueIdentifier>{127db879-812e-4e64-98d3-f91cb207e23c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Unit\Heros\China">
+      <UniqueIdentifier>{d12b2498-0e0c-4014-a995-f49ece8265ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Heros\Korea">
+      <UniqueIdentifier>{8dcdd5c0-27f2-4478-be33-c41986051e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Heros\Japan">
+      <UniqueIdentifier>{32183015-747c-4fd6-a2f5-7eb458d03306}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -123,6 +132,28 @@
     </ClInclude>
     <ClInclude Include="Minion.h">
       <Filter>Object\Unit\Minion</Filter>
+    </ClInclude>
+    <ClInclude Include="Gonisi.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="Mitsunari.h" />
+    <ClInclude Include="Seisho.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="Tokugawa.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="Ugida.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="Wakizaka.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="Gato.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClInclude>
+    <ClInclude Include="Asako.h">
+      <Filter>Object\Unit\Heros\Japan</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +248,28 @@
     </ClCompile>
     <ClCompile Include="Minion.cpp">
       <Filter>Object\Unit\Minion</Filter>
+    </ClCompile>
+    <ClCompile Include="Gonisi.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="Mitsunari.cpp" />
+    <ClCompile Include="Seisho.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="Tokugawa.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="Ugida.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="Wakizaka.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="Gato.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
+    </ClCompile>
+    <ClCompile Include="Asako.cpp">
+      <Filter>Object\Unit\Heros\Japan</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

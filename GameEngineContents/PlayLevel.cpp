@@ -30,8 +30,17 @@
 #include "Tiger.h"
 #include "WeirdPlant.h"
 #include "SwordPirate.h"
-std::shared_ptr<Player> Object0 = nullptr;
+#include "TestObject.h"
 
+#include "Gonisi.h"
+#include "Asako.h"
+#include "Gato.h"
+#include "Seisho.h"
+#include "Tokugawa.h"
+#include "Ugida.h"
+#include "Wakizaka.h"
+std::shared_ptr<Player> Object0 = nullptr;
+std::shared_ptr<TestObject> TestObject0 = nullptr;
 std::shared_ptr<DragBox> NewDragBox = nullptr;
 std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
@@ -55,6 +64,15 @@ std::shared_ptr<Snowwoman> NewSnowwoman = nullptr;
 std::shared_ptr<Tiger> NewTiger = nullptr;
 std::shared_ptr<WeirdPlant> NewWeirdPlant = nullptr;
 std::shared_ptr<SwordPirate> NewSwordPirate = nullptr;
+
+std::shared_ptr<Gonisi> NewGonisi = nullptr;
+std::shared_ptr<Asako> NewAsako = nullptr;
+std::shared_ptr<Gato> NewGato = nullptr;
+std::shared_ptr<Seisho> NeSeisho = nullptr;
+std::shared_ptr<Tokugawa> NewTokugawa = nullptr;
+std::shared_ptr<Ugida> NewUgida = nullptr;
+std::shared_ptr<Wakizaka> NewWakizaka = nullptr;
+
 
 PlayLevel::PlayLevel()
 {
@@ -459,6 +477,11 @@ void PlayLevel::Start()
 	NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
 	NewWeirdPlant = CreateActor<WeirdPlant>();
 	NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
+
+	NewGonisi = CreateActor<Gonisi>();
+	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
+	NewAsako = CreateActor<Asako>();
+	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
 }			
 
 void PlayLevel::LevelChangeStart()

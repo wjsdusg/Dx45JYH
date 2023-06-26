@@ -24,4 +24,6 @@ void TestObject::Update(float _DeltaTime)
 void TestObject::Start()
 {
 	Render = CreateComponent<GameEngineSpriteRenderer>();
+	Render->SetTexture("generalja0.png");
+	Render->GetTransform()->SetLocalScale({ 100,100,1 });
 }
