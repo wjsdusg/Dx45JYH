@@ -2,11 +2,11 @@
 #include "GameEngineFontRenderer.h"
 #include "GameEngineFont.h"
 
-GameEngineFontRenderer::GameEngineFontRenderer() 
+GameEngineFontRenderer::GameEngineFontRenderer()
 {
 }
 
-GameEngineFontRenderer::~GameEngineFontRenderer() 
+GameEngineFontRenderer::~GameEngineFontRenderer()
 {
 }
 
@@ -32,13 +32,20 @@ void GameEngineFontRenderer::Render(float _Delta)
 		return;
 	}
 
-	Font->FontDraw(Text);
+	float4 Pos = GetTransform()->GetWorldPosition();
+
+	GameEngineCamera* Camera = GetCamera();
+	Pos *= Camera->GetView();
+	Pos *= Camera->GetProjection();
+	Pos *= Camera->GetViewPort();
+
+	Font->FontDraw(Text, Pos, FontScale, FontColor);
 
 	GameEngineDevice::GetContext()->GSSetShader(nullptr, nullptr, 0);
 
 }
 
-void GameEngineFontRenderer::Start() 
+void GameEngineFontRenderer::Start()
 {
 	GameEngineRenderer::Start();
 }

@@ -44,7 +44,8 @@ struct OutPut
     // 레스터라이저야 이 포지션이
     // w나눈 다음  뷰포트 곱하고 픽셀 건져낼때 쓸포지션 정보를 내가 보낸거야.
     float4 Pos : SV_Position;
-    float4 UV : TEXCOORD;
+    float4 UV : TEXCOORD0;
+    float4 ClipUV : TEXCOORD1;
 };
 
 
@@ -54,6 +55,12 @@ cbuffer AtlasData : register(b1)
     float2 FramePos;
     // 0.5 0.5 
     float2 FrameScale;
+    // float4 AtlasUV;
+}
+
+cbuffer ClipData : register(b2)
+{
+    float4 Clip;
     // float4 AtlasUV;
 }
 
@@ -79,6 +86,8 @@ OutPut Texture_VS(Input _Value)
     OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
     OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
     
+    OutPutValue.ClipUV = _Value.UV;
+    
     return OutPutValue;
 }
 
@@ -89,7 +98,7 @@ cbuffer ColorOption : register(b0)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState WRAPSAMPLER : register(s0);
+SamplerState CLAMPSAMPLER : register(s0);
 
 struct OutColor
 {
@@ -101,9 +110,41 @@ struct OutColor
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
+    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     
-    Color *= MulColor;
+    if (Clip.z == 0)
+    {
+        if (_Value.ClipUV.x > Clip.x)
+        {
+            clip(-1);
+        }
+    }
+    else
+    {
+        // 0~1
+        // 0.7
+        if (_Value.ClipUV.x < 1.0f - Clip.x)
+        {
+            clip(-1);
+        }
+    }
+    
+    if (Clip.w == 0)
+    {
+        if (_Value.ClipUV.y > Clip.y)
+        {
+            clip(-1);
+        }
+    }
+    else
+    {
+        if (_Value.ClipUV.y < 1.0f - Clip.y)
+        {
+            clip(-1);
+        }
+    }
+    
+        Color *= MulColor;
     Color += PlusColor;
     
     return Color;
