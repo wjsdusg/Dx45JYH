@@ -151,6 +151,9 @@
     <ClInclude Include="GameEngineDebug3D.h">
       <Filter>Debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
+      <Filter>ThirdParty\Fw1Font\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -377,6 +380,21 @@
     <Filter Include="Debug">
       <UniqueIdentifier>{2e6f2842-e8af-404a-978b-29c77232eb8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\Fw1Font">
+      <UniqueIdentifier>{ebb86a41-772f-49b3-8cc9-21a695e27f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin">
+      <UniqueIdentifier>{b343be57-e4df-48ac-aa55-2758658d457b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Debug">
+      <UniqueIdentifier>{dbf54c23-f340-47de-b246-cc07554a553e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Release">
+      <UniqueIdentifier>{a19376d6-fa0f-48d7-86bc-e1bef400b22d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\Header">
+      <UniqueIdentifier>{40ec70d7-9cff-444a-9191-06d1c93aaace}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
@@ -388,5 +406,19 @@
     <None Include="ThirdParty\DirectXTex\lib\x64\Release\DirectXTex.lib">
       <Filter>ThirdParty\DirectXTex\bin\Release</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
