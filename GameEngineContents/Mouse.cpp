@@ -67,8 +67,7 @@ void Mouse::Update(float _DeltaTime)
 		{
 			Render0->ChangeAnimation("MyTeamCusor");
 			AnimationEnd = true;
-		}
-		
+		}		
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 		{
 			if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f)

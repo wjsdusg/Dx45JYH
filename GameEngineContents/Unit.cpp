@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Unit.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
@@ -70,7 +71,11 @@ void Unit::Update(float _DeltaTime)
 		FSM.ChangeState("Move");
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 	}
-
+	if (true == GameEngineInput::IsUp("A") && true == IsClick)
+	{		
+		Mouse::NewMainMouse->Render0->ChangeAnimation("AClick");
+		
+	}
 	if (true == GameEngineInput::IsUp("H") && true == IsClick)
 	{
 		IsHold = true;

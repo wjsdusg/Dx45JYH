@@ -206,6 +206,9 @@
     <ClInclude Include="Mouse.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -370,6 +373,9 @@
       <Filter>Object\Unit\Heros\China</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>

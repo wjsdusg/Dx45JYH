@@ -217,6 +217,7 @@
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Tokugawa.h" />
     <ClInclude Include="Ugida.h" />
+    <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIPannel.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="Wakizaka.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Tokugawa.cpp" />
     <ClCompile Include="Ugida.cpp" />
+    <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIPannel.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="Wakizaka.cpp" />

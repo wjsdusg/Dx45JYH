@@ -5,7 +5,7 @@
 
 class Mouse : public GameEngineActor
 {
-	
+	friend class Unit;
 public:
 	static Mouse* NewMainMouse;
 	// constrcuter destructer

@@ -22,22 +22,8 @@ Object::~Object()
 
 
 void Object::Update(float _DeltaTime)
-{
-	/*if (MiniMap::MainMiniMap->MiniPoints.size() != 0)
-	{
-		for (std::shared_ptr<GameEngineUIRenderer> NewObject : MiniMap::MainMiniMap->MiniPoints)
-		{
-			NewObject->Death();
-			NewObject = nullptr;
-		}
-	}*/
-	ObjectsSetTile();
-	/*for (std::shared_ptr<Object> NewObject : Objects)
-	{
-		
-		NewPoint->GetTransform()->SetLocalPosition(NewObject->GetTransform()->GetWorldPosition()* MiniViewRatio);
-		MiniMap::MainMiniMap->MiniPoints.push_back(NewPoint);
-	}*/
+{	
+	ObjectsSetTile();	
 	std::list<std::shared_ptr<Object>>::iterator StartObject = Objects.begin();
 	std::list<std::shared_ptr<Object>>::iterator EndObject = Objects.end();
 	std::vector<std::shared_ptr<GameEngineUIRenderer>>::iterator StartRenders = MiniMap::MainMiniMap->MiniPoints.begin();
