@@ -151,14 +151,14 @@
     <ClInclude Include="GameEngineDebug3D.h">
       <Filter>Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
-      <Filter>ThirdParty\Fw1Font\Header</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineFont.h">
       <Filter>Resources\Font</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineFontRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
+      <Filter>ThirdParty\Fw1Font\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -167,7 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
     <ClInclude Include="EngineContentRenderingStruct.h" />
     <ClInclude Include="GameEngineActor.h" />
     <ClInclude Include="GameEngineBlend.h" />
@@ -224,6 +223,7 @@
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h" />
+    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp" />
