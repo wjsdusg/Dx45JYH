@@ -23,25 +23,31 @@ Object::~Object()
 
 void Object::Update(float _DeltaTime)
 {
-	if (MiniMap::MainMiniMap->MiniPoints.size() != 0)
+	/*if (MiniMap::MainMiniMap->MiniPoints.size() != 0)
 	{
 		for (std::shared_ptr<GameEngineUIRenderer> NewObject : MiniMap::MainMiniMap->MiniPoints)
 		{
 			NewObject->Death();
 			NewObject = nullptr;
 		}
-	}
+	}*/
 	ObjectsSetTile();
-	for (std::shared_ptr<Object> NewObject : Objects)
+	/*for (std::shared_ptr<Object> NewObject : Objects)
 	{
-		std::shared_ptr<GameEngineUIRenderer> NewPoint = CreateComponent<GameEngineUIRenderer>();
 		
-		NewPoint->GetTransform()->SetParent(MiniMap::MainMiniMap->GetTransform());
-		NewPoint->GetTransform()->SetLocalScale({ 5.f,5.f,1.f });
 		NewPoint->GetTransform()->SetLocalPosition(NewObject->GetTransform()->GetWorldPosition()* MiniViewRatio);
 		MiniMap::MainMiniMap->MiniPoints.push_back(NewPoint);
+	}*/
+	std::list<std::shared_ptr<Object>>::iterator StartObject = Objects.begin();
+	std::list<std::shared_ptr<Object>>::iterator EndObject = Objects.end();
+	std::vector<std::shared_ptr<GameEngineUIRenderer>>::iterator StartRenders = MiniMap::MainMiniMap->MiniPoints.begin();
+	std::vector<std::shared_ptr<GameEngineUIRenderer>>::iterator EndRenders = MiniMap::MainMiniMap->MiniPoints.end();
+	while (StartObject != EndObject)
+	{
+		(*StartRenders)->GetTransform()->SetLocalPosition((*StartObject)->GetTransform()->GetWorldPosition() * MiniViewRatio);
+		StartObject++;
+		StartRenders++;
 	}
-
 }
 
 void Object::Start()
@@ -49,7 +55,10 @@ void Object::Start()
 	if (nullptr != DynamicThis<Unit>())
 	{
 		Objects.push_back(DynamicThis<Object>());
-
+		std::shared_ptr<GameEngineUIRenderer> NewPoint = CreateComponent<GameEngineUIRenderer>();
+		NewPoint->GetTransform()->SetParent(MiniMap::MainMiniMap->GetTransform());
+		NewPoint->GetTransform()->SetLocalScale({ 3.f,3.f,1.f });
+		MiniMap::MainMiniMap->MiniPoints.push_back(NewPoint);
 	}
 }
 void Object::ObjectsSetTile()
