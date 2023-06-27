@@ -41,7 +41,7 @@ protected:
 	virtual void StateInit() {};
 	float FOV = 300.f;
 	float FightFOV = 300.f;
-	static CollisionData MouseData;
+	
 	static std::list<std::shared_ptr<Object>> Objects;
 private:
 	void ObjectsSetTile();

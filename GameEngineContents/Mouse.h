@@ -7,7 +7,7 @@ class Mouse : public GameEngineActor
 {
 	
 public:
-	static Mouse* MainMouse;
+	static Mouse* NewMainMouse;
 	// constrcuter destructer
 	Mouse();
 	~Mouse();
@@ -21,6 +21,7 @@ public:
 	{
 		return MousePos;
 	}
+	void GetMoveMark(float4 _Pos);
 	
 	
 protected:
@@ -29,10 +30,14 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+	std::shared_ptr<class GameEngineUIRenderer> Render0;
+	std::shared_ptr<class GameEngineSpriteRenderer> MouseMarkRender;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	float4 MousePos = float4::Zero;
-	
+	CollisionData MouseData;
+	float DoubleClickTimer= 0;
+	std::shared_ptr<class Unit> CopyUnit = nullptr;
+	bool AnimationEnd = false;
 
 };
 

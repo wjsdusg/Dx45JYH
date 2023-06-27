@@ -5,12 +5,16 @@
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
 #include "Minion.h"
+#include "Mouse.h"
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 extern float4 IsoTileScale;
 std::vector<std::shared_ptr<Unit>> Unit::Units;
-float Unit::DoubleClickTimer = 0.f;
 
+std::vector<std::shared_ptr<Unit>> Unit::GetUnits()
+{
+	return Units;
+}
 int num = 0;
 Unit::Unit()
 {
@@ -37,41 +41,7 @@ void Unit::Update(float _DeltaTime)
 			NewUnit->FSM.ChangeState("Stay");
 		}
 	}*/
-	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
-	MouseData.SPHERE.Radius = 0.0f;
-
-	if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
-	{
-		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
-		{
-			if (true == IsClick && DoubleClickTimer < 0.5f)
-			{
-				/*for (int i = 0; i < Units.size(); i++)
-				{
-					Units[i]->IsClick = true;
-				}*/
-				for (auto Start = Units.begin(); Start!=Units.end(); Start++)
-				{
-					(*Start)->IsClick = true;
-				}
-
-			}
-			else
-			{
-				for (auto Start = Units.begin(); Start != Units.end(); Start++)
-				{
-					(*Start)->IsClick = false;
-				}
-
-				IsClick = true;
-			}
-			DoubleClickTimer = 0.f;
-		}
-	}
-	if (IsClick == true)
-	{
-		DoubleClickTimer += _DeltaTime;
-	}
+	
 	if (true == IsClick)
 	{
 		if (nullptr == SelectionCircle)
@@ -98,6 +68,7 @@ void Unit::Update(float _DeltaTime)
 		TargetPos = MainMouse;
 		IsHold = false;
 		FSM.ChangeState("Move");
+		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 	}
 
 	if (true == GameEngineInput::IsUp("H") && true == IsClick)

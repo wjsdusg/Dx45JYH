@@ -15,7 +15,16 @@ public:
 	Unit(Unit&& _Other) noexcept = delete;
 	Unit& operator=(const Unit& _Other) = delete;
 	Unit& operator=(Unit&& _Other) noexcept = delete;
-
+	static std::vector<std::shared_ptr<Unit>> GetUnits();
+	
+	void SetIsClick(bool _Check)
+	{
+		IsClick = _Check;
+	}
+	bool GetIsClick()
+	{
+		return IsClick;
+	}
 protected:
 	void Start();
 	void Update(float _DeltaTime);
@@ -39,7 +48,6 @@ protected:
 	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
 private:
 	
-	static float DoubleClickTimer;
 
 };
 

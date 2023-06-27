@@ -8,7 +8,7 @@
 extern float4 IsoTileScale;
 extern float4 MiniViewRatio;
 std::list<std::shared_ptr<Object>> Object::Objects;
-CollisionData Object::MouseData;
+
 Object::Object()
 {
 	

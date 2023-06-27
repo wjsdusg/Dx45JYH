@@ -286,12 +286,8 @@ void PlayLevel::Update(float _DeltaTime)
 			float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldDownVector() * Speed * _DeltaTime;
 			OutlineCheck(Pos);
 			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-
-
-
 		}
 	}
-
 	//if(true==GetMainCamera()->GetTransform()->GetLocalPosition())
 	{
 		
@@ -375,6 +371,7 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("A", 'A');
 		GameEngineInput::CreateKey("S", 'S');
 		GameEngineInput::CreateKey("H", 'H');
+		GameEngineInput::CreateKey("M", 'M');
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
@@ -389,10 +386,8 @@ void PlayLevel::Start()
 	NewMiniMap->GetTransform()->AddLocalPosition({ -458.f,-27.f });
 	NewMapOverlay = CreateActor<MapOverlay>();
 	
-
 	float4 _Pos2 = MapUpP;
 	_Pos2.y -= 50.f;
-	
 	NewMapOverlay->GetTransform()->SetLocalPosition(_Pos2);
 	
 	{
