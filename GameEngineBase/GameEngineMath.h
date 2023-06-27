@@ -302,7 +302,7 @@ public:
 		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
 	}
 
-	UINT ColorToUint() const
+	UINT ColorToUint()
 	{
 		UINT Return;
 
@@ -365,7 +365,7 @@ public:
 
 		float Result = acosf(AngleCheck.x);
 
-		if (AngleCheck.y < 0)
+		if (AngleCheck.y > 0)
 		{
 			Result = GameEngineMath::PIE2 - Result;
 		}
