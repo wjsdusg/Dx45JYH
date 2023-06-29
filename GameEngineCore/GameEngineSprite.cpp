@@ -80,7 +80,7 @@ void GameEngineSprite::ResLoadSheet(const std::string_view& _Path, size_t _X, si
 
 		Start.x = 0.0f;
 		Start.y += UVScale.y;
-	}
+	}		
 
 }
 

@@ -26,7 +26,7 @@ void Karcher::Start()
 
 	GetTransform()->AddLocalPosition({ 0.f,-200.f });
 	//MousePickPos = GetTransform()->GetLocalPosition();
-	if (nullptr == GameEngineSprite::Find("archerk"))
+	if (nullptr == GameEngineSprite::Find("archerk.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");

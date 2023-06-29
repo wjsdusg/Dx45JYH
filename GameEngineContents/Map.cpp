@@ -31,10 +31,22 @@ void Map::Update(float _DeltaTime)
 
 void Map::Start()
 {
+	{
+		if (nullptr == GameEngineSprite::Find("RealBackground.png"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("ContentResources");
+			NewDir.Move("ContentResources");
+			NewDir.Move("Texture");
+			NewDir.Move("Map");
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("RealBackground.png").GetFullPath(), 1, 1);
+		}	
+		
+	}
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	
-	Render0->SetTexture("background.png");
-	Render0->SetScaleToTexture("background.png");
+	Render0->SetTexture("Background.png");
+	Render0->SetScaleToTexture("Background.png");
 	MapSize = Render0->GetTransform()->GetLocalScale();
 	MapRightP = { MapSize.x / 2.f,0.f };
 	MapLeftP = { -MapSize.x / 2.f,0.f };

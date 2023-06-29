@@ -22,6 +22,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	
 	
 	float sda = acosf(float(0.5))*GameEngineMath::RadToDeg;
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentsBin");
+		NewDir.Move("ContentsBin");
+		
+		
+
+		std::string Str = "aaaaa bbbbb ccccc";
+		GameEngineSerializer Data;
+		Data.Write(Str);
+
+		GameEngineFile NewFile = GameEngineFile(NewDir.GetPlusFileName("AAAA.data").GetFullPath());
+		NewFile.SaveBin(Data);
+		GameEngineSerializer ss;
+		NewFile.LoadBin(ss);
+		std::string Str2;
+		ss.Read(Str2);
+
+		int a = 0;
+		
+
+	}
+
 	GameEngineCore::Start(hInstance,
 		ContentsCore::GameStart,
 		ContentsCore::GameEnd,
