@@ -1,5 +1,4 @@
 #pragma once
-#include "Mouse.h"
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
 
@@ -23,6 +22,7 @@ public:
 	}
 	void GetMoveMark(float4 _Pos);
 	
+	std::shared_ptr<class GameEngineCollision> Collision;
 	
 protected:
 	void Start();
@@ -32,7 +32,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineUIRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseMarkRender;
-	std::shared_ptr<class GameEngineCollision> Collision;
 	float4 MousePos = float4::Zero;
 	CollisionData MouseData;
 	float DoubleClickTimer= 0;

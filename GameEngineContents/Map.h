@@ -24,7 +24,7 @@ protected:
 private:
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
-
+	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
 
 
 };

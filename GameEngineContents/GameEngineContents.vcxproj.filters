@@ -43,6 +43,9 @@
     <Filter Include="Object\Unit\Heros\Japan">
       <UniqueIdentifier>{32183015-747c-4fd6-a2f5-7eb458d03306}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MapEditor">
+      <UniqueIdentifier>{3fad294e-a294-4950-a082-22305fa90a7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -208,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="UIButton.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="DefenseMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
+      <Filter>MapEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -377,6 +386,12 @@
     </ClCompile>
     <ClCompile Include="UIButton.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DefenseMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>MapEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

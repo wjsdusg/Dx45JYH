@@ -51,9 +51,9 @@ void MapOverlay::Start()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("FOGWAR.png").GetFullPath(), 3, 1);
 	}	
 
-	int s = gcd(MapUpP.y, MapRightP.x);
-	IsoTileScale.y = MapUpP.y / s/2;
-	IsoTileScale.x = MapRightP.x / s/2;
+	//int s = gcd(MapUpP.y, MapRightP.x);
+	//IsoTileScale.y = MapUpP.y / s/2;
+	//IsoTileScale.x = MapRightP.x / s/2;
 	
 	TileMap = CreateComponent<GameEngineTileMapRenderer>();
 	TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(), IsoTileScale, IsoTileScale*1.2f,TileMapMode::Iso);
@@ -65,8 +65,7 @@ void MapOverlay::Start()
 			TileMap->SetTile(x, y, "FOGWAR.png", 0);
 		}
 	}
-	/*Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->GetTransform()->SetLocalScale({ 40,40 });*/
+	
 }
 
 // 이건 디버깅용도나 

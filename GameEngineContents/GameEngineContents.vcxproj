@@ -170,6 +170,7 @@
     <ClInclude Include="Asako.h" />
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="DefenseMap.h" />
     <ClInclude Include="DragBox.h" />
     <ClInclude Include="FadeEffect.h" />
     <ClInclude Include="Frog.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="KwakJaewoo.h" />
     <ClInclude Include="KwonYul.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapEditor.h" />
     <ClInclude Include="MapOverlay.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Minion.h" />
@@ -231,6 +233,7 @@
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="ContentsEnum.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
+    <ClCompile Include="DefenseMap.cpp" />
     <ClCompile Include="DragBox.cpp" />
     <ClCompile Include="FadeEffect.cpp" />
     <ClCompile Include="Frog.cpp" />
@@ -251,6 +254,7 @@
     <ClCompile Include="KwakJaewoo.cpp" />
     <ClCompile Include="KwonYul.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
     <ClCompile Include="MapOverlay.cpp" />
     <ClCompile Include="MathFuntion.cpp" />
     <ClCompile Include="MiniMap.cpp" />

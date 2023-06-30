@@ -16,8 +16,8 @@ bool AddScreenSizeY = true;
 float4 UIMouse;
 float4 MainMouse;
 //y>= a*x+b 이면 x,y점이 닿거나 위에있다.
-float4 TileScale = { 40.f,40.f };
-float4 IsoTileScale = {};
+float4 TileScale = { 64.f,32.f,1 };
+float4 IsoTileScale = {128,64.f,1};
 
 bool CheckPointOnUpLine(float4 Point1, float4 Point2, float4 CheckPoint)
 {

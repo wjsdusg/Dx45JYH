@@ -1,0 +1,61 @@
+#pragma once
+#include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineFSM.h>
+#include <GameEngineCore/GameEngineButton.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
+class TileInfo
+{
+public:
+	float4 Pos;
+	size_t Index = 0;
+	bool IsMove = true;
+	bool ISMonsterCreate = false;
+
+};
+// Ό³Έν :
+class MapEditor : public GameEngineActor
+{
+public:
+	// constrcuter destructer
+	MapEditor();
+	~MapEditor();
+
+	// delete Function
+	MapEditor(const MapEditor& _Other) = delete;
+	MapEditor(MapEditor&& _Other) noexcept = delete;
+	MapEditor& operator=(const MapEditor& _Other) = delete;
+	MapEditor& operator=(MapEditor&& _Other) noexcept = delete;
+	
+	void CreateTileEditor(int _X, int _Y, const float4& _TileSize);
+
+	void Clear();	
+
+	size_t GetTIleIndex(const float4& _Pos);
+
+	float4 PosToTilePos(float4 _Pos);
+
+	bool IsOver(int _X, int _Y) const;
+
+	inline float4 GetCount() const
+	{
+		return MapCount;
+	}
+	inline void OnRender0()
+	{
+		Render0->On();
+	}
+protected:
+	void Render(float _Delta) override;
+
+private:
+	bool IsTilemapCulling = false;
+
+	std::vector<std::vector<TileInfo>> TileInfos;
+	float4 MapCount;	
+	float4 TileSize;
+	float4 TileSizeH;
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+};
+

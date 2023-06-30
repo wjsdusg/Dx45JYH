@@ -142,7 +142,7 @@ void Mouse::Update(float _DeltaTime)
 
 void Mouse::Start()
 {
-	GameEngineInput::MouseCursorOff();
+	//GameEngineInput::MouseCursorOff();
 
 	if (nullptr == GameEngineSprite::Find("movemark.png"))
 	{
