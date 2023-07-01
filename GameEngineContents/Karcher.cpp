@@ -17,7 +17,7 @@ Karcher::~Karcher()
 void Karcher::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
-	
+	GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), TestComponent->GetTransform());
 }
 
 void Karcher::Start()
@@ -60,18 +60,22 @@ void Karcher::Start()
 	Render0->CreateAnimation({ "Die", "archerk.png",160,167});
 
 	Render0->ChangeAnimation("LStay");
-	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
-	Collision = CreateComponent<GameEngineCollision>();
+	
+	/*Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
+	Collision->SetOrder(static_cast<int>(ColEnum::Unit));*/
 
-	FOVCollision = CreateComponent<GameEngineCollision>();
+	/*FOVCollision = CreateComponent<GameEngineCollision>();
 	FOVCollision->GetTransform()->SetLocalScale({ 400,400,1.f });
-	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));
+	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
 
 	Unit::Start();
 	MyTeam = Team::Ally;
-	//FOVCollision->DebugOn();
+	
+	TestComponent = CreateComponent<GameEngineComponent>();
+	TestComponent->GetTransform()->AddLocalPosition({ 60,0,0 });
+	TestComponent->GetTransform()->SetLocalScale({ 20,20 });
+	
 }
 
 // 이건 디버깅용도나 

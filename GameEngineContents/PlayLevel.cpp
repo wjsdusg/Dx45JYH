@@ -9,6 +9,7 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineButton.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include "Mouse.h"
 #include "Object.h"
 #include "Map.h"
@@ -78,6 +79,7 @@ std::shared_ptr<Ugida> NewUgida = nullptr;
 std::shared_ptr<Wakizaka> NewWakizaka = nullptr;
 std::shared_ptr<DefenseMap> NewDefenseMap = nullptr;
 std::shared_ptr<MapEditor> NewMapEditor = nullptr;
+std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
 
 PlayLevel::PlayLevel()
 {
@@ -335,12 +337,14 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 	if (true == GameEngineInput::IsUp("Space"))
 	{
 		//GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
-		GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->GetTransform()->GetLocalPosition());
+		//GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->GetTransform()->GetLocalPosition());
 		
+		GetMainCamera()->GetTransform()->SetLocalPosition(FontRender-> GetTransform()->GetLocalPosition());
 	}
 	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F1")) {
 		NewMapEditor->OnRender0();
 	}
+	NewObject->GetTransform()->SetWorldPosition(GetMainCamera()->GetTransform()->GetLocalPosition());
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -370,6 +374,9 @@ void PlayLevel::OutlineCheck(float4& _Pos)
 
 void PlayLevel::Start()
 {
+	
+	
+
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -400,7 +407,7 @@ void PlayLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	//std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
 	Map1 = CreateActor<Map>();
-	//Map1->Off();
+	
 	NewUIPannel = CreateActor<UIPannel>();
 	NewMiniMap = CreateActor<MiniMap>();
 
@@ -472,8 +479,8 @@ void PlayLevel::Start()
 	//NewKsword = CreateActor<Ksword>();
 	NewKsword2 = CreateActor<Ksword>();
 	NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
-	//NewKarcher = CreateActor<Karcher>();
-	//NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
+	NewKarcher = CreateActor<Karcher>();
+	NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	
@@ -507,6 +514,20 @@ void PlayLevel::Start()
 	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
 	NewAsako = CreateActor<Asako>();
 	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
+	GameEngineFont::Load("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+	{
+		int a = 3;
+		int b = 5;
+		std::string str1 = std::to_string(a);
+		std::string str2 = std::to_string(b);
+		std::string str3 = str1 + " " + str2;
+		std::string_view sv = str3;
+		FontRender = NewObject->CreateComponent<GameEngineFontRenderer>();
+		FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+		FontRender->SetText(sv);
+		FontRender->SetScale({30.f});
+		FontRender->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 });
+	}
 }			
 
 void PlayLevel::LevelChangeStart()

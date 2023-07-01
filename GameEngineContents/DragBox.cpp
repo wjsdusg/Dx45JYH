@@ -28,6 +28,8 @@ void DragBox::Update(float _DeltaTime)
 	Scale.z = 1;
 	Render0->GetTransform()->SetLocalScale(Scale);
 	Collision->GetTransform()->SetLocalScale(Scale);
+
+	GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), Collision->GetTransform());
 }
 
 void DragBox::Start()
@@ -46,7 +48,7 @@ void DragBox::AllCollision()
 		{
 			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
 
-			if (nullptr != NewUnit && 120.f < Render0->GetTransform()->GetLocalScale().x * Render0->GetTransform()->GetLocalScale().y)
+			if (nullptr != NewUnit && 120.f < Collision->GetTransform()->GetLocalScale().x * Collision->GetTransform()->GetLocalScale().y)
 			{
 				if (false == check)
 				{

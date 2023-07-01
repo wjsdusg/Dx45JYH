@@ -50,7 +50,7 @@ void Object::Start()
 void Object::ObjectsSetTile()
 {
 	
-	float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
+	/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
 	for (std::shared_ptr<Object> NewObject : Objects)
 	{
 		for (float i = NewObject->GetTransform()->GetWorldPosition().y - FOV; i <= NewObject->GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
@@ -64,7 +64,7 @@ void Object::ObjectsSetTile()
 				}
 			}
 		}
-	}
+	}*/
 		
 	
 }

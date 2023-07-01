@@ -82,7 +82,7 @@ void Unit::Update(float _DeltaTime)
 		FSM.ChangeState("Stay");
 	}
 	{
-		float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
+		/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
 		for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
 		{
 			for (float j = GetTransform()->GetWorldPosition().x - FOV; j <= GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x/2)
@@ -94,7 +94,7 @@ void Unit::Update(float _DeltaTime)
 					MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 1);
 				}
 			}
-		}
+		}*/
 	}
 	
 	FSM.Update(_DeltaTime);
