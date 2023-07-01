@@ -15,6 +15,7 @@ public:
 // Ό³Έν :
 class MapEditor : public GameEngineActor
 {
+	friend class PlayLevel;
 public:
 	// constrcuter destructer
 	MapEditor();
@@ -33,6 +34,8 @@ public:
 	size_t GetTIleIndex(const float4& _Pos);
 
 	float4 PosToTilePos(float4 _Pos);
+
+	TileInfo* GetTIleInfo(const float4& _Pos);
 
 	bool IsOver(int _X, int _Y) const;
 
@@ -57,5 +60,13 @@ private:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+	std::vector<std::shared_ptr<class GameEngineComponent>> MoveMarks;
+	void FSMInit();
+	class GameEngineFSM FSM;
+	std::shared_ptr<class GameEngineComponent> NewObject;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender0;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender1;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender2;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender3;
 };
 

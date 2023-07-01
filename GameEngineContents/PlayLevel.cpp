@@ -337,14 +337,16 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 	if (true == GameEngineInput::IsUp("Space"))
 	{
 		//GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
-		//GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->GetTransform()->GetLocalPosition());
+		float4 sd = NewMapEditor->NewObject->GetTransform()->GetWorldPosition();
+		float4 df= NewMapEditor->FontRender0->GetTransform()->GetWorldPosition(); 
+		GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->NewObject->GetTransform()->GetWorldPosition());
 		
-		GetMainCamera()->GetTransform()->SetLocalPosition(FontRender-> GetTransform()->GetLocalPosition());
+		//GetMainCamera()->GetTransform()->SetLocalPosition(FontRender-> GetTransform()->GetLocalPosition());
 	}
 	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F1")) {
 		NewMapEditor->OnRender0();
 	}
-	NewObject->GetTransform()->SetWorldPosition(GetMainCamera()->GetTransform()->GetLocalPosition());
+	
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -415,12 +417,11 @@ void PlayLevel::Start()
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -458.f,-27.f });
 	NewMapOverlay = CreateActor<MapOverlay>();
+	NewMapOverlay->GetTransform()->SetLocalPosition(MapUpP);
 	NewDefenseMap = CreateActor<DefenseMap>();
 	NewMapEditor = CreateActor<MapEditor>();
+	NewMapEditor->GetTransform()->SetLocalPosition(MapUpP);
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
-	float4 _Pos2 = MapUpP;
-	_Pos2.y -= 50.f;
-	NewMapOverlay->GetTransform()->SetLocalPosition(_Pos2);
 	
 	{
 		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>();
@@ -514,20 +515,8 @@ void PlayLevel::Start()
 	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
 	NewAsako = CreateActor<Asako>();
 	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
-	GameEngineFont::Load("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
-	{
-		int a = 3;
-		int b = 5;
-		std::string str1 = std::to_string(a);
-		std::string str2 = std::to_string(b);
-		std::string str3 = str1 + " " + str2;
-		std::string_view sv = str3;
-		FontRender = NewObject->CreateComponent<GameEngineFontRenderer>();
-		FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
-		FontRender->SetText(sv);
-		FontRender->SetScale({30.f});
-		FontRender->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 });
-	}
+	
+	
 }			
 
 void PlayLevel::LevelChangeStart()

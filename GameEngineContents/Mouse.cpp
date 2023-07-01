@@ -52,7 +52,9 @@ void Mouse::Update(float _DeltaTime)
 		Pos *= Proj.InverseReturn();
 		Pos *= View.InverseReturn();
 		Collision->GetTransform()->SetLocalPosition(Pos);
-		
+
+		float4 ss = MainMouse;
+		int a = 0;
 	}
 	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
 	MouseData.SPHERE.Radius = 0.0f;

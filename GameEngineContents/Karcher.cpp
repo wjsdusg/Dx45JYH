@@ -73,8 +73,8 @@ void Karcher::Start()
 	MyTeam = Team::Ally;
 	
 	TestComponent = CreateComponent<GameEngineComponent>();
-	TestComponent->GetTransform()->AddLocalPosition({ 60,0,0 });
-	TestComponent->GetTransform()->SetLocalScale({ 20,20 });
+	TestComponent->GetTransform()->SetWorldPosition({ 60,0,0 });
+	TestComponent->GetTransform()->SetLocalScale({ 3,3 });
 	
 }
 
