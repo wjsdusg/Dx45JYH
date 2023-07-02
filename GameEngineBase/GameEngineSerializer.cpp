@@ -59,7 +59,7 @@ void GameEngineSerializer::Read(std::string& _Value)
 	_Value.resize(Size);
 	Read(_Value.data(), Size);
 }
-
+int num3 = 0;
 void GameEngineSerializer::Read(void* _Ptr, size_t _Size)
 {
 	//  1024             1023   + 4
@@ -67,7 +67,7 @@ void GameEngineSerializer::Read(void* _Ptr, size_t _Size)
 	{
 		MsgAssert("데이터의 한도이상으로 읽으려고 했습니다.");
 	}
-
+	num3++;
 	memcpy_s(_Ptr, _Size, &Datas[Offset], _Size);
 
 	Offset += _Size;

@@ -346,7 +346,27 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F1")) {
 		NewMapEditor->OnRender0();
 	}
-	
+	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F2")) {
+		{
+			GameEngineSerializer Ser;
+			NewMapEditor->Save(Ser);
+
+			GameEngineDirectory NewDir2;
+			NewDir2.MoveParentToDirectory("ContentsBin");
+			NewDir2.Move("ContentsBin");
+			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+			NewFile.SaveBin(Ser);
+		}
+	}
+	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F3")) {
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewMapEditor->Load(Ser);
+	}
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -404,6 +424,7 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("M", 'M');
 		GameEngineInput::CreateKey("F1", VK_F1);
 		GameEngineInput::CreateKey("F2", VK_F2);
+		GameEngineInput::CreateKey("F3", VK_F3);
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
@@ -420,7 +441,8 @@ void PlayLevel::Start()
 	NewMapOverlay->GetTransform()->SetLocalPosition(MapUpP);
 	NewDefenseMap = CreateActor<DefenseMap>();
 	NewMapEditor = CreateActor<MapEditor>();
-	NewMapEditor->GetTransform()->SetLocalPosition(MapUpP);
+	//NewMapEditor->GetTransform()->SetLocalPosition(MapUpP);
+	
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
 	
 	{

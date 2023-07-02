@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineButton.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineBase/GameEngineSerializer.h>
 class TileInfo
 {
 public:
@@ -47,6 +48,8 @@ public:
 	{
 		Render0->On();
 	}
+	void Save(GameEngineSerializer& _Ser);
+	void Load(GameEngineSerializer& _Ser);
 protected:
 	void Render(float _Delta) override;
 
@@ -68,5 +71,9 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> FontRender1;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender2;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender3;
+	
+	int x;
+	int y;
+	int SaveNum=0;
 };
 
