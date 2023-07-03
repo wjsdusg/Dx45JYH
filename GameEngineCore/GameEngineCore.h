@@ -6,6 +6,7 @@
 #include <functional>
 #include <string_view>
 #include <typeinfo>
+#include <GameEngineBase/GameEngineThreadJobQueue.h>
 
 #pragma comment(lib, "GameEngineBase.lib")
 #pragma comment(lib, "GameEnginePlatform.lib")
@@ -32,7 +33,7 @@ public:
 	GameEngineCore& operator=(const GameEngineCore& _Other) = delete;
 	GameEngineCore& operator=(GameEngineCore&& _Other) noexcept = delete;
 
-	static void Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos = { 0, 0 }, float4 _Size = { 1200, 900 });
+	static void Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos = { 0, 0 }, float4 _Size = { 1280, 720 });
 
 	template<typename LevelType>
 	static std::shared_ptr<LevelType> CreateLevel(const std::string_view& _Name = "")
@@ -68,6 +69,7 @@ public:
 		return MainLevel;
 	}
 
+	static GameEngineThreadJobQueue JobQueue;
 
 protected:
 
@@ -86,5 +88,6 @@ private:
 	static std::map<std::string, std::shared_ptr<GameEngineLevel>> LevelMap;
 	static std::shared_ptr<GameEngineLevel> MainLevel;
 	static std::shared_ptr<GameEngineLevel> NextLevel;
+
 };
 

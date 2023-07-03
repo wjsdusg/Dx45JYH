@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
 #include <GameEngineBase\GameEngineDebug.h>
+#include <GameEngineBase\GameEngineThread.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
@@ -9,6 +10,8 @@
 #include "GameEngineDevice.h"
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
+
+GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -34,6 +37,8 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 		GameEngineInput::CreateKey("GUISwitch", VK_F8);
 	}
 
+
+	JobQueue.Initialize("EngineJobQueue");
 
 	GameEngineDevice::Initialize();
 
@@ -142,7 +147,6 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 	LevelMap.clear();
 	CoreResourcesEnd();
 
-
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
 }
@@ -177,6 +181,7 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 {
 	CurLoadLevel = _Level.get();
+	_Level->Level = _Level.get();
 	_Level->Start();
 	CurLoadLevel = nullptr;
 }

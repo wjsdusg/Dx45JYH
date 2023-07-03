@@ -289,6 +289,7 @@ void GameEngineDevice::Initialize()
 	// 윈도우와 연결하는 작업.
 	// 즉 백버퍼 만드는 작업을 하게 됩니다.
 	// 다이렉트 x에서 멀티쓰레드 관련 
+	// 멀티쓰레드 사용하겠다는 설정을 해놨다.
 	Result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
 	CreateSwapChain();
