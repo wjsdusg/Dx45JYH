@@ -65,7 +65,7 @@ void MapOverlay::Start()
 	//		TileMap->SetTile(x, y, "FOGWAR.png", 0);
 	//	}
 	//}
-	//
+	
 }
 
 // 이건 디버깅용도나 

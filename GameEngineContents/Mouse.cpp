@@ -56,8 +56,8 @@ void Mouse::Update(float _DeltaTime)
 		float4 ss = MainMouse;
 		int a = 0;
 	}
-	MouseData.SPHERE.Center = MainMouse.DirectFloat3;
-	MouseData.SPHERE.Radius = 0.0f;
+	/*MouseData.SPHERE.Center = MainMouse.DirectFloat3;
+	MouseData.SPHERE.Radius = 0.0f;*/
 
 	float MinDIstance = 1000.f;
 	

@@ -62,6 +62,7 @@ void DragBox::AllCollision()
 			}
 		}
 	}
+	//float4 pos = Collision->GetTransform()->GetLocalScale();
 	Death();
 }
 

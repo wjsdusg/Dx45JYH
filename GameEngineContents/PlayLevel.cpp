@@ -34,6 +34,7 @@
 #include "WeirdPlant.h"
 #include "SwordPirate.h"
 #include "TestObject.h"
+#include "UIButton.h"
 
 #include "Gonisi.h"
 #include "Asako.h"
@@ -80,7 +81,7 @@ std::shared_ptr<Wakizaka> NewWakizaka = nullptr;
 std::shared_ptr<DefenseMap> NewDefenseMap = nullptr;
 std::shared_ptr<MapEditor> NewMapEditor = nullptr;
 std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
-
+std::shared_ptr<UIButton> NewUIButton = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -343,8 +344,15 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 		
 		//GetMainCamera()->GetTransform()->SetLocalPosition(FontRender-> GetTransform()->GetLocalPosition());
 	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F1")) {
+	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F1"))
+	{
+		NewMapEditor->FSM.ChangeState("IsMove");
 		NewMapEditor->OnRender0();
+	}
+	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F8")) 
+	{
+		NewMapEditor->Render0->Off();
+		NewMapEditor->FSM.ChangeState("Default");
 	}
 	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F2")) {
 		{
@@ -362,7 +370,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
 		NewDir2.Move("ContentsBin");
-		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
 		GameEngineSerializer Ser;
 		NewFile.LoadBin(Ser);
 		NewMapEditor->Load(Ser);
@@ -425,6 +433,11 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("F1", VK_F1);
 		GameEngineInput::CreateKey("F2", VK_F2);
 		GameEngineInput::CreateKey("F3", VK_F3);
+		GameEngineInput::CreateKey("F4", VK_F4);
+		GameEngineInput::CreateKey("F5", VK_F5);
+		GameEngineInput::CreateKey("F6", VK_F6);
+		GameEngineInput::CreateKey("F7", VK_F7);
+		GameEngineInput::CreateKey("F8", VK_F8);
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
@@ -445,6 +458,8 @@ void PlayLevel::Start()
 	
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
 	
+	NewUIButton = CreateActor<UIButton>();
+
 	{
 		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>();
 		Button->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition());
@@ -506,37 +521,40 @@ void PlayLevel::Start()
 	NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
-	
-	NewMonster =CreateActor<Monster_01>();
 	NewObject = CreateActor<Object>(1);
 	
-	NewForg = CreateActor<Frog>();
-	NewForg->GetTransform()->SetLocalPosition({ -100.f,-100 });
-	NewGangsi = CreateActor<Gangsi>();
-	NewGangsi->GetTransform()->SetLocalPosition({ -50.f,-100 });
-	NewGatpha = CreateActor<Gatpha>();
-	NewGatpha->GetTransform()->SetLocalPosition({ 0,-100 });
-	NewHungryDemon = CreateActor<HungryDemon>();
-	NewHungryDemon->GetTransform()->SetLocalPosition({ 50,-100 });
-	NewOnghwa = CreateActor<Onghwa>();
-	NewOnghwa->GetTransform()->SetLocalPosition({ 100,-100 });
-	NewRaccoondog = CreateActor<Raccoondog>();
-	NewRaccoondog->GetTransform()->SetLocalPosition({ 150,-100 });
-	NewSnowdemon = CreateActor<Snowdemon>();
-	NewSnowdemon->GetTransform()->SetLocalPosition({ 200,-100 });
-	NewSnowwoman = CreateActor<Snowwoman>();
-	NewSnowwoman->GetTransform()->SetLocalPosition({ 250,-100 });
-	NewSwordPirate = CreateActor<SwordPirate>();
-	NewSwordPirate->GetTransform()->SetLocalPosition({ 300,-100 });
-	NewTiger = CreateActor<Tiger>();
-	NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
-	NewWeirdPlant = CreateActor<WeirdPlant>();
-	NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
+	
+	{
+		NewMonster = CreateActor<Monster_01>();
+		NewForg = CreateActor<Frog>();
+		NewForg->GetTransform()->SetLocalPosition({ -100.f,-100 });
+		NewGangsi = CreateActor<Gangsi>();
+		NewGangsi->GetTransform()->SetLocalPosition({ -50.f,-100 });
+		NewGatpha = CreateActor<Gatpha>();
+		NewGatpha->GetTransform()->SetLocalPosition({ 0,-100 });
+		NewHungryDemon = CreateActor<HungryDemon>();
+		NewHungryDemon->GetTransform()->SetLocalPosition({ 50,-100 });
+		NewOnghwa = CreateActor<Onghwa>();
+		NewOnghwa->GetTransform()->SetLocalPosition({ 100,-100 });
+		NewRaccoondog = CreateActor<Raccoondog>();
+		NewRaccoondog->GetTransform()->SetLocalPosition({ 150,-100 });
+		NewSnowdemon = CreateActor<Snowdemon>();
+		NewSnowdemon->GetTransform()->SetLocalPosition({ 200,-100 });
+		NewSnowwoman = CreateActor<Snowwoman>();
+		NewSnowwoman->GetTransform()->SetLocalPosition({ 250,-100 });
+		NewSwordPirate = CreateActor<SwordPirate>();
+		NewSwordPirate->GetTransform()->SetLocalPosition({ 300,-100 });
+		NewTiger = CreateActor<Tiger>();
+		NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
+		NewWeirdPlant = CreateActor<WeirdPlant>();
+		NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
 
-	NewGonisi = CreateActor<Gonisi>();
-	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
-	NewAsako = CreateActor<Asako>();
-	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
+		NewGonisi = CreateActor<Gonisi>();
+		NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
+		NewAsako = CreateActor<Asako>();
+		NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
+	}
+
 	
 	
 }			

@@ -30,12 +30,10 @@ void MapEditor::Update(float _DeltaTime)
 		{
 			GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), MoveMarks[i]->GetTransform());
 		}
-	}
-	
-	
+	}	
 	{
 		Pos -= MapUpP;
-		std::string str3 = "MousePos " + Pos.ToString();;
+		std::string str3 = "MousePos-MapUpP " + Pos.ToString();;
 		std::string_view MouseConvertTile = str3;
 		FontRender0->SetText(MouseConvertTile);
 	}
@@ -92,9 +90,7 @@ void MapEditor::Start()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("FOGWAR.png").GetFullPath(), 3, 1);
 	}
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-
 	Render0->GetTransform()->SetLocalScale(TileScale);
-
 	Render0->CreateAnimation({ "CurrentPos", "FOGWAR.png",0,1 });
 	Render0->ChangeAnimation("CurrentPos");
 	Render0->Off();
@@ -102,33 +98,35 @@ void MapEditor::Start()
 	NewObject = CreateComponent<GameEngineComponent>();
 	GameEngineFont::Load("휴먼둥근헤드라인");
 	{
-		FontRender0 = CreateComponent<GameEngineFontRenderer>();
-		FontRender0->GetTransform()->SetParent(NewObject->GetTransform());
-		FontRender0->SetFont("휴먼둥근헤드라인");
-		FontRender0->SetScale({ 20.f });
-		FontRender0->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 });
-	}
-	{
-		FontRender1 = CreateComponent<GameEngineFontRenderer>();
-		FontRender1->GetTransform()->SetParent(NewObject->GetTransform());
-		FontRender1->SetFont("휴먼둥근헤드라인");
-		FontRender1->SetScale({ 20.f });
-		FontRender1->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2-20 });	
-	}
-	{
-		FontRender2 = CreateComponent<GameEngineFontRenderer>();
-		FontRender2->GetTransform()->SetParent(NewObject->GetTransform());
-		FontRender2->SetFont("휴먼둥근헤드라인");
-		FontRender2->SetScale({ 20.f });
-		FontRender2->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 - 40 });
-	}
-	{
-		FontRender3 = CreateComponent<GameEngineFontRenderer>();
-		FontRender3->GetTransform()->SetParent(NewObject->GetTransform());
-		FontRender3->SetFont("휴먼둥근헤드라인");
-		FontRender3->SetScale({ 20.f });
-		FontRender3->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 - 60 });
-	}
+		{
+			FontRender0 = CreateComponent<GameEngineFontRenderer>();
+			FontRender0->GetTransform()->SetParent(NewObject->GetTransform());
+			FontRender0->SetFont("휴먼둥근헤드라인");
+			FontRender0->SetScale({ 20.f });
+			FontRender0->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 });
+		}
+		{
+			FontRender1 = CreateComponent<GameEngineFontRenderer>();
+			FontRender1->GetTransform()->SetParent(NewObject->GetTransform());
+			FontRender1->SetFont("휴먼둥근헤드라인");
+			FontRender1->SetScale({ 20.f });
+			FontRender1->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 - 20 });
+		}
+		{
+			FontRender2 = CreateComponent<GameEngineFontRenderer>();
+			FontRender2->GetTransform()->SetParent(NewObject->GetTransform());
+			FontRender2->SetFont("휴먼둥근헤드라인");
+			FontRender2->SetScale({ 20.f });
+			FontRender2->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 - 40 });
+		}
+		{
+			FontRender3 = CreateComponent<GameEngineFontRenderer>();
+			FontRender3->GetTransform()->SetParent(NewObject->GetTransform());
+			FontRender3->SetFont("휴먼둥근헤드라인");
+			FontRender3->SetScale({ 20.f });
+			FontRender3->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 - 60 });
+		}
+	}	
 }
 
 void MapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
@@ -156,9 +154,7 @@ void MapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
 			vPos.x = (x * TileSizeH.x) - (y * TileSizeH.x);
 			vPos.y = -(x * TileSizeH.y) - (y * TileSizeH.y);
 			vPos.y -= TileSizeH.y;
-			vPos.y += MapUpP.y;
-		/*	X = static_cast<int>((vPos.x / TileSizeH.x + -vPos.y / TileSizeH.y) / 2);
-			Y = static_cast<int>((-vPos.y / TileSizeH.y - (vPos.x / TileSizeH.x)) / 2);*/
+			vPos.y += MapUpP.y;		
 
 			TileInfos[y][x].Pos = vPos;
 			TileInfos[y][x].Index = num;
@@ -171,8 +167,6 @@ void MapEditor::Clear()
 {
 	TileInfos.clear();
 }
-
-
 
 bool MapEditor::IsOver(int _X, int _Y) const
 {
@@ -189,8 +183,6 @@ bool MapEditor::IsOver(int _X, int _Y) const
 	return false;
 }
 
-
-
 size_t MapEditor::GetTIleIndex(const float4& _Pos)
 {
 	int X = -1;
@@ -201,9 +193,9 @@ size_t MapEditor::GetTIleIndex(const float4& _Pos)
 	if (true == TileInfos.empty())
 	{
 		//MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
-		return -1;
 		x = -1;
 		y = -1;
+		return -1;
 	}
 
 	// 인덱스 오버
@@ -231,23 +223,22 @@ TileInfo* MapEditor::GetTIleInfo(const float4& _Pos)
 		//MsgAssert("CreateTileMap을 먼저 호출해주셔야 합니다.");
 		return nullptr;
 	}
-
 	// 인덱스 오버
 	if (true == IsOver(X, Y))
 	{
-		//MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
+		MsgAssert("타일맵 크기를 초과해 접근하려 했습니다");
 		return nullptr;
 	}
-
 	return &TileInfos[Y][X];
 }
 float4 MapEditor::PosToTilePos(float4 _Pos)
 {
 	int X = -1;
 	int Y = -1;
+	_Pos -= MapUpP;
 	X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
 	Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
-	float4 ReturnPos;
+	/*float4 ReturnPos;
 	ReturnPos.x = (X * TileSizeH.x) - (Y * TileSizeH.x);
 	ReturnPos.y = -(X * TileSizeH.y) - (Y * TileSizeH.y);
 	if (ReturnPos.y > 0)
@@ -258,11 +249,13 @@ float4 MapEditor::PosToTilePos(float4 _Pos)
 	else
 	{
 		ReturnPos.y -= TileSizeH.y;
+	}*/
+	if (X >= 0 && Y >= 0)
+	{
+		return TileInfos[Y][X].Pos;
 	}
 
-
-	//ReturnPos = TileInfos[Y][X].Pos;
-	return ReturnPos;
+	//return ReturnPos;
 
 }
 
@@ -313,10 +306,16 @@ void MapEditor::FSMInit()
 		.End = []() {}
 		}
 	);
-
-	FSM.ChangeState("IsMove");
+	FSM.CreateState(
+		{ .Name = "Default",
+		.Start = [this]() {},
+		.Update =[this](float _DeltaTime){}
+		,
+		.End = []() {}
+		}
+	);
+	FSM.ChangeState("Default");
 }
-
 
 
 void MapEditor::Render(float _Delta)
