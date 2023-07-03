@@ -56,7 +56,7 @@ void MapOverlay::Start()
 	////IsoTileScale.x = MapRightP.x / s/2;
 	//
 	//TileMap = CreateComponent<GameEngineTileMapRenderer>();
-	//TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(), IsoTileScale, IsoTileScale*1.2f,TileMapMode::Iso);
+	//TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(),0 ,IsoTileScale, IsoTileScale*1.2f,TileMapMode::Iso);
 	//TileMap->TilemapCullingOn();
 	//for (size_t y = 0; y < TileMap->GetCount().y; y++)
 	//{

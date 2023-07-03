@@ -63,7 +63,7 @@ int num3 = 0;
 void GameEngineSerializer::Read(void* _Ptr, size_t _Size)
 {
 	//  1024             1023   + 4
-	if (Datas.size() <= Offset + _Size)
+	if (Datas.size() < Offset + _Size)
 	{
 		MsgAssert("데이터의 한도이상으로 읽으려고 했습니다.");
 	}

@@ -24,7 +24,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	float sda = acosf(float(0.5))*GameEngineMath::RadToDeg;
 
 	{
-		GameEngineDirectory NewDir;
+		/*GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentsBin");
 		NewDir.Move("ContentsBin");
 		
@@ -41,7 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		std::string Str2;
 		ss.Read(Str2);
 
-		int a = 0;
+		int a = 0;*/
 		
 
 	}

@@ -63,15 +63,15 @@ void Ksword::Start()
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
-	FOVCollision = CreateComponent<GameEngineCollision>();
+	/*FOVCollision = CreateComponent<GameEngineCollision>();
 	FOVCollision->GetTransform()->SetLocalScale({ FightFOV,0,1.f });
 	FOVCollision->SetColType(ColType::SPHERE2D);
-	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));
-	//FOVCollision->DebugOn();
+	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
 	
 
 	Unit::Start();
 	MyTeam = Team::Ally;
+	Speed = 500.f;
 }
 
 // 이건 디버깅용도나 

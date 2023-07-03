@@ -36,7 +36,7 @@ void UIButton::Start()
 	//Collision = CreateComponent<GameEngineCollision>();
 	Render0->GetTransform()->SetLocalScale({ 50.f,50.f });
 	TileMap = CreateComponent<GameEngineTileMapRenderer>(1);
-	TileMap->CreateTileMap(3,3,{46.f,37.f});
+	TileMap->CreateTileMap(3,3,-1.f,{46.f,37.f});
 	int num = 0;
 	for (int y = TileMap->GetCount().y - 1; y >= 0; y--)
 	{
