@@ -65,7 +65,6 @@ public:
 
 	// 랜더타겟에다가 effect를 준다는 개념이 됩니다.
 
-	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
 
 	template<typename EffectType>
 	std::shared_ptr<EffectType> CreateEffect()
@@ -116,5 +115,7 @@ private:
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 
 	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
+
+	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
 
 };

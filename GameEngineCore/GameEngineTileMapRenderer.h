@@ -15,7 +15,6 @@ class Tile
 public:
 	GameEngineSprite* Sprite;
 	size_t Index = 0;
-	int count = 0;
 };
 
 // Ό³Έν :
@@ -62,11 +61,7 @@ public:
 	{
 		IsTilemapCulling = false;
 	}
-	void AddCount(float4 _Pos);
 
-	void SubCount(float4 _Pos);
-
-	int GetCount(float4 _Pos);
 protected:
 	void Render(float _Delta) override;
 
@@ -76,7 +71,6 @@ private:
 	std::vector<std::vector<Tile>> Tiles;
 	float4 MapCount;
 	float4 AtlasData;
-	float4 Clip = float4::One;
 	float4 TileSize;
 	float4 RenderSize;
 	float4 TileSizeH;

@@ -565,3 +565,13 @@ void GameEngineTexture::ReLoad()
 
 	ResLoad(GetPath());
 }
+
+//void GameEngineTexture::SetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor)
+//{
+//	const DirectX::Image* Ptr = Image.GetImages();
+//
+//	//Ptr->pixels[0] = 0;
+//	//Ptr->pixels[1] = 0;
+//	//Ptr->pixels[2] = 0;
+//	//Ptr->pixels[3] = 0;
+//}
