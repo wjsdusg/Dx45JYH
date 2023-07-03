@@ -73,6 +73,7 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 
 GameEngineRenderer::GameEngineRenderer()
 {
+	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
 }
 
 GameEngineRenderer::~GameEngineRenderer()
@@ -99,6 +100,9 @@ void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
 
 void GameEngineRenderer::Render(float _Delta)
 {
+	BaseValue.Time.x += _Delta;
+	BaseValue.Time.y = _Delta;
+
 	// GameEngineDevice::GetContext()->VSSetConstantBuffers();
 	// GameEngineDevice::GetContext()->PSSetConstantBuffers();
 
@@ -196,6 +200,10 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name, int _index)
 		Unit->ShaderResHelper.SetConstantBufferLink("TransformData", Data);
 	}
 
+	if (true == Unit->ShaderResHelper.IsConstantBuffer("RenderBaseValue"))
+	{
+		Unit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
+	}
 
 	GetTransform()->GetWorldMatrix();
 }

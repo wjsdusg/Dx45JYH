@@ -4,6 +4,13 @@
 #include "EngineContentRenderingStruct.h"
 #include <map>
 
+class AnimationStartEvent
+{
+public:
+	bool IsEvent = false;
+	std::function<void()> Function;
+};
+
 class AnimationInfo : public std::enable_shared_from_this<AnimationInfo>
 {
 	friend class GameEngineSpriteRenderer;
@@ -44,7 +51,7 @@ public:
 	std::vector<float> FrameTime = std::vector<float>();
 
 	std::map<size_t, std::function<void()>> UpdateEventFunction;
-	std::map<size_t, std::function<void()>> StartEventFunction;
+	std::map<size_t, AnimationStartEvent> StartEventFunction;
 
 	bool IsEnd();
 };

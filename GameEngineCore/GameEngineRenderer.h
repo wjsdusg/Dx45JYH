@@ -23,6 +23,14 @@ public:
 };
 
 
+class RenderBaseValue
+{
+public:
+	float4 Time;
+	float4 ScreenScale;
+	float4 Mouse;
+};
+
 // 설명 :
 class GameEngineRenderer : public GameEngineComponent
 {
@@ -93,6 +101,8 @@ private:
 	//// GameEngineShaderResHelper 가 합쳐져야 랜더링 이 되는 식이 됩니다.
 	//std::shared_ptr<class GameEngineRenderingPipeLine> Pipe;
 	//GameEngineShaderResHelper ShaderResHelper;
+
+	RenderBaseValue BaseValue;
 
 	void RenderTransformUpdate(GameEngineCamera* _Camera);
 };
