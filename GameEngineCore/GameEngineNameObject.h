@@ -25,6 +25,11 @@ public:
 		return Name.c_str();
 	}
 
+	std::string GetNameToString()
+	{
+		return Name;
+	}
+
 
 protected:
 
