@@ -18,8 +18,15 @@ void MapEditor::Update(float _DeltaTime)
 {
 	float4 Pos= Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
 	//Pos -= MapUpP;
-	float4 sd = PosToTilePos(Pos);
-	Render0->GetTransform()->SetWorldPosition(sd);
+	if (true==Render0->IsUpdate())
+	{
+		float4 sd = PosToTilePos(Pos);
+		Render0->GetTransform()->SetWorldPosition(sd);		
+	}
+	else
+	{
+		int a = 0;
+	}
 
 	FSM.Update(_DeltaTime);
 	NewObject->GetTransform()->SetWorldPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
