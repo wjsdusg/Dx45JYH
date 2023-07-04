@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineFSM.h>
 // Ό³Έν :
 
 class UIButton : public GameEngineActor
@@ -29,16 +30,15 @@ private:
 	std::shared_ptr<class GameEngineUIRenderer> Render3;
 	std::shared_ptr<class GameEngineUIRenderer> Render4;
 	std::shared_ptr<class GameEngineUIRenderer> Render5;
-	std::shared_ptr<class GameEngineFontRenderer> FontRender0;
-	std::shared_ptr<class GameEngineFontRenderer> FontRender1;
-	std::shared_ptr<class GameEngineFontRenderer> FontRender2;
-	std::shared_ptr<class GameEngineFontRenderer> FontRender3;
-	std::shared_ptr<class GameEngineFontRenderer> FontRender4;
-	std::shared_ptr<class GameEngineFontRenderer> FontRender5;
+	
 	std::shared_ptr<class GameEngineUIRenderer> ColRender;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
+	class GameEngineFSM FSM;
+	void FSMInit();
 	float x = 55.f;
 	float y = 46.f;
+	
+	
 };
 
