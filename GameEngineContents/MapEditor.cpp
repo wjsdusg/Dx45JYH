@@ -21,7 +21,7 @@ void MapEditor::Update(float _DeltaTime)
 	if (true==Render0->IsUpdate())
 	{
 		float4 sd = PosToTilePos(Pos);
-		Render0->GetTransform()->SetWorldPosition(sd);		
+		Render0->GetTransform()->SetWorldPosition(sd);
 	}
 	else
 	{
@@ -29,7 +29,7 @@ void MapEditor::Update(float _DeltaTime)
 	}
 
 	FSM.Update(_DeltaTime);
-	NewObject->GetTransform()->SetWorldPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
+	NewObject->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
 		
 	if (0 < MoveMarks.size())
 	{
@@ -103,7 +103,7 @@ void MapEditor::Start()
 	Render0->Off();
 	FSMInit();
 	NewObject = CreateComponent<GameEngineComponent>();
-	GameEngineFont::Load("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
+	
 	{
 		{
 			FontRender0 = CreateComponent<GameEngineFontRenderer>();

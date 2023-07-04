@@ -49,7 +49,7 @@ void Karcher::Start()
 	Render0->CreateAnimation({ "LMove", "archerk.png",88,95});
 	Render0->CreateAnimation({ "LUp45Move", "archerk.png",96,103});
 	Render0->CreateAnimation({ "UpMove", "archerk.png",104,111});
-	Render0->CreateAnimation({ "DownMove", "archerk.png",112,114});
+	Render0->CreateAnimation({ "DownMove", "archerk.png",112,119});
 
 	Render0->CreateAnimation({ "LDown45Attack", "archerk.png",120,127,AttackSpeed/8.f});
 	Render0->CreateAnimation({ "LAttack", "archerk.png",128,135,AttackSpeed / 8.f });

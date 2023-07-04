@@ -442,6 +442,7 @@ void PlayLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	//std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+	GameEngineFont::Load("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
 	Map1 = CreateActor<Map>();
 	
 	NewUIPannel = CreateActor<UIPannel>();
@@ -459,7 +460,7 @@ void PlayLevel::Start()
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
 	
 	NewUIButton = CreateActor<UIButton>();
-
+	NewUIButton->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	{
 		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>();
 		Button->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition());

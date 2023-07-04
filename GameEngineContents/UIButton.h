@@ -23,8 +23,22 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+	std::shared_ptr<class GameEngineUIRenderer> Render0;
+	std::shared_ptr<class GameEngineUIRenderer> Render1;
+	std::shared_ptr<class GameEngineUIRenderer> Render2;
+	std::shared_ptr<class GameEngineUIRenderer> Render3;
+	std::shared_ptr<class GameEngineUIRenderer> Render4;
+	std::shared_ptr<class GameEngineUIRenderer> Render5;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender0;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender1;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender2;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender3;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender4;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender5;
+	std::shared_ptr<class GameEngineUIRenderer> ColRender;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
+	float x = 55.f;
+	float y = 46.f;
 };
 
