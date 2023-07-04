@@ -72,12 +72,15 @@ void Mouse::Update(float _DeltaTime)
 		}		
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 		{
-			if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f)
+			if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f && CopyUnit->MyTeam == Team::Mine)
 			{
 				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 				for (auto Start = Units.begin(); Start != Units.end(); Start++)
 				{
-					(*Start)->SetIsClick(true);
+					if ((*Start)->MyTeam == Team::Mine)
+					{
+						(*Start)->SetIsClick(true);
+					}
 				}
 			}
 			else
@@ -109,8 +112,7 @@ void Mouse::Update(float _DeltaTime)
 		}			
 	}
 	else
-	{
-		
+	{		
 		Render0->ChangeAnimation("Default");
 	}
 	if (nullptr!= CopyUnit&&CopyUnit->GetIsClick() == true)

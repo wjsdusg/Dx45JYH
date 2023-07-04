@@ -5,6 +5,7 @@
 class Unit : public Object
 {
 	friend class DragBox;
+	friend class Mouse;
 public:
 	// constrcuter destructer
 	Unit();
