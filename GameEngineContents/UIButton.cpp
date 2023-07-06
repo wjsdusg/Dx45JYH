@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "ContentsEnum.h"
 
+UIButton* UIButton::MainUIButton=nullptr;
 
 UIButton::UIButton()
 {
@@ -34,11 +35,9 @@ void UIButton::Start()
 		NewDir.Move("Texture");
 		NewDir.Move("Button");
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("button.png").GetFullPath(), 17, 17);
-	}
-	
+	}	
 	FSMInit();
-	 
-
+	MainUIButton = this;
 }
 
 
@@ -94,9 +93,7 @@ void UIButton::FSMInit()
 			Mouse *= Proj.InverseReturn();
 			Mouse *= View.InverseReturn();
 			CollisionData MouseData;
-			MouseData.SPHERE.Center = Mouse.DirectFloat3;
-			float4 sdsdas = Render0->GetTransform()->GetLocalPosition();
-			float4 sdsdas2 = Render0->GetTransform()->GetWorldPosition();
+			MouseData.SPHERE.Center = Mouse.DirectFloat3;			
 			MouseData.SPHERE.Radius = 0.0f;
 			CollisionData asd = Render0->GetTransform()->GetCollisionData();
 				int a = 0;
@@ -105,6 +102,34 @@ void UIButton::FSMInit()
 				ColRender->On();
 				ColRender->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+			}
+			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render1->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				ColRender->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
+			}
+			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render2->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				ColRender->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
+			}
+			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render3->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				ColRender->GetTransform()->SetLocalScale(Render3->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render3->GetTransform()->GetLocalPosition());
+			}
+			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render4->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				ColRender->GetTransform()->SetLocalScale(Render4->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render4->GetTransform()->GetLocalPosition());
+			}
+			else 
+			{
+				ColRender->Off();
 			}
 		},
 		.End = [this]()

@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineFSM.h>
 // Ό³Έν :
 
 class Mouse : public GameEngineActor
@@ -32,11 +33,13 @@ protected:
 private:
 	std::shared_ptr<class GameEngineUIRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseMarkRender;
+	GameEngineFSM FSM;
+	void FSMInit();
 	float4 MousePos = float4::Zero;
 	CollisionData MouseData;
 	float DoubleClickTimer= 0;
 	std::shared_ptr<class Unit> CopyUnit = nullptr;
 	bool AnimationEnd = false;
-
+	bool IsUICollision = false;
 };
 

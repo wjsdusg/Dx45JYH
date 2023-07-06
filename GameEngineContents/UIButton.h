@@ -18,6 +18,7 @@ public:
 	UIButton& operator=(const UIButton& _Other) = delete;
 	UIButton& operator=(UIButton&& _Other) noexcept = delete;
 	
+	static UIButton* MainUIButton;
 protected:
 	void Start();
 	void Update(float _DeltaTime);

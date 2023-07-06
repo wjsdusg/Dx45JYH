@@ -45,11 +45,10 @@ void Unit::Update(float _DeltaTime)
 	
 	if (true == IsClick)
 	{
-		if (nullptr == SelectionCircle)
+		if (false == SelectionCircle->IsUpdate())
 		{
-			SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
+			SelectionCircle->On();
 			SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f });
-
 			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
 	}
@@ -57,9 +56,7 @@ void Unit::Update(float _DeltaTime)
 	{
 		if (nullptr != SelectionCircle)
 		{
-			SelectionCircle->Death();
-			SelectionCircle = nullptr;
-
+			SelectionCircle->Off();
 		}
 	}
 
@@ -104,6 +101,8 @@ void Unit::Start()
 	Units.push_back(DynamicThis<Unit>());
 	StateInit();
 	Object::Start();
+	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
+	SelectionCircle->Off();
 	//CreateTileFOV(GetTransform()->GetLocalPosition());
 }
 
