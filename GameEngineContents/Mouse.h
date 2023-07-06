@@ -41,5 +41,7 @@ private:
 	std::shared_ptr<class Unit> CopyUnit = nullptr;
 	bool AnimationEnd = false;
 	bool IsUICollision = false;
+	std::shared_ptr<class DragBox> NewDragBox;
+	int ID = -1;
 };
 

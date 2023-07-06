@@ -6,6 +6,8 @@
 #include "ContentsEnum.h"
 #include "UIButton.h"
 #include "Unit.h"
+#include "Object.h"
+#include "DragBox.h"
 Mouse* Mouse::NewMainMouse;
 extern float4 MainMouse;
 Mouse::Mouse()
@@ -57,20 +59,7 @@ void Mouse::Update(float _DeltaTime)
 	/*MouseData.SPHERE.Center = MainMouse.DirectFloat3;
 	MouseData.SPHERE.Radius = 0.0f;*/
 
-	/*if(false==Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)&& true == GameEngineInput::IsUp("EngineMouseLeft"))
-	{
-		if (nullptr != CopyUnit)
-		{
-			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-			for (auto Start = Units.begin(); Start != Units.end(); Start++)
-			{
-				(*Start)->SetIsClick(false);
-			}
 
-			CopyUnit = nullptr;
-		}
-
-	}*/
 
 	if (Render0->IsAnimationEnd())
 	{
@@ -125,6 +114,9 @@ void Mouse::Start()
 	Collision->GetTransform()->SetLocalScale({ 1.f,1.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Mouse));
 	FSMInit();
+	NewDragBox = GetLevel()->CreateActor<DragBox>();
+	NewDragBox->Off();
+
 }
 
 void Mouse::GetMoveMark(float4 _Pos)
@@ -154,57 +146,108 @@ void Mouse::FSMInit()
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
-			if (AnimationEnd == false)
-			{
-				Render0->ChangeAnimation("MyTeamCusor");
-				AnimationEnd = true;
-			}
-			if (true == GameEngineInput::IsUp("EngineMouseLeft"))
-			{
-				if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f)
+				if (AnimationEnd == false)
 				{
-					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-					for (auto Start = Units.begin(); Start != Units.end(); Start++)
+					Render0->ChangeAnimation("MyTeamCusor");
+					AnimationEnd = true;
+				}
+				bool check = false;
+				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					if (nullptr != CopyUnit)
 					{
-						(*Start)->SetIsClick(true);
+						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+						{
+							std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
+							if (ID == NewUnit->UnitID)
+							{
+								check = true;
+							}
+						
+						}
+					}
+
+					if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f&&true==check)
+					{
+						std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+						for (auto Start = Units.begin(); Start != Units.end(); Start++)
+						{
+							if ((*Start)->MyTeam == Team::Mine)
+							{
+								(*Start)->SetIsClick(true);
+							}
+						}
+					}
+					else
+					{
+						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+						{
+							std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
+							if (nullptr == NewUnit)
+							{
+								continue;
+							}
+							/*if (MinDIstance > GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition()))
+							{
+								MinDIstance = GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition());
+							}*/
+								CopyUnit = NewUnit;
+								ID = CopyUnit->UnitID;
+						}
+
+					if (nullptr != CopyUnit)
+					{
+						std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+						for (auto Start = Units.begin(); Start != Units.end(); Start++)
+						{
+							(*Start)->SetIsClick(false);
+						}
+						CopyUnit->SetIsClick(true);
+						DoubleClickTimer = 0.f;
+					}
 					}
 				}
-				else
+			}
+			else
+			{
+				Render0->ChangeAnimation("Default");
+			}
+			if (nullptr != CopyUnit && CopyUnit->GetIsClick() == true)
+			{
+				DoubleClickTimer += _DeltaTime;
+			}
+
+			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
+			{
+				if (false == NewDragBox->IsUpdate())
 				{
-					for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-					{
-						std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-						if (nullptr == NewUnit)
-						{
-							continue;
-						}
-						if (MinDIstance > GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition()))
-						{
-							MinDIstance = GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition());
-							CopyUnit = NewUnit;
-						}
-					}
+					NewDragBox->On();
+					NewDragBox->SetMousePos(Collision->GetTransform()->GetLocalPosition());
+				}
+				NewDragBox->SetMouseMovePos(Collision->GetTransform()->GetLocalPosition());
+				if (120.f < NewDragBox->Area)
+				{
+					FSM.ChangeState("DragBoxOn");
+				}
+			}
+			else
+			{
+				NewDragBox->Off();
+			}
+		
+			if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)&& GameEngineInput::IsUp("EngineMouseLeft"))
+			{
+				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+				for (auto Start = Units.begin(); Start != Units.end(); Start++)
+				{
+					(*Start)->SetIsClick(false);
+				}
 				if (nullptr != CopyUnit)
 				{
-					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-					for (auto Start = Units.begin(); Start != Units.end(); Start++)
-					{
-						(*Start)->SetIsClick(false);
-					}
-					CopyUnit->SetIsClick(true);
-					DoubleClickTimer = 0.f;
+					CopyUnit = nullptr;
 				}
-			}
-		}
-		}
-		else
-		{
-			Render0->ChangeAnimation("Default");
-		}
-		if (nullptr != CopyUnit && CopyUnit->GetIsClick() == true)
-		{
-			DoubleClickTimer += _DeltaTime;
-		}
+			}			
+
 		}
 		,
 		.End = []() {}
@@ -238,6 +281,33 @@ void Mouse::FSMInit()
 		.Update = [this](float _DeltaTime) {}
 		,
 		.End = []() {}
+		}
+	);
+	FSM.CreateState
+	(
+		{
+			.Name = "DragBoxOn",
+		.Start = [this]()
+		{
+
+		}
+		,
+		.Update = [this](float _DeltaTime)
+		{
+			NewDragBox->SetMouseMovePos(Collision->GetTransform()->GetLocalPosition());
+			if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+			{
+				NewDragBox->AllCollision();
+				FSM.ChangeState("Default");
+			}
+
+		}
+		,
+		.End = [this]()
+		{
+			NewDragBox->Area = 0;
+			NewDragBox->Off();
+		}
 		}
 	);
 	FSM.ChangeState("Default");

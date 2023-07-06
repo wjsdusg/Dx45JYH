@@ -36,7 +36,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> EnemyFOVCollision;
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
-	int Id;
+	
 	float Angle = 0.0f;
 	Team MyTeam = Team::Max;
 	Field MyField = Field::Max;

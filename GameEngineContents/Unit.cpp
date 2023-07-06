@@ -19,7 +19,7 @@ std::vector<std::shared_ptr<Unit>> Unit::GetUnits()
 int num = 0;
 Unit::Unit()
 {
-	Id = num;
+	UnitID = num;
 	num++;
 	
 }

@@ -18,7 +18,6 @@
 #include "MiniMap.h"
 #include "MapOverlay.h"
 #include "Ksword.h"
-#include "DragBox.h"
 #include "Karcher.h"
 #include "Monster_01.h"
 #include "Frog.h"
@@ -47,7 +46,7 @@
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
-std::shared_ptr<DragBox> NewDragBox = nullptr;
+
 std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
 std::shared_ptr<MiniMap> NewMiniMap = nullptr;
@@ -117,7 +116,6 @@ void PlayLevel::Update(float _DeltaTime)
 	}
 	{
 		std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
-
 		// ·£´õ·¯ 
 		float4x4 ViewPort = Camera->GetViewPort();
 		float4x4 Proj = Camera->GetProjection();
@@ -308,31 +306,6 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 		}
 	}
 
-	{
-		if (nullptr != NewDragBox && true == NewDragBox->IsDeath())
-		{
-			NewDragBox = nullptr;
-		}
-		if (true == GameEngineInput::IsPress("EngineMouseLeft"))
-		{
-			if (nullptr == NewDragBox)
-			{
-				NewDragBox = CreateActor<DragBox>();
-				NewDragBox->SetMousePos(MainMouse);
-			}
-			NewDragBox->SetMouseMovePos(MainMouse);
-		}
-		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
-		{
-			if (nullptr != NewDragBox)
-			{
-				NewDragBox->AllCollision();
-
-				/*NewDragBox->Death();
-				NewDragBox = nullptr;*/
-			}
-		}
-	}
 		
 	
 	if (true == GameEngineInput::IsUp("Space"))

@@ -4,7 +4,7 @@
 
 class DragBox : public GameEngineActor
 {
-	friend class PlayLevel;
+	friend class Mouse;
 public:
 	// constrcuter destructer
 	DragBox();
@@ -15,11 +15,11 @@ public:
 	DragBox(DragBox&& _Other) noexcept = delete;
 	DragBox& operator=(const DragBox& _Other) = delete;
 	DragBox& operator=(DragBox&& _Other) noexcept = delete;
-	void SetMousePos(float4 _Pos)
+	inline void SetMousePos(float4 _Pos)
 	{
 		MousePos = _Pos;
 	}
-	void SetMouseMovePos(float4 _Pos)
+	inline void SetMouseMovePos(float4 _Pos)
 	{
 		MouseMovePos = _Pos;
 	}
@@ -34,6 +34,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> Collision;
 	float4 MousePos;
 	float4 MouseMovePos;
+	float Area=0;
 	bool check = false;
 
 };
