@@ -8,6 +8,7 @@
 
 class Object : public GameEngineActor
 {
+	friend class Mouse;
 public:
 	// constrcuter destructer
 	Object();
@@ -30,14 +31,15 @@ protected:
 	void Render(float _DeltaTime) {}
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
-	float Angle = 0.0f;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
 	std::shared_ptr<class GameEngineCollision> EnemyFOVCollision;
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
 	int Id;
+	float Angle = 0.0f;
 	Team MyTeam = Team::Max;
+	Field MyField = Field::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
 	float FightFOV = 300.f;

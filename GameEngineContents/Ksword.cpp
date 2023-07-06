@@ -70,7 +70,7 @@ void Ksword::Start()
 	
 
 	Unit::Start();
-	MyTeam = Team::Ally;
+	MyTeam = Team::Mine;
 	Speed = 500.f;
 }
 

@@ -20,7 +20,15 @@ enum class ColEnum
 
 enum class Team
 {
+	Mine,
 	Ally,
 	Enemy,
+	Max
+};
+
+enum class Field
+{
+	DungeonMap,
+	DefenseMap,
 	Max
 };
