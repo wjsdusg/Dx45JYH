@@ -155,5 +155,5 @@ void UIButton::FSMInit()
 		.End = []() {}
 		}
 	);
-	FSM.ChangeState("UnitControl");
+	FSM.ChangeState("Default");
 }

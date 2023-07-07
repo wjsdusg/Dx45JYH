@@ -8,6 +8,7 @@
 #include "Unit.h"
 #include "Object.h"
 #include "DragBox.h"
+#include "UIButton.h"
 Mouse* Mouse::NewMainMouse;
 extern float4 MainMouse;
 Mouse::Mouse()
@@ -114,6 +115,7 @@ void Mouse::Start()
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 1.f,1.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Mouse));
+	Collision->SetColType(ColType::SPHERE2D);
 	NewDragBox = GetLevel()->CreateActor<DragBox>();
 	NewDragBox->Off();
 	FSMInit();
@@ -143,10 +145,17 @@ void Mouse::FSMInit()
 		.Start = [this]() 
 		{
 			NewDragBox->Area = 0;
+			UIButton::MainUIButton->FSM.ChangeState("Default");
 		},
 		.Update = [this](float _DeltaTime)
-		{			
+		{
+
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+
+			if (nullptr!=Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				return;
+			}			
 			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
 				if (AnimationEnd == false)
@@ -212,20 +221,14 @@ void Mouse::FSMInit()
 		{
 			NewDragBox->Area = 0;
 			DoubleClickTimer = 0.f;
+			UIButton::MainUIButton->FSM.ChangeState("UnitControl");
 		},
 		.Update = [this](float _DeltaTime) 
 		{
-			////·»´õ
-			//
-			//if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
-			//{
-			//	if (AnimationEnd == false)
-			//	{
-			//		Render0->ChangeAnimation("MyTeamCusor");
-			//		AnimationEnd = true;
-			//	}				
-			//}
-			
+			if (nullptr != Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				return;
+			}
 			if (nullptr == CopyUnit)
 			{
 				FSM.ChangeState("Default");
@@ -344,9 +347,14 @@ void Mouse::FSMInit()
 		{
 			CopyUnit = nullptr;
 			NewDragBox->Area = 0;
+			UIButton::MainUIButton->FSM.ChangeState("UnitControl");
 		},
 		.Update = [this](float _DeltaTime)
 		{
+			if (nullptr != Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				return;
+			}
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
@@ -445,7 +453,7 @@ void Mouse::FSMInit()
 	FSM.CreateState
 	(
 		{
-			.Name = "DragBoxOn",
+		.Name = "DragBoxOn",
 		.Start = [this]()
 		{
 

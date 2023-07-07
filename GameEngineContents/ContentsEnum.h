@@ -15,6 +15,7 @@ enum class ColEnum
 	Enemy,
 	EnemyFOV,
 	Mouse,
+	UIPannel,
 	Max
 };
 

@@ -6,7 +6,7 @@
 
 class UIButton : public GameEngineActor
 {
-	friend class PlayLevel;
+	friend class Mouse;
 public:
 	// constrcuter destructer
 	UIButton();

@@ -64,9 +64,6 @@
     <ClInclude Include="ContentsEnum.h">
       <Filter>Enum</Filter>
     </ClInclude>
-    <ClInclude Include="UIPannel.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -218,6 +215,9 @@
     <ClInclude Include="MapEditor.h">
       <Filter>MapEditor</Filter>
     </ClInclude>
+    <ClInclude Include="UIPannel.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -241,9 +241,6 @@
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="UIPannel.cpp">
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="MapOverlay.cpp">
@@ -392,6 +389,9 @@
     </ClCompile>
     <ClCompile Include="MapEditor.cpp">
       <Filter>MapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UIPannel.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
