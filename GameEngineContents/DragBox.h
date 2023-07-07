@@ -23,7 +23,7 @@ public:
 	{
 		MouseMovePos = _Pos;
 	}
-	void AllCollision();
+	bool AllCollision();
 protected:
 	void Start();
 	void Update(float _DeltaTime);

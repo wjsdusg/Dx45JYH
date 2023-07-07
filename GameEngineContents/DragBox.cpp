@@ -38,10 +38,10 @@ void DragBox::Start()
 	Collision = CreateComponent<GameEngineCollision>();
 }
 
-void DragBox::AllCollision()
+bool DragBox::AllCollision()
 {
 	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-
+	check = false;
 	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -63,7 +63,7 @@ void DragBox::AllCollision()
 		}
 	}
 	//float4 pos = Collision->GetTransform()->GetLocalScale();
-	check = false;
+	return check;
 }
 
 void DragBox::Render(float _DeltaTime)
