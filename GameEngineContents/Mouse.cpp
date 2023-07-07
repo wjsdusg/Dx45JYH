@@ -40,6 +40,7 @@ void Mouse::Update(float _DeltaTime)
 		Pos.y -= Render0->GetTransform()->GetLocalScale().y / 2;
 		Pos.z = -1.f;
 		Render0->GetTransform()->SetLocalPosition(Pos);
+
 	}
 	{
 		std::shared_ptr<GameEngineCamera> Camera = GetLevel()->GetMainCamera();
@@ -56,7 +57,7 @@ void Mouse::Update(float _DeltaTime)
 		Pos *= View.InverseReturn();
 		Collision->GetTransform()->SetLocalPosition(Pos);
 	}
-	if (nullptr==CopyUnit||true == CopyUnit->IsDeath())
+	if (nullptr == CopyUnit || true == CopyUnit->IsDeath())
 	{
 		CopyUnit = nullptr;
 	}
@@ -108,10 +109,37 @@ void Mouse::Start()
 	Render0->CreateAnimation({ "EnemyCursor", "eventmark.png",0,3, });
 	Render0->CreateAnimation({ "AClick", "mouse.png",60,60 });
 	Render0->CreateAnimation({ "Default", "mouse.png",80,80 });
-	Render0->CreateAnimation({ "DefaultClcik", "mouse.png",80,81, });
+	Render0->CreateAnimation({ "DefaultClcik", "mouse.png",80,81,0.1f,false });
 	Render0->CreateAnimation({ "MClick", "mouse.png",100,100 });
 	Render0->ChangeAnimation("Default");
-
+	Render0->SetAnimationUpdateEvent("MyTeamCusor", 0, [this]()
+		{
+			float4 Pos = float4::Zero;
+			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
+			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
+			Render0->GetTransform()->AddLocalPosition(Pos);
+		});
+	Render0->SetAnimationUpdateEvent("MyTeamCusor", 1, [this]()
+		{
+			float4 Pos = float4::Zero;
+			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
+			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
+			Render0->GetTransform()->AddLocalPosition(Pos);
+		});
+	Render0->SetAnimationUpdateEvent("MyTeamCusor", 2, [this]()
+		{
+			float4 Pos = float4::Zero;
+			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
+			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
+			Render0->GetTransform()->AddLocalPosition(Pos);
+		});
+	Render0->SetAnimationUpdateEvent("MyTeamCusor", 3, [this]()
+		{
+			float4 Pos = float4::Zero;
+			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
+			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
+			Render0->GetTransform()->AddLocalPosition(Pos);
+		});
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 1.f,1.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Mouse));
@@ -142,9 +170,10 @@ void Mouse::FSMInit()
 	(
 		{
 			.Name = "Default",
-		.Start = [this]() 
+		.Start = [this]()
 		{
 			NewDragBox->Area = 0;
+			Render0->ChangeAnimation("Default");
 			UIButton::MainUIButton->FSM.ChangeState("Default");
 		},
 		.Update = [this](float _DeltaTime)
@@ -152,27 +181,29 @@ void Mouse::FSMInit()
 
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
-			if (nullptr!=Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
+			if (nullptr != Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
 			{
 				return;
-			}			
+			}
 			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
 				if (AnimationEnd == false)
 				{
 					Render0->ChangeAnimation("MyTeamCusor");
+
+
 					AnimationEnd = true;
 				}
 				bool check = false;
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
-				{						
+				{
 					for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 					{
 						std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
 						if (nullptr == NewUnit)
 						{
 							continue;
-						}						
+						}
 						CopyUnit = NewUnit;
 						ID = CopyUnit->UnitID;
 						std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
@@ -181,15 +212,15 @@ void Mouse::FSMInit()
 							(*Start)->SetIsClick(false);
 						}
 						CopyUnit->SetIsClick(true);
-						
+
 					}
-					FSM.ChangeState("UnitClick");				
+					FSM.ChangeState("UnitClick");
 				}
 			}
 			else
 			{
 				Render0->ChangeAnimation("Default");
-			}			
+			}
 
 			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
 			{
@@ -217,24 +248,24 @@ void Mouse::FSMInit()
 	(
 		{
 			.Name = "UnitClick",
-		.Start = [this]() 
+		.Start = [this]()
 		{
 			NewDragBox->Area = 0;
 			DoubleClickTimer = 0.f;
 			UIButton::MainUIButton->FSM.ChangeState("UnitControl");
 		},
-		.Update = [this](float _DeltaTime) 
+		.Update = [this](float _DeltaTime)
 		{
 			if (nullptr != Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
 			{
 				return;
 			}
+			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			if (nullptr == CopyUnit)
 			{
 				FSM.ChangeState("Default");
-			}
-			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
+			}//유닛클릭
+			else if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
 				if (AnimationEnd == false)
 				{
@@ -291,16 +322,11 @@ void Mouse::FSMInit()
 							CopyUnit->SetIsClick(true);
 							FSM.ChangeState("UnitClick");
 						}
-					
+
 					}
 				}
 			}
-			else
-			{
-				Render0->ChangeAnimation("Default");
-			}
-			
-			if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
+			else if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
 			{
 				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 				for (auto Start = Units.begin(); Start != Units.end(); Start++)
@@ -313,6 +339,11 @@ void Mouse::FSMInit()
 				}
 				Render0->ChangeAnimation("Default");
 			}
+			else
+			{
+				Render0->ChangeAnimation("Default");
+			}
+			//드래그박스
 			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
 			{
 				if (false == NewDragBox->IsUpdate())
@@ -335,7 +366,7 @@ void Mouse::FSMInit()
 		,
 		.End = []()
 			{
-				
+
 			}
 		}
 	);
@@ -355,7 +386,9 @@ void Mouse::FSMInit()
 			{
 				return;
 			}
+			bool check = false;
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+			//유닛클릭시 유닛클릭상태로 이동
 			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
 				if (AnimationEnd == false)
@@ -386,37 +419,43 @@ void Mouse::FSMInit()
 					FSM.ChangeState("UnitClick");
 				}
 			}
-			else
-			{
-				Render0->ChangeAnimation("Default");
-			}
-			
-			if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
+
+			//빈공간클릭시 디폴트상태
+			else if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
 			{
 				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 				for (auto Start = Units.begin(); Start != Units.end(); Start++)
 				{
 					(*Start)->SetIsClick(false);
-				}				
+				}
 				FSM.ChangeState("Default");
 			}
-			//유닛이 한마리라도 클릭중인지 체크
-			bool check = false;
-			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-			for (auto Start = Units.begin(); Start != Units.end(); Start++)
+			//유닛이 한마리라도 클릭중인지 체크			
+			else if (false == check)
 			{
-				if (true == (*Start)->GetIsClick())
+				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+				for (auto Start = Units.begin(); Start != Units.end(); Start++)
 				{
-					check = true;
-					break;
+					if (true == (*Start)->GetIsClick())
+					{
+						check = true;
+						break;
+					}
 				}
-			}
-			if (false == check)
+				if (false == check)
+				{
+					FSM.ChangeState("Default");
+				}
+				else if (true==check&& true == GameEngineInput::IsUp("A"))
+				{
+					FSM.ChangeState("UnitClickAttack");
+				}				
+			}			
+			else
 			{
 				Render0->ChangeAnimation("Default");
 			}
-
-
+			//드래그박스
 			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
 			{
 				if (false == NewDragBox->IsUpdate())
@@ -436,16 +475,6 @@ void Mouse::FSMInit()
 			}
 
 		}
-		,
-		.End = []() {}
-		}
-	);
-	FSM.CreateState
-	(
-		{
-			.Name = "UnitClickNMove",
-		.Start = [this]() {},
-		.Update = [this](float _DeltaTime) {}
 		,
 		.End = []() {}
 		}
@@ -486,6 +515,42 @@ void Mouse::FSMInit()
 			NewDragBox->Area = 0;
 			NewDragBox->Off();
 		}
+		}
+	);
+	FSM.CreateState
+	(
+		{
+			.Name = "UnitClickAttack",
+		.Start = [this]()
+		{
+			Render0->ChangeAnimation("AClick");
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			bool check = false;
+			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+				for (auto Start = Units.begin(); Start != Units.end(); Start++)
+				{
+					if (true == (*Start)->GetIsClick())
+					{
+						check = true;
+						break;
+					}
+				}
+				if (false == check)
+				{
+					FSM.ChangeState("Default");
+				}
+				else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					FSM.ChangeState("UnitsClick");
+
+				}
+
+
+		}
+		,
+		.End = []() {}
 		}
 	);
 	FSM.ChangeState("Default");

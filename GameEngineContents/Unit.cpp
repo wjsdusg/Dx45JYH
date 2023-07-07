@@ -70,8 +70,16 @@ void Unit::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsUp("A") && true == IsClick)
 	{		
-		Mouse::NewMainMouse->Render0->ChangeAnimation("AClick");
-		
+		IsA = true;		
+	}
+	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA)
+	{
+		MousePickPos = MainMouse;
+		TargetPos = MainMouse;
+		IsHold = false;
+		FSM.ChangeState("Move");
+		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
+		IsA = false;
 	}
 	if (true == GameEngineInput::IsUp("H") && true == IsClick)
 	{
