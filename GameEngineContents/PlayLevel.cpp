@@ -403,6 +403,7 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("S", 'S');
 		GameEngineInput::CreateKey("H", 'H'); 
 		GameEngineInput::CreateKey("M", 'M');
+		GameEngineInput::CreateKey("P", 'P');
 		GameEngineInput::CreateKey("F1", VK_F1);
 		GameEngineInput::CreateKey("F2", VK_F2);
 		GameEngineInput::CreateKey("F3", VK_F3);

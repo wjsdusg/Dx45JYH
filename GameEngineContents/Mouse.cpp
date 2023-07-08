@@ -104,7 +104,7 @@ void Mouse::Start()
 	Render0->CreateAnimation({ "RDown45Move", "mouse.png",27,27 });
 	Render0->CreateAnimation({ "RMove", "mouse.png",26,26 });
 	Render0->CreateAnimation({ "RUp45Move", "mouse.png",25,25 });
-
+	Render0->CreateAnimation({ "Patrol", "mouse.png",45,45 });
 	Render0->CreateAnimation({ "MyTeamCusor", "mouse.png",0,3, });
 	Render0->CreateAnimation({ "EnemyCursor", "eventmark.png",0,3, });
 	Render0->CreateAnimation({ "AClick", "mouse.png",60,60 });
@@ -138,6 +138,14 @@ void Mouse::Start()
 			float4 Pos = float4::Zero;
 			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
 			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
+			Render0->GetTransform()->AddLocalPosition(Pos);
+		});
+	Render0->SetAnimationUpdateEvent("Patrol", 1, [this]()
+		{
+			float4 Pos = float4::Zero;
+			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
+			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
+			Pos.x -= 200.f;
 			Render0->GetTransform()->AddLocalPosition(Pos);
 		});
 	Collision = CreateComponent<GameEngineCollision>();
@@ -310,7 +318,7 @@ void Mouse::FSMInit()
 							}
 							/*if (MinDIstance > GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition()))
 							{
-								MinDIstance = GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition());
+								MinDIstance = GetTransform()->GetLoaclPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition());
 							}*/
 							CopyUnit = NewUnit;
 							ID = CopyUnit->UnitID;
@@ -326,6 +334,7 @@ void Mouse::FSMInit()
 					}
 				}
 			}
+			//유닛이 없는데 클릭하면 디폴트상태로 변경
 			else if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
 			{
 				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
@@ -338,6 +347,18 @@ void Mouse::FSMInit()
 					CopyUnit = nullptr;
 				}
 				Render0->ChangeAnimation("Default");
+			}
+			else if (true == GameEngineInput::IsUp("A"))
+			{
+				FSM.ChangeState("UnitClickAttack");
+			}
+			else if (true == GameEngineInput::IsUp("M"))
+			{
+				FSM.ChangeState("UnitClickMove");
+			}
+			else if (true == GameEngineInput::IsUp("P"))
+			{
+				FSM.ChangeState("UnitClickPatrol");
 			}
 			else
 			{
@@ -449,12 +470,21 @@ void Mouse::FSMInit()
 				else if (true==check&& true == GameEngineInput::IsUp("A"))
 				{
 					FSM.ChangeState("UnitClickAttack");
-				}				
+				}	
+				else if (true == check && true == GameEngineInput::IsUp("M"))
+				{
+					FSM.ChangeState("UnitClickMove");
+				}
+				else if (true == check && true == GameEngineInput::IsUp("P"))
+				{
+					FSM.ChangeState("UnitClickPatrol");
+				}
+				else
+				{
+					Render0->ChangeAnimation("Default");
+				}
 			}			
-			else
-			{
-				Render0->ChangeAnimation("Default");
-			}
+			
 			//드래그박스
 			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
 			{
@@ -524,6 +554,78 @@ void Mouse::FSMInit()
 		.Start = [this]()
 		{
 			Render0->ChangeAnimation("AClick");
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			bool check = false;
+			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+				for (auto Start = Units.begin(); Start != Units.end(); Start++)
+				{
+					if (true == (*Start)->GetIsClick())
+					{
+						check = true;
+						break;
+					}
+				}
+				if (false == check)
+				{
+					FSM.ChangeState("Default");
+				}
+				else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					FSM.ChangeState("UnitsClick");
+
+				}
+
+
+		}
+		,
+		.End = []() {}
+		}
+	);
+	FSM.CreateState
+	(
+		{
+			.Name = "UnitClickMove",
+		.Start = [this]()
+		{
+			Render0->ChangeAnimation("Default");
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			bool check = false;
+			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+				for (auto Start = Units.begin(); Start != Units.end(); Start++)
+				{
+					if (true == (*Start)->GetIsClick())
+					{
+						check = true;
+						break;
+					}
+				}
+				if (false == check)
+				{
+					FSM.ChangeState("Default");
+				}
+				else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					FSM.ChangeState("UnitsClick");
+
+				}
+
+
+		}
+		,
+		.End = []() {}
+		}
+	);
+	FSM.CreateState
+	(
+		{
+			.Name = "UnitClickPatrol",
+		.Start = [this]()
+		{
+			Render0->ChangeAnimation("Patrol");
 		},
 		.Update = [this](float _DeltaTime)
 		{

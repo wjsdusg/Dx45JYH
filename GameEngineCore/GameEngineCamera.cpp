@@ -35,7 +35,7 @@ void GameEngineCamera::Start()
 
 		GameEngineInput::CreateKey("CamRot", VK_RBUTTON);
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
-		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
+		//GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
 		GameEngineInput::CreateKey("ProjectionModeChange", 'O');
 	}
 
@@ -74,7 +74,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
+	/*if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
 	{
 		if (GetLevel()->GetMainCamera().get() != this)
 		{
@@ -90,7 +90,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 		else {
 			GetTransform()->SetTransformData(OldData);
 		}
-	}
+	}*/
 
 	if (true == FreeCamera)
 	{
