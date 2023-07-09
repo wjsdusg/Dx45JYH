@@ -6,6 +6,7 @@
 class Mouse : public GameEngineActor
 {
 	friend class Unit;
+	friend class UIButton;
 public:
 	static Mouse* NewMainMouse;
 	// constrcuter destructer

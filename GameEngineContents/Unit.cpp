@@ -68,24 +68,42 @@ void Unit::Update(float _DeltaTime)
 		FSM.ChangeState("Move");
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 	}
-	if (true == GameEngineInput::IsUp("A") && true == IsClick)
-	{		
-		IsA = true;		
+	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
+	{
+		TargetPos = MainMouse;
+		FSM.ChangeState("Move");
+		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
+		IsM = false;
+	}
+	if (true == IsClick && true == GameEngineInput::IsUp("A"))
+	{
+		IsA = true;
 	}
 	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA)
 	{
+		//여기이상함
 		MousePickPos = MainMouse;
-		TargetPos = MainMouse;
-		IsHold = false;
+		TargetPos = MainMouse;		
 		FSM.ChangeState("Move");
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
-		IsA = false;
+		//IsA = false;
+	}
+	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsP)
+	{
+		//여기이상함
+		MousePickPos = MainMouse;
+		TargetPos = MainMouse;
+		FSM.ChangeState("Move");
+		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
+		//IsA = false;
 	}
 	if (true == GameEngineInput::IsUp("H") && true == IsClick)
 	{
 		IsHold = true;
 		FSM.ChangeState("Stay");
 	}
+	
+	
 	{
 		/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
 		for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)

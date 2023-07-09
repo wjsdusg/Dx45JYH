@@ -140,12 +140,11 @@ void Mouse::Start()
 			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
 			Render0->GetTransform()->AddLocalPosition(Pos);
 		});
-	Render0->SetAnimationUpdateEvent("Patrol", 1, [this]()
+	Render0->SetAnimationUpdateEvent("Patrol", 0, [this]()
 		{
 			float4 Pos = float4::Zero;
 			Pos.x -= Render0->GetTransform()->GetLocalScale().x / 2;
-			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;
-			Pos.x -= 200.f;
+			Pos.y += Render0->GetTransform()->GetLocalScale().y / 2;			
 			Render0->GetTransform()->AddLocalPosition(Pos);
 		});
 	Collision = CreateComponent<GameEngineCollision>();
@@ -554,6 +553,7 @@ void Mouse::FSMInit()
 		.Start = [this]()
 		{
 			Render0->ChangeAnimation("AClick");
+			
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -576,11 +576,17 @@ void Mouse::FSMInit()
 					FSM.ChangeState("UnitsClick");
 
 				}
+				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
+				{
+					FSM.ChangeState("UnitsClick");
 
-
+				}
 		}
 		,
-		.End = []() {}
+		.End = []() 
+		{
+			
+		}
 		}
 	);
 	FSM.CreateState
@@ -590,6 +596,7 @@ void Mouse::FSMInit()
 		.Start = [this]()
 		{
 			Render0->ChangeAnimation("Default");
+			
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -612,11 +619,18 @@ void Mouse::FSMInit()
 					FSM.ChangeState("UnitsClick");
 
 				}
+				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
+				{
+					FSM.ChangeState("UnitsClick");
 
+				}
 
 		}
 		,
-		.End = []() {}
+		.End = []() 
+		{
+			
+		}
 		}
 	);
 	FSM.CreateState
@@ -626,6 +640,7 @@ void Mouse::FSMInit()
 		.Start = [this]()
 		{
 			Render0->ChangeAnimation("Patrol");
+			
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -648,11 +663,19 @@ void Mouse::FSMInit()
 					FSM.ChangeState("UnitsClick");
 
 				}
+				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
+				{
+					FSM.ChangeState("UnitsClick");
 
+				}
 
 		}
 		,
-		.End = []() {}
+		.End = []()
+		{
+		
+			
+		}
 		}
 	);
 	FSM.ChangeState("Default");

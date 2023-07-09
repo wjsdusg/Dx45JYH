@@ -9,6 +9,7 @@
 class Object : public GameEngineActor
 {
 	friend class Mouse;
+	friend class UIButton;
 public:
 	// constrcuter destructer
 	Object();

@@ -6,6 +6,7 @@ class Unit : public Object
 {
 	friend class DragBox;
 	friend class Mouse;
+	friend class UIButton;
 public:
 	// constrcuter destructer
 	Unit();
@@ -37,8 +38,10 @@ protected:
 	bool IsMove = false;
 	bool IsFlip = false;
 	bool AnimationEnd = false;
-	bool IsHold = false;
-	bool IsA = false;
+	bool IsHold=false;
+	bool IsA=false;
+	bool IsM=false;
+	bool IsP=false;
 	float Speed = 100.f;
 	float attackRange = 0;
 	float AngleBetween = 0;
