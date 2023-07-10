@@ -2,12 +2,14 @@
 #include "DefenseMapEditor.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
-
+#include "DefenseMap.h"
 #include "Mouse.h"
+#include "Frog.h"
 extern float4 TileScale;
-extern float4 MapUpP;
+
 DefenseMapEditor::DefenseMapEditor()
 {
+
 }
 
 DefenseMapEditor::~DefenseMapEditor()
@@ -17,13 +19,13 @@ DefenseMapEditor::~DefenseMapEditor()
 void DefenseMapEditor::Update(float _DeltaTime)
 {
 	float4 Pos = Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
-	//Pos -= MapUpP;
+	Pos -= DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition();
+	Pos.y -= DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
 	if (true == Render0->IsUpdate())
 	{
 		float4 sd = PosToTilePos(Pos);
 		Render0->GetTransform()->SetWorldPosition(sd);
 	}
-
 	FSM.Update(_DeltaTime);
 	NewObject->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
 
@@ -34,10 +36,9 @@ void DefenseMapEditor::Update(float _DeltaTime)
 			GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), MoveMarks[i]->GetTransform());
 		}
 	}
-	{
-		//여기서 한번뺴주고
-		Pos -= MapUpP;
-		std::string str3 = "MousePos-DefensMapPos " + Pos.ToString();;
+	{		
+		
+		std::string str3 = "MousePos" /*- DefenseMapPosition()*/ + Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition().ToString();//Pos.ToString();;
 		std::string_view MouseConvertTile = str3;
 		FontRender0->SetText(MouseConvertTile);
 	}
@@ -51,9 +52,9 @@ void DefenseMapEditor::Update(float _DeltaTime)
 	{
 		std::string str2 = "PostoTilePos: ";
 		std::string str3 = {};
-		if (nullptr != GetTIleInfo(Pos))
+		if (nullptr != GetDTileInfo(Pos))
 		{
-			str3 = GetTIleInfo(Pos)->Pos.ToString();
+			str3 = GetDTileInfo(Pos)->Pos.ToString();
 		}
 		str2 += str3;
 		std::string_view PostoTilePos = str2;
@@ -69,7 +70,7 @@ void DefenseMapEditor::Update(float _DeltaTime)
 		str2 += str3;
 		str3 = "\n Ismove: ";
 		str2 += str3;
-		if (nullptr != GetTIleInfo(Pos) && true == GetTIleInfo(Pos)->IsMove)
+		if (nullptr != GetDTileInfo(Pos) && true == GetDTileInfo(Pos)->IsMove)
 		{
 			str3 = "T";
 		}
@@ -81,6 +82,31 @@ void DefenseMapEditor::Update(float _DeltaTime)
 		std::string_view Index = str2;
 		FontRender3->SetText(Index);
 	}
+
+	if (5.0f < GetLiveTime())
+	{
+		for (std::pair<const __int64, std::list<MonsterData>>& Pair : MonsterWave)
+		{
+			TileXY MTileXY;
+			MTileXY.XY = Pair.first;
+
+			if (0 == Pair.second.size())
+			{
+				continue;
+			}
+
+			std::list<MonsterData>::iterator DataIter = Pair.second.begin();
+
+			MonsterData MonsterIndex = *DataIter;
+
+			CreateMonster(DTileInfos[MTileXY.Y][MTileXY.X].Pos, MonsterIndex);
+
+			Pair.second.pop_front();
+		}
+
+		ResetLiveTime();
+	}
+
 }
 
 void DefenseMapEditor::Start()
@@ -131,6 +157,28 @@ void DefenseMapEditor::Start()
 			FontRender3->GetTransform()->SetLocalPosition({ -GameEngineWindow::GetScreenSize().x / 2, GameEngineWindow::GetScreenSize().y / 2 - 60 });
 		}
 	}
+	TileXY StartTile;
+	StartTile.X = 1;
+	StartTile.Y = 3;
+	for (size_t i = 0; i < 30; i++)
+	{
+		MonsterWave[StartTile.XY].push_back({0});
+	}
+}
+
+void DefenseMapEditor::CreateMonster(float4 _Pos, MonsterData _MonsterIndex)
+{
+	std::shared_ptr<Frog> NewFrog = nullptr;
+	switch (_MonsterIndex.Type)
+	{
+	case 0:		
+		NewFrog=GetLevel()->CreateActor<Frog>();
+		NewFrog->GetTransform()->SetWorldPosition(_Pos);
+		break;
+
+	default:		
+		break;
+	}
 }
 
 void DefenseMapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
@@ -142,26 +190,27 @@ void DefenseMapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
 	MapCount.x = static_cast<float>(_X);
 	MapCount.y = static_cast<float>(_Y);
 
-	TileInfos.resize(_Y);
-	for (size_t y = 0; y < TileInfos.size(); y++)
+	DTileInfos.resize(_Y);
+	for (size_t y = 0; y < DTileInfos.size(); y++)
 	{
-		TileInfos[y].resize(_X);
+		DTileInfos[y].resize(_X);
 	}
 	int num = 0;
 	int X = -1;
 	int Y = -1;
-	for (size_t y = 0; y < TileInfos.size(); y++)
+	for (size_t y = 0; y < DTileInfos.size(); y++)
 	{
-		for (size_t x = 0; x < TileInfos[y].size(); x++)
+		for (size_t x = 0; x < DTileInfos[y].size(); x++)
 		{
 			float4 vPos;
 			vPos.x = (x * TileSizeH.x) - (y * TileSizeH.x);
 			vPos.y = -(x * TileSizeH.y) - (y * TileSizeH.y);
 			vPos.y -= TileSizeH.y;
-			vPos.y += MapUpP.y;
-
-			TileInfos[y][x].Pos = vPos;
-			TileInfos[y][x].Index = num;
+			vPos.y += DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition().y;
+			vPos.x += DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition().x;
+			vPos.y += DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
+			DTileInfos[y][x].Pos = vPos;
+			DTileInfos[y][x].Index = num;
 			num++;
 		}
 	}
@@ -169,7 +218,7 @@ void DefenseMapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
 
 void DefenseMapEditor::Clear()
 {
-	TileInfos.clear();
+	DTileInfos.clear();
 }
 
 bool DefenseMapEditor::IsOver(int _X, int _Y) const
@@ -194,7 +243,7 @@ size_t DefenseMapEditor::GetTIleIndex(const float4& _Pos)
 	X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
 	Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
 
-	if (true == TileInfos.empty())
+	if (true == DTileInfos.empty())
 	{		
 		x = -1;
 		y = -1;
@@ -210,45 +259,44 @@ size_t DefenseMapEditor::GetTIleIndex(const float4& _Pos)
 	}
 	x = X;
 	y = Y;
-	return TileInfos[Y][X].Index;
+	return DTileInfos[Y][X].Index;
 }
 
-TileInfo* DefenseMapEditor::GetTIleInfo(const float4& _Pos)
+DTileInfo* DefenseMapEditor::GetDTileInfo(const float4& _Pos)
 {
 	int X = -1;
 	int Y = -1;
 	X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
 	Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
 
-	if (true == TileInfos.empty())
-	{		
+	if (true == DTileInfos.empty())
+	{
 		return nullptr;
 	}
 	// 인덱스 오버
 	if (true == IsOver(X, Y))
-	{		
+	{
 		return nullptr;
 	}
-	return &TileInfos[Y][X];
+	return &DTileInfos[Y][X];
 }
 float4 DefenseMapEditor::PosToTilePos(float4 _Pos)
 {
 	int X = -1;
 	int Y = -1;
-	//여기서 한번더 뺴줌
-	_Pos -= MapUpP;
+
 	X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
-	Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);	
-	if (X >= 0 && Y >= 0)
+	Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
+
+	if (X >= 0 && Y >= 0 && X < 30 && Y < 30)
 	{
-		return TileInfos[Y][X].Pos;
+		return DTileInfos[Y][X].Pos;
 	}
 	else
 	{
 		return { static_cast<float>(Y),static_cast<float>(Y) };
 	}
 
-	//return ReturnPos;
 
 }
 
@@ -256,18 +304,22 @@ void DefenseMapEditor::FSMInit()
 {
 	FSM.CreateState(
 		{ .Name = "IsMove",
-		.Start = [this]() {},
+		.Start = [this]()
+		{
+			Render0->On();
+		},
 		.Update = [this](float _DeltaTime)
 		{
 			if (GameEngineInput::IsUp("EngineMouseLeft"))
 			{
 				float4 Pos = Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
-				float4 CheckPos = Pos - MapUpP;
-				if (nullptr != GetTIleInfo(CheckPos))
+				float4 CheckPos = Pos - DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition();
+				CheckPos.y-= DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
+				if (nullptr != GetDTileInfo(CheckPos))
 				{
-					GetTIleInfo(CheckPos)->IsMove = false;
+					GetDTileInfo(CheckPos)->IsMove = false;
 					std::shared_ptr<GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();
-					NewComponent->GetTransform()->SetWorldPosition(PosToTilePos(Pos));
+					NewComponent->GetTransform()->SetWorldPosition(PosToTilePos(CheckPos));
 					NewComponent->GetTransform()->SetLocalScale({ 5.f,5.f,1.f });
 					MoveMarks.push_back(NewComponent);
 				}
@@ -276,10 +328,11 @@ void DefenseMapEditor::FSMInit()
 			if (GameEngineInput::IsUp("EngineMouseRight"))
 			{
 				float4 Pos = Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
-				float4 CheckPos = Pos - MapUpP;
-				if (false == GetTIleInfo(CheckPos)->IsMove)
+				float4 CheckPos = Pos - DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition();
+				CheckPos.y -= DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
+				if (false == GetDTileInfo(CheckPos)->IsMove)
 				{
-					float4 Tran = PosToTilePos(Pos);
+					float4 Tran = PosToTilePos(CheckPos);
 					int Count = 0;
 					for (int i = 0; i < MoveMarks.size(); i++)
 					{
@@ -288,7 +341,7 @@ void DefenseMapEditor::FSMInit()
 							MoveMarks[i]->Death();
 							MoveMarks[i] = nullptr;
 							MoveMarks.erase(MoveMarks.begin() + Count);
-							GetTIleInfo(CheckPos)->IsMove = true;
+							GetDTileInfo(CheckPos)->IsMove = true;
 							break;
 						}
 						Count++;
@@ -296,7 +349,10 @@ void DefenseMapEditor::FSMInit()
 				}
 			}
 		},
-		.End = []() {}
+		.End = [this]() 
+		{
+			Render0->Off();
+		}
 		}
 	);
 	FSM.CreateState(
@@ -355,8 +411,9 @@ void DefenseMapEditor::Load(GameEngineSerializer& _Ser)
 		_Ser.Read(z);
 		NewComponent->GetTransform()->SetLocalScale({ static_cast<float>(x),static_cast<float>(y),static_cast<float>(z) });
 		MoveMarks[i] = NewComponent;
-		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - MapUpP;
-		GetTIleInfo(CheckPos)->IsMove = false;
+		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition();
+		CheckPos.y -= DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
+		GetDTileInfo(CheckPos)->IsMove = false;
 		//_Ser.Read(static_cast<int>(Pos.x));
 
 

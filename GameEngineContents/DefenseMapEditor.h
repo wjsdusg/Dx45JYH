@@ -4,7 +4,7 @@
 #include <GameEngineCore/GameEngineButton.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineBase/GameEngineSerializer.h>
-class TileInfo
+class DTileInfo
 {
 public:
 	float4 Pos;
@@ -12,6 +12,22 @@ public:
 	bool IsMove = true;
 	bool ISMonsterCreate = false;
 
+};
+class MonsterData
+{
+public:
+	int Type = 0;
+};
+
+union TileXY
+{
+public:
+	struct
+	{
+		int X;
+		int Y;
+	};
+	__int64 XY;
 };
 // Ό³Έν :
 class DefenseMapEditor : public GameEngineActor
@@ -36,9 +52,11 @@ public:
 
 	float4 PosToTilePos(float4 _Pos);
 
-	TileInfo* GetTIleInfo(const float4& _Pos);
+	DTileInfo* GetDTileInfo(const float4& _Pos);
 
 	bool IsOver(int _X, int _Y) const;
+
+	std::map<__int64, std::list<MonsterData>> MonsterWave;
 
 	inline float4 GetCount() const
 	{
@@ -56,7 +74,7 @@ protected:
 private:
 	bool IsTilemapCulling = false;
 
-	std::vector<std::vector<TileInfo>> TileInfos;
+	std::vector<std::vector<DTileInfo>> DTileInfos;
 	float4 MapCount;
 	float4 TileSize;
 	float4 TileSizeH;
@@ -71,7 +89,7 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> FontRender1;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender2;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender3;
-
+	void CreateMonster(float4 _Pos,MonsterData _MonsterIndex);
 	int x;
 	int y;
 	int SaveNum = 0;

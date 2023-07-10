@@ -43,6 +43,7 @@
 #include "Ugida.h"
 #include "Wakizaka.h"
 #include "MapEditor.h"
+#include "DefenseMapEditor.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
@@ -81,6 +82,7 @@ std::shared_ptr<DefenseMap> NewDefenseMap = nullptr;
 std::shared_ptr<MapEditor> NewMapEditor = nullptr;
 std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
 std::shared_ptr<UIButton> NewUIButton = nullptr;
+std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -310,43 +312,87 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 	
 	if (true == GameEngineInput::IsUp("Space"))
 	{
-		//GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
-		float4 sd = NewMapEditor->NewObject->GetTransform()->GetWorldPosition();
-		float4 df= NewMapEditor->FontRender0->GetTransform()->GetWorldPosition(); 
-		GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->NewObject->GetTransform()->GetWorldPosition());
+		GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
+	    //float4 sd = NewMapEditor->NewObject->GetTransform()->GetWorldPosition();
+		//float4 df= NewMapEditor->FontRender0->GetTransform()->GetWorldPosition(); 
+		//GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->NewObject->GetTransform()->GetWorldPosition());
 		
 		//GetMainCamera()->GetTransform()->SetLocalPosition(FontRender-> GetTransform()->GetLocalPosition());
 	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F1"))
 	{
-		NewMapEditor->FSM.ChangeState("IsMove");
-		NewMapEditor->OnRender0();
-	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F8")) 
-	{
-		NewMapEditor->Render0->Off();
-		NewMapEditor->FSM.ChangeState("Default");
-	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F2")) {
+		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
 		{
+			NewMapEditor->FSM.ChangeState("IsMove");
+		}
+		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F8"))
+		{
+			NewMapEditor->FSM.ChangeState("Default");
+		}
+		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
+			{
+				GameEngineSerializer Ser;
+				NewMapEditor->Save(Ser);
+				GameEngineDirectory NewDir2;
+				NewDir2.MoveParentToDirectory("ContentsBin");
+				NewDir2.Move("ContentsBin");
+				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+				NewFile.SaveBin(Ser);
+			}
+		}
+		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
+			GameEngineDirectory NewDir2;
+			NewDir2.MoveParentToDirectory("ContentsBin");
+			NewDir2.Move("ContentsBin");
+			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
 			GameEngineSerializer Ser;
-			NewMapEditor->Save(Ser);
+			NewFile.LoadBin(Ser);
+			NewMapEditor->Load(Ser);
+		}
+	}
+	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
+	{
+		if (true == NewMapEditor->IsUpdate())
+		{
+			NewMapEditor->Off();
+			NewDefenseMapEditor->On();
+		}
+		else
+		{
+			NewMapEditor->On();
+			NewDefenseMapEditor->Off();
+		}
+	}
+	{
+		if (nullptr != NewDefenseMapEditor && true==NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
+		{			
+			NewDefenseMapEditor->FSM.ChangeState("IsMove");
 
+		}
+		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F8"))
+		{
+			
+			NewDefenseMapEditor->FSM.ChangeState("Default");
+		}
+		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
+			{
+				GameEngineSerializer Ser;				
+				NewDefenseMapEditor->Save(Ser);
+				GameEngineDirectory NewDir2;
+				NewDir2.MoveParentToDirectory("ContentsBin");
+				NewDir2.Move("ContentsBin");
+				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+				NewFile.SaveBin(Ser);
+			}
+		}
+		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
 			GameEngineDirectory NewDir2;
 			NewDir2.MoveParentToDirectory("ContentsBin");
 			NewDir2.Move("ContentsBin");
 			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
-			NewFile.SaveBin(Ser);
+			GameEngineSerializer Ser;
+			NewFile.LoadBin(Ser);			
+			NewDefenseMapEditor->Load(Ser);
 		}
-	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F3")) {
-		GameEngineDirectory NewDir2;
-		NewDir2.MoveParentToDirectory("ContentsBin");
-		NewDir2.Move("ContentsBin");
-		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
-		GameEngineSerializer Ser;
-		NewFile.LoadBin(Ser);
-		NewMapEditor->Load(Ser);
 	}
 }
 
@@ -428,11 +474,11 @@ void PlayLevel::Start()
 	NewMapOverlay = CreateActor<MapOverlay>();
 	NewMapOverlay->GetTransform()->SetLocalPosition(MapUpP);
 	NewDefenseMap = CreateActor<DefenseMap>();
-	NewMapEditor = CreateActor<MapEditor>();
-	//NewMapEditor->GetTransform()->SetLocalPosition(MapUpP);
-	
+	NewMapEditor = CreateActor<MapEditor>();	
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
-	
+	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
+	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
+	NewDefenseMapEditor->Off();
 	NewUIButton = CreateActor<UIButton>();
 	NewUIButton->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	{

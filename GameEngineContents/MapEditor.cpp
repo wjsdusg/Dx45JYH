@@ -257,7 +257,10 @@ void MapEditor::FSMInit()
 {
 	FSM.CreateState(
 		{ .Name = "IsMove",
-		.Start = [this]() {},
+		.Start = [this]()
+		{
+			Render0->On();
+		},
 		.Update = [this](float _DeltaTime)
 		{						
 			if (GameEngineInput::IsUp("EngineMouseLeft"))
@@ -297,7 +300,10 @@ void MapEditor::FSMInit()
 				}
 			}
 		},
-		.End = []() {}
+		.End = [this]() 
+		{
+			Render0->Off();
+		}
 		}
 	);
 	FSM.CreateState(

@@ -4,7 +4,7 @@
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-
+DefenseMap* DefenseMap::MainDefenseMap;
 DefenseMap::DefenseMap()
 {
 }
@@ -40,6 +40,7 @@ void DefenseMap::Start()
 		}
 
 	}*/
+	MainDefenseMap = this;
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 
 	Render0->SetTexture("defense.png");
