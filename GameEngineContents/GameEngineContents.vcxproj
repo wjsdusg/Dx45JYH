@@ -178,6 +178,7 @@
     <ClInclude Include="Gangsi.h" />
     <ClInclude Include="Gato.h" />
     <ClInclude Include="Gatpha.h" />
+    <ClInclude Include="GlobalValue.h" />
     <ClInclude Include="Gonisi.h" />
     <ClInclude Include="HeoJun.h" />
     <ClInclude Include="Hero.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="Gangsi.cpp" />
     <ClCompile Include="Gato.cpp" />
     <ClCompile Include="Gatpha.cpp" />
+    <ClCompile Include="GlobalValue.cpp" />
     <ClCompile Include="Gonisi.cpp" />
     <ClCompile Include="HeoJun.cpp" />
     <ClCompile Include="Hero.cpp" />

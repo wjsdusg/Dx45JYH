@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore\GameEngineLevel.h>
-
+#include <GameEngineBase/GameEngineAstar.h>
 // Ό³Έν :
 class PlayLevel : public GameEngineLevel
 {
@@ -23,7 +23,6 @@ protected:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
 	
-
 private:
 	void OutlineCheck(float4& _Pos);
 	void PlayerCreate();

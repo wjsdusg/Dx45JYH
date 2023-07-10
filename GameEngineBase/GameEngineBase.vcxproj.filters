@@ -38,6 +38,7 @@
     <ClCompile Include="GameEngineThread.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineAstar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -77,6 +78,7 @@
     <ClInclude Include="GameEngineThread.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineAstar.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">
@@ -96,6 +98,9 @@
     </Filter>
     <Filter Include="Thread">
       <UniqueIdentifier>{35ef976d-a499-4b7a-84d8-3ff4e2b125d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{379386e5-68ed-43a2-92ca-c16b3b6992ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include "MapOverlay.h"
 #include "Minion.h"
 #include "Mouse.h"
+#include "GlobalValue.h"
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 extern float4 IsoTileScale;
@@ -66,6 +67,22 @@ void Unit::Update(float _DeltaTime)
 		TargetPos = MainMouse;
 		IsHold = false;
 		FSM.ChangeState("Move");
+
+		std::list<PathIndex> Result;
+
+		int MouseX = -1;
+		int MouseY = -1;
+		MouseX = static_cast<int>((MousePickPos.x / 32.0f + -MousePickPos.y / 16.0f) / 2);
+		MouseY = static_cast<int>((-MousePickPos.y / 16.0f - (MousePickPos.x / 32.0f)) / 2);
+
+		int UnitX = -1;
+		int UnitY = -1;
+		UnitX = static_cast<int>((GetTransform()->GetWorldPosition().x / 32.0f + -GetTransform()->GetWorldPosition().y / 16.0f) / 2);
+		UnitY = static_cast<int>((-GetTransform()->GetWorldPosition().y / 16.0f - (GetTransform()->GetWorldPosition().x / 32.0f)) / 2);
+
+
+		GlobalValue::AStart.FindPath({ UnitX , UnitY }, { MouseX , MouseY }, -1, Result);
+
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 	}
 	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)

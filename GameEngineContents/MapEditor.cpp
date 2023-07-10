@@ -2,6 +2,7 @@
 #include "MapEditor.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include "GlobalValue.h"
 
 #include "Mouse.h"
 extern float4 TileScale;
@@ -140,6 +141,8 @@ void MapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
 
 	MapCount.x = static_cast<float>(_X);
 	MapCount.y = static_cast<float>(_Y);
+
+	//GlobalValue::AStart.SetPathData({ 10, 10 }, -1);
 
 	TileInfos.resize(_Y);
 	for (size_t y = 0; y < TileInfos.size(); y++)
@@ -364,6 +367,13 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 		MoveMarks[i]=NewComponent;
 		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - MapUpP;
 		GetTIleInfo(CheckPos)->IsMove = false;
+
+		
+		int X = -1;
+		int Y = -1;
+		X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
+		GlobalValue::AStart.SetPathData({ X, Y }, -1);
 		//_Ser.Read(static_cast<int>(Pos.x));
 		
 		

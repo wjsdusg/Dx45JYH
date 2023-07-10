@@ -167,6 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameEngineAstar.cpp" />
     <ClCompile Include="GameEngineDebug.cpp" />
     <ClCompile Include="GameEngineDirectory.cpp">
       <SubType>
@@ -208,6 +209,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngineAstar.h" />
     <ClInclude Include="GameEngineDebug.h" />
     <ClInclude Include="GameEngineDirectory.h">
       <SubType>

@@ -10,6 +10,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineButton.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include "GlobalValue.h"
 #include "Mouse.h"
 #include "Object.h"
 #include "Map.h"
@@ -476,6 +477,7 @@ void PlayLevel::Start()
 	NewDefenseMap = CreateActor<DefenseMap>();
 	NewMapEditor = CreateActor<MapEditor>();	
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
+	GlobalValue::AStart.CreateTileData(180, 180, 1000);
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
 	NewDefenseMapEditor->Off();

@@ -221,6 +221,7 @@
     <ClInclude Include="DefenseMapEditor.h">
       <Filter>MapEditor</Filter>
     </ClInclude>
+    <ClInclude Include="GlobalValue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -399,6 +400,7 @@
     <ClCompile Include="DefenseMapEditor.cpp">
       <Filter>MapEditor</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalValue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngineContents.rc" />
