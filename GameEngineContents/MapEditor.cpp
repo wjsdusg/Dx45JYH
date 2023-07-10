@@ -7,6 +7,7 @@
 #include "Mouse.h"
 extern float4 TileScale;
 extern float4 MapUpP;
+float4 MapEditor::TileSizeH=float4::Zero;
 MapEditor::MapEditor()
 {
 }
@@ -150,8 +151,7 @@ void MapEditor::CreateTileEditor(int _X, int _Y, const float4& _TileSize)
 		TileInfos[y].resize(_X);
 	}
 	int num = 0;
-	int X = -1;
-	int Y = -1;
+	
 	for (size_t y = 0; y < TileInfos.size(); y++)
 	{
 		for (size_t x = 0; x < TileInfos[y].size(); x++)
@@ -367,7 +367,6 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 		MoveMarks[i]=NewComponent;
 		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - MapUpP;
 		GetTIleInfo(CheckPos)->IsMove = false;
-
 		
 		int X = -1;
 		int Y = -1;
@@ -380,4 +379,16 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 	}
 
 
+}
+
+float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
+{
+	float4 CheckPos= _Pos - MapUpP;
+
+	int X = -1;
+	int Y = -1;
+	X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
+	Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
+	float4 Pos = { static_cast<float>(X) , static_cast<float>(Y) };
+	return Pos;
 }

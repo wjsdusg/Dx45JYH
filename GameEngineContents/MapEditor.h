@@ -28,6 +28,8 @@ public:
 	MapEditor& operator=(const MapEditor& _Other) = delete;
 	MapEditor& operator=(MapEditor&& _Other) noexcept = delete;
 	
+	static float4 ConvertPosToTileXY(float4 _Pos);
+
 	void CreateTileEditor(int _X, int _Y, const float4& _TileSize);
 
 	void Clear();	
@@ -59,7 +61,7 @@ private:
 	std::vector<std::vector<TileInfo>> TileInfos;
 	float4 MapCount;	
 	float4 TileSize;
-	float4 TileSizeH;
+	static float4 TileSizeH;
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
