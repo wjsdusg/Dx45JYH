@@ -90,6 +90,8 @@ GameEngineAstar::PathNode* GameEngineAstar::CreatePathNode(PathIndex _Index, Gam
 		NodePtr->F = NodePtr->H + NodePtr->G;
 	}
 
+	++CurPathNode;
+
 	return NodePtr;
 }
 
