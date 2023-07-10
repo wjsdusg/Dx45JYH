@@ -102,7 +102,13 @@ void Unit::Update(float _DeltaTime)
 		IsHold = true;
 		FSM.ChangeState("Stay");
 	}
-	
+	if (true== IsClick &&true == GameEngineInput::IsUp("EngineMouseRight") && (true == IsP || true == IsM || true == IsHold || true == IsA))
+	{
+		IsP = false;
+		IsM  = false;
+		IsHold = false;
+		IsA = false;
+	}
 	
 	{
 		/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();

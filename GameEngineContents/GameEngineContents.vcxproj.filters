@@ -218,6 +218,9 @@
     <ClInclude Include="UIPannel.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="DefenseMapEditor.h">
+      <Filter>MapEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -392,6 +395,9 @@
     </ClCompile>
     <ClCompile Include="UIPannel.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DefenseMapEditor.cpp">
+      <Filter>MapEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
