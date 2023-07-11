@@ -88,7 +88,7 @@ void Unit::Update(float _DeltaTime)
 		MousePickPos = MainMouse;
 		TargetPos = MainMouse;
 		IsHold = false;
-		FSM.ChangeState("Move");
+		//FSM.ChangeState("Move");
 
 		std::list<PathIndex> Result;
 
