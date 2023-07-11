@@ -657,8 +657,24 @@ void Unit::StateInit()
 	);
 	FSM.CreateState(
 		{ .Name = "Die",
-		.Start = [this]() {},
-		.Update = [this](float _DeltaTime) {},
+		.Start = [this]() 
+		{
+			Render0->ChangeAnimation("Die");
+			auto it = std::find(Units.begin(), Units.end(), DynamicThis<Unit>());
+			if (it != Units.end())
+			{
+				std::swap(*it, Units.back());
+				Units.pop_back();
+			}
+			this->ObjectDeath();
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			if (true == Render0->IsAnimationEnd())
+			{
+				Death();
+			}
+		},
 		.End = []() {}
 		}
 	);

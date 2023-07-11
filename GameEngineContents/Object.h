@@ -10,6 +10,7 @@ class Object : public GameEngineActor
 {
 	friend class Mouse;
 	friend class UIButton;
+	friend class PlayLevel;
 public:
 	// constrcuter destructer
 	Object();
@@ -30,6 +31,7 @@ protected:
 	void Start();
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime) {}
+	void ObjectDeath();
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	std::shared_ptr<class GameEngineCollision> Collision;
@@ -45,7 +47,7 @@ protected:
 	float FOV = 300.f;
 	float FightFOV = 300.f;
 	
-	static std::list<std::shared_ptr<Object>> Objects;
+	static std::vector<std::shared_ptr<Object>> Objects;
 private:
 	void ObjectsSetTile();
 

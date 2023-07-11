@@ -53,7 +53,7 @@ void Snowdemon::Start()
 	Render0->CreateAnimation({ "UpAttack", "Snowdemon.png",30,39,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Snowdemon.png",40,49,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Snowdemon.png",130,142 });
+	Render0->CreateAnimation({ "Die", "Snowdemon.png",130,142,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

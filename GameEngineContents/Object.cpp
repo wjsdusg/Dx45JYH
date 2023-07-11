@@ -7,11 +7,11 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 extern float4 IsoTileScale;
 extern float4 MiniViewRatio;
-std::list<std::shared_ptr<Object>> Object::Objects;
+std::vector<std::shared_ptr<Object>> Object::Objects;
 
 Object::Object()
 {
-	
+	int a = 0;
 }
 
 Object::~Object()
@@ -24,8 +24,8 @@ Object::~Object()
 void Object::Update(float _DeltaTime)
 {	
 	ObjectsSetTile();	
-	std::list<std::shared_ptr<Object>>::iterator StartObject = Objects.begin();
-	std::list<std::shared_ptr<Object>>::iterator EndObject = Objects.end();
+	std::vector<std::shared_ptr<Object>>::iterator StartObject = Objects.begin();
+	std::vector<std::shared_ptr<Object>>::iterator EndObject = Objects.end();
 	std::vector<std::shared_ptr<GameEngineUIRenderer>>::iterator StartRenders = MiniMap::MainMiniMap->MiniPoints.begin();
 	std::vector<std::shared_ptr<GameEngineUIRenderer>>::iterator EndRenders = MiniMap::MainMiniMap->MiniPoints.end();
 	while (StartObject != EndObject)
@@ -67,4 +67,21 @@ void Object::ObjectsSetTile()
 	}*/
 		
 	
+}
+
+void Object::ObjectDeath()
+{
+	int Count = 0;
+	
+	for (int i = 0; i < Objects.size(); i++)
+	{
+		if (DynamicThis<Object>() == Objects[i])
+		{
+			Objects.erase(Objects.begin() + Count);
+			MiniMap::MainMiniMap->MiniPoints[i]->Death();
+			MiniMap::MainMiniMap->MiniPoints.erase(MiniMap::MainMiniMap->MiniPoints.begin()+Count);
+			break;
+		}
+		Count++;
+	}	
 }

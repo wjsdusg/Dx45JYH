@@ -53,7 +53,7 @@ void HungryDemon::Start()
 	Render0->CreateAnimation({ "UpAttack", "HungryDemon.png",24,31,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "HungryDemon.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "HungryDemon.png",120,130 });
+	Render0->CreateAnimation({ "Die", "HungryDemon.png",120,130,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

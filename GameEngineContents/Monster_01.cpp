@@ -57,7 +57,7 @@ void Monster_01::Start()
 	Render0->CreateAnimation({ "UpAttack", "Monster_01.png",15,23,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Monster_01.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Monster_01.png",40,56 });
+	Render0->CreateAnimation({ "Die", "Monster_01.png",40,56,0.1f,false });
 
 	Render0->ChangeAnimation("LStay");
 	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });

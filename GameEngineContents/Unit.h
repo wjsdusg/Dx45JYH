@@ -7,6 +7,7 @@ class Unit : public Object
 	friend class DragBox;
 	friend class Mouse;
 	friend class UIButton;
+	friend class PlayLevel;
 public:
 	// constrcuter destructer
 	Unit();

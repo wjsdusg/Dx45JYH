@@ -53,7 +53,7 @@ void SwordPirate::Start()
 	Render0->CreateAnimation({ "UpAttack", "SwordPirate.png",24,31,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "SwordPirate.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "SwordPirate.png",120,128 });
+	Render0->CreateAnimation({ "Die", "SwordPirate.png",120,128,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

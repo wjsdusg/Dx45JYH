@@ -53,7 +53,7 @@ void Raccoondog::Start()
 	Render0->CreateAnimation({ "UpAttack", "Raccoondog.png",36,47,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Raccoondog.png",48,59,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Raccoondog.png",60,71 });
+	Render0->CreateAnimation({ "Die", "Raccoondog.png",60,71,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

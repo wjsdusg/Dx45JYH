@@ -54,7 +54,7 @@ void Gangsi::Start()
 	Render0->CreateAnimation({ "UpAttack", "Gangsi2.png",39,51,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Gangsi2.png",52,64,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Gangsi3.png",0,11 });
+	Render0->CreateAnimation({ "Die", "Gangsi3.png",0,11,0.1f,false });
 	
 
 	Render0->ChangeAnimation("LStay");

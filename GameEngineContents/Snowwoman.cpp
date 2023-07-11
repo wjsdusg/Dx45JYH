@@ -53,7 +53,7 @@ void Snowwoman::Start()
 	Render0->CreateAnimation({ "UpAttack", "Snowwoman.png",39,51,AttackSpeed / 13.f });
 	Render0->CreateAnimation({ "DownAttack", "Snowwoman.png",52,64,AttackSpeed / 13.f });
 
-	Render0->CreateAnimation({ "Die", "Snowwoman.png",65,83 });
+	Render0->CreateAnimation({ "Die", "Snowwoman.png",65,83,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

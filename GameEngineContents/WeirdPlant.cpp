@@ -53,7 +53,7 @@ void WeirdPlant::Start()
 	Render0->CreateAnimation({ "UpAttack", "WeirdPlant.png",24,31,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "WeirdPlant.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "WeirdPlant.png",120,129 });
+	Render0->CreateAnimation({ "Die", "WeirdPlant.png",120,129,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

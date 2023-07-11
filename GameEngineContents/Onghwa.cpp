@@ -53,7 +53,7 @@ void Onghwa::Start()
 	Render0->CreateAnimation({ "UpAttack", "Onghwa.png",24,31,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Onghwa.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Onghwa.png",120,134 });
+	Render0->CreateAnimation({ "Die", "Onghwa.png",120,134,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");

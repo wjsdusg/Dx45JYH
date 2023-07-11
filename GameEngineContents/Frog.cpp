@@ -53,7 +53,7 @@ void Frog::Start()
 	Render0->CreateAnimation({ "UpAttack", "Frog.png",24,31,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Frog.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Frog.png",120,130 });
+	Render0->CreateAnimation({ "Die", "Frog.png",120,130,0.1f,false });
 
 	Render0->ChangeAnimation("LStay");
 	

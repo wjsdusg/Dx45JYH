@@ -53,7 +53,7 @@ void Gatpha::Start()
 	Render0->CreateAnimation({ "UpAttack", "Gatpha.png",24,31,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "DownAttack", "Gatpha.png",32,39,AttackSpeed / 8.f });
 
-	Render0->CreateAnimation({ "Die", "Gatpha.png",120,133 });
+	Render0->CreateAnimation({ "Die", "Gatpha.png",120,133,0.1f,false });
 
 
 	Render0->ChangeAnimation("LStay");
