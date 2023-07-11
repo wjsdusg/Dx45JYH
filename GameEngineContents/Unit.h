@@ -1,5 +1,7 @@
 #pragma once
 #include "Object.h"
+#include <GameEngineBase/GameEngineAstar.h>
+#include <GameEngineBase/JPSHeap.h>
 // Ό³Έν :
 
 class Unit : public Object
@@ -54,7 +56,9 @@ protected:
 	static std::vector<std::shared_ptr<Unit>> Units;
 	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
 private:
-	
-
+	std::list<PathIndex> PathResult;
+	std::list<JPSCoord> JPSPathResult;
+	std::list<float4> PathPos;
+	float PathTime = 0.0f;
 };
 

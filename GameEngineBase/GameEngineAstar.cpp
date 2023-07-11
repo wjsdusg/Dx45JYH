@@ -97,12 +97,19 @@ GameEngineAstar::PathNode* GameEngineAstar::CreatePathNode(PathIndex _Index, Gam
 
 bool GameEngineAstar::FindPath(PathIndex _Start, PathIndex _End, int _BlockData, std::list<PathIndex>& Result)
 {
+	Result.clear();
 	CurPathNode = 0;
 
 	EndPoint = _End;
 	OpenList.clear();
 	CloseList.clear();
+	OpenNodeFinder.clear();
 	GameEngineAstar::PathNode* Node = CreatePathNode(_Start, nullptr);
+
+	if (PathMapData[_End.Y][_End.X] == _BlockData)
+	{
+		return false;
+	}
 
 	GameEngineAstar::PathNode* EndPointNode = nullptr;
 
@@ -143,6 +150,12 @@ bool GameEngineAstar::FindPath(PathIndex _Start, PathIndex _End, int _BlockData,
 				continue;
 			}
 			
+
+			if (CurPathNode >= PathNodeLimit)
+			{
+				break;
+			}
+
 			GameEngineAstar::PathNode* NextFindNode = CreatePathNode(DirIndex, CurFindNode);
 
 			if (NextFindNode->Index == EndPoint)
@@ -152,6 +165,7 @@ bool GameEngineAstar::FindPath(PathIndex _Start, PathIndex _End, int _BlockData,
 			}
 
 			OpenList.insert(std::make_pair(NextFindNode->F, NextFindNode));
+
 		}
 
 		if (nullptr != EndPointNode)
@@ -171,7 +185,7 @@ bool GameEngineAstar::FindPath(PathIndex _Start, PathIndex _End, int _BlockData,
 
 	while (nullptr != PathResultNode)
 	{
-		Result.push_back(PathResultNode->Index);
+		Result.push_front(PathResultNode->Index);
 		PathResultNode = PathResultNode->Parent;
 	}
 

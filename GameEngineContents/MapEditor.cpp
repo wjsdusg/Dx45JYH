@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "GlobalValue.h"
+#include <GameEngineBase/JPSCollision.h>
 
 #include "Mouse.h"
 extern float4 TileScale;
@@ -373,12 +374,14 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 		X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
 		Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
 		GlobalValue::AStart.SetPathData({ X, Y }, -1);
+		GlobalValue::Collision->SetAt(X, Y);
 		
 		//_Ser.Read(static_cast<int>(Pos.x));
 		
 		
 	}
 
+	GlobalValue::JpsP.Init(GlobalValue::Collision);
 
 }
 

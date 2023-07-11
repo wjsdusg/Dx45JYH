@@ -201,6 +201,8 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineTimeEvent.cpp" />
+    <ClCompile Include="JPSCollision.cpp" />
+    <ClCompile Include="JPSPath.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -209,6 +211,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base.h" />
+    <ClInclude Include="BitArray.h" />
+    <ClInclude Include="CoreTypeDef.h" />
     <ClInclude Include="GameEngineAstar.h" />
     <ClInclude Include="GameEngineDebug.h" />
     <ClInclude Include="GameEngineDirectory.h">
@@ -243,6 +248,9 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineTimeEvent.h" />
+    <ClInclude Include="JPSCollision.h" />
+    <ClInclude Include="JPSHeap.h" />
+    <ClInclude Include="JPSPath.h" />
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

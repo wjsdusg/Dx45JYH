@@ -39,6 +39,12 @@
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineAstar.cpp" />
+    <ClCompile Include="JPSCollision.cpp">
+      <Filter>JPS</Filter>
+    </ClCompile>
+    <ClCompile Include="JPSPath.cpp">
+      <Filter>JPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -79,6 +85,24 @@
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineAstar.h" />
+    <ClInclude Include="BitArray.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTypeDef.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="JPSCollision.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="JPSHeap.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="JPSPath.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Base.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">
@@ -101,6 +125,9 @@
     </Filter>
     <Filter Include="Algorithm">
       <UniqueIdentifier>{379386e5-68ed-43a2-92ca-c16b3b6992ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JPS">
+      <UniqueIdentifier>{8f2581d1-7c19-46c7-a3f1-7522f13bb3ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

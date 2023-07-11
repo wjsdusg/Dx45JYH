@@ -9,9 +9,11 @@
 #include "Mouse.h"
 #include "GlobalValue.h"
 #include "MapEditor.h"
+
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 extern float4 IsoTileScale;
+extern float4 MapUpP;
 std::vector<std::shared_ptr<Unit>> Unit::Units;
 
 std::vector<std::shared_ptr<Unit>> Unit::GetUnits()
@@ -31,6 +33,25 @@ Unit::~Unit()
 }
 void Unit::Update(float _DeltaTime)
 {
+	PathTime += _DeltaTime;
+
+	if (0 != PathPos.size() && 0.1f <= PathTime)
+	{
+		float4 WPos = GetTransform()->GetWorldPosition();
+
+		PathTime = 0.0f;
+		float4 Pos = PathPos.front();
+		GetTransform()->SetWorldPosition(Pos);
+		PathPos.pop_front();
+		return;
+	}
+
+	if (0 != PathPos.size())
+	{
+		return;
+	}
+	
+
 	/*std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 	{
@@ -74,10 +95,39 @@ void Unit::Update(float _DeltaTime)
 		float4 MPos = MapEditor::ConvertPosToTileXY(MousePickPos);
 		float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
 		
-		GlobalValue::AStart.FindPath({ UPos.ix() , UPos.iy()}, { MPos.ix() ,MPos.iy()}, -1, Result);
+		PathPos.clear();
+		//GlobalValue::AStart.FindPath({ UPos.ix() , UPos.iy()}, { MPos.ix() ,MPos.iy()}, -1, PathResult);
 
+		//for (const PathIndex& Point : PathResult)
+		//{
+		//	float4 ConvertPos;
+		//	ConvertPos.x = (Point.X * 32.0f) + (Point.Y * -32.0f);
+		//	ConvertPos.y = (Point.X * -16.0f) + (Point.Y * -16.0f);
+
+		//	ConvertPos += MapUpP;
+
+		//	PathPos.push_back(ConvertPos);
+		//}
+
+		GlobalValue::JpsP.Search( UPos.ix() , UPos.iy() ,  MPos.ix() ,MPos.iy() , JPSPathResult);
+
+		for (const JPSCoord& Point : JPSPathResult)
+		{
+			float4 ConvertPos;
+			ConvertPos.x = (Point.m_x * 32.0f) + (Point.m_y * -32.0f);
+			ConvertPos.y = (Point.m_x * -16.0f) + (Point.m_y * -16.0f);
+
+			ConvertPos += MapUpP;
+
+			PathPos.push_back(ConvertPos);
+		}
+
+
+
+		PathTime = 0.0f;
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 	}
+
 	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
 	{
 		TargetPos = MainMouse;

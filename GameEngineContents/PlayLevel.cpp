@@ -477,6 +477,8 @@ void PlayLevel::Start()
 	NewDefenseMap = CreateActor<DefenseMap>();
 	NewMapEditor = CreateActor<MapEditor>();	
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
+	GlobalValue::Collision = std::make_shared<JPSCollision>();
+	GlobalValue::Collision->Create(180, 180);
 	GlobalValue::AStart.CreateTileData(180, 180, 1000);
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
