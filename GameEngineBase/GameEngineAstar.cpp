@@ -100,7 +100,8 @@ bool GameEngineAstar::FindPath(PathIndex _Start, PathIndex _End, int _BlockData,
 	CurPathNode = 0;
 
 	EndPoint = _End;
-
+	OpenList.clear();
+	CloseList.clear();
 	GameEngineAstar::PathNode* Node = CreatePathNode(_Start, nullptr);
 
 	GameEngineAstar::PathNode* EndPointNode = nullptr;

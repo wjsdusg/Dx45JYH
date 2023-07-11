@@ -331,13 +331,13 @@ void MapEditor::Save(GameEngineSerializer& _Ser)
 	_Ser.Write(SaveNum);
 	for (int i = 0; i < MoveMarks.size(); i++)
 	{
-		MoveMarks[i]->GetTransform()->GetWorldPosition();
-		MoveMarks[i]->GetTransform()->GetLocalScale();
+		//MoveMarks[i]->GetTransform()->GetWorldPosition();
+		//MoveMarks[i]->GetTransform()->GetLocalScale();
 		_Ser.Write(MoveMarks[i]->GetTransform()->GetWorldPosition().ix());
 		_Ser.Write(MoveMarks[i]->GetTransform()->GetWorldPosition().iy());
-		_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().ix());
-		_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().iy());
-		_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().iz());
+		//_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().ix());
+		//_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().iy());
+		//_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().iz());
 	}
 }
 void MapEditor::Load(GameEngineSerializer& _Ser)
@@ -356,23 +356,24 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 		std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();		
 		int x;
 		int y;
-		int z;
+		
 		_Ser.Read(x);
 		_Ser.Read(y);
 		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });
-		_Ser.Read(x);
-		_Ser.Read(y);
-		_Ser.Read(z);
-		NewComponent->GetTransform()->SetLocalScale({ static_cast<float>(x),static_cast<float>(y),static_cast<float>(z) });
+		//_Ser.Read(x);
+		//_Ser.Read(y);
+		//_Ser.Read(z);
+		NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
 		MoveMarks[i]=NewComponent;
 		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - MapUpP;
 		GetTIleInfo(CheckPos)->IsMove = false;
-		
+				
 		int X = -1;
 		int Y = -1;
 		X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
 		Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
 		GlobalValue::AStart.SetPathData({ X, Y }, -1);
+		
 		//_Ser.Read(static_cast<int>(Pos.x));
 		
 		

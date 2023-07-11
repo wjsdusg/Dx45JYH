@@ -336,7 +336,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 				GameEngineDirectory NewDir2;
 				NewDir2.MoveParentToDirectory("ContentsBin");
 				NewDir2.Move("ContentsBin");
-				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
 				NewFile.SaveBin(Ser);
 			}
 		}
