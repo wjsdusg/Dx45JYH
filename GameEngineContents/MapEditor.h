@@ -30,6 +30,7 @@ public:
 	
 	static float4 ConvertPosToTileXY(float4 _Pos);
 
+	static float4 ConvertTileXYToPos(size_t _X, size_t _Y);
 	void CreateTileEditor(int _X, int _Y, const float4& _TileSize);
 
 	void Clear();	
@@ -58,7 +59,7 @@ protected:
 private:
 	bool IsTilemapCulling = false;
 
-	std::vector<std::vector<TileInfo>> TileInfos;
+	static std::vector<std::vector<TileInfo>> TileInfos;
 	float4 MapCount;	
 	float4 TileSize;
 	static float4 TileSizeH;

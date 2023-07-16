@@ -9,6 +9,7 @@
 extern float4 TileScale;
 extern float4 MapUpP;
 float4 MapEditor::TileSizeH=float4::Zero;
+std::vector<std::vector<TileInfo>> MapEditor::TileInfos;
 MapEditor::MapEditor()
 {
 }
@@ -395,4 +396,9 @@ float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
 	Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
 	float4 Pos = { static_cast<float>(X) , static_cast<float>(Y) };
 	return Pos;
+}
+
+float4 MapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
+{
+	return TileInfos[_Y][_X].Pos;
 }

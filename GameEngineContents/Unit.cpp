@@ -86,43 +86,11 @@ void Unit::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick)
 	{
 		MousePickPos = MainMouse;
-		TargetPos = MainMouse;
+		
 		IsHold = false;
 		//FSM.ChangeState("Move");
 
-		std::list<PathIndex> Result;
-
-		float4 MPos = MapEditor::ConvertPosToTileXY(MousePickPos);
-		float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
-		
-		PathPos.clear();
-		//GlobalValue::AStart.FindPath({ UPos.ix() , UPos.iy()}, { MPos.ix() ,MPos.iy()}, -1, PathResult);
-
-		//for (const PathIndex& Point : PathResult)
-		//{
-		//	float4 ConvertPos;
-		//	ConvertPos.x = (Point.X * 32.0f) + (Point.Y * -32.0f);
-		//	ConvertPos.y = (Point.X * -16.0f) + (Point.Y * -16.0f);
-
-		//	ConvertPos += MapUpP;
-
-		//	PathPos.push_back(ConvertPos);
-		//}
-
-		GlobalValue::JpsP.Search( UPos.ix() , UPos.iy() ,  MPos.ix() ,MPos.iy() , JPSPathResult);
-
-		for (const JPSCoord& Point : JPSPathResult)
-		{
-			float4 ConvertPos;
-			ConvertPos.x = (Point.m_x * 32.0f) + (Point.m_y * -32.0f);
-			ConvertPos.y = (Point.m_x * -16.0f) + (Point.m_y * -16.0f);
-
-			ConvertPos += MapUpP;
-
-			PathPos.push_back(ConvertPos);
-		}
-
-
+		PathCal();
 
 		PathTime = 0.0f;
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
@@ -730,4 +698,157 @@ void Unit::StateInit()
 	);
 	
 	FSM.ChangeState("Stay");
+}
+
+void Unit::PathCal()
+{
+	TargetPos = MainMouse;
+	float4 MPos = MapEditor::ConvertPosToTileXY(TargetPos);
+	float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
+
+	PathPos.clear();
+	//Angle°è»ê
+	MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+
+	GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), MPos.iy(), JPSPathResult);
+		
+	if (JPSPathResult.size() == 0)
+	{
+		if (Angle < 45 || Angle >= 315)
+		{
+			//¿À¸¥ÂÊ
+			int CloseXRight = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), true, true);
+			int CloseXLeft = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), true, false);
+			if (CloseXRight == MPos.ix())
+			{
+				int _Y = MPos.iy();
+				while (JPSPathResult.size() == 0)
+				{
+					CloseXRight--;
+					_Y++;
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXRight, _Y, JPSPathResult);					
+					if (GlobalValue::Collision->IsOutBound(CloseXRight, _Y))
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (abs(MPos.ix() - CloseXRight) <= abs(MPos.ix() - CloseXLeft))
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXRight, MPos.iy(), JPSPathResult);
+				}
+				else
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXLeft, MPos.iy(), JPSPathResult);
+				}
+				
+			}
+		}
+		else if (Angle >= 45 && Angle < 135)
+		{
+			//À§
+			int CloseYUp = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), false, false);
+			int CloseYDown = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), false, true);
+			if (CloseYUp == MPos.iy())
+			{
+				int _X = MPos.ix();
+				while (JPSPathResult.size() == 0)
+				{
+					CloseYUp++;
+					_X++;
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), _X, CloseYUp, JPSPathResult);
+					
+					if (GlobalValue::Collision->IsOutBound(_X, CloseYUp))
+					{
+						break;
+					}
+				}
+			}
+			else
+			{				
+				if (abs(MPos.iy() - CloseYUp) <= abs(MPos.iy() - CloseYDown))
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), CloseYUp, JPSPathResult);
+				}
+				else
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), CloseYDown, JPSPathResult);
+				}
+			}
+		}
+		else if (Angle >= 135 && Angle < 225)
+		{
+			//¿Þ
+			int CloseXRight = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), true, true);
+			int CloseXLeft = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), true, false);
+			if (CloseXLeft == MPos.ix())
+			{
+				int _Y = MPos.iy();
+				while (JPSPathResult.size() == 0)
+				{
+					CloseXLeft++;
+					_Y--;
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXLeft, _Y, JPSPathResult);
+					
+					if (GlobalValue::Collision->IsOutBound(CloseXLeft, _Y))
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (abs(MPos.ix() - CloseXRight) >= abs(MPos.ix() - CloseXLeft))
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXLeft, MPos.iy(), JPSPathResult);
+				}
+				else
+				{					
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXRight, MPos.iy(), JPSPathResult);
+				}
+
+			}
+		}
+		else if (Angle >= 225 && Angle < 315)
+		{
+			//¹Ø
+			int CloseYUp = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), false, false);
+			int CloseYDown = GlobalValue::Collision->GetOpenValue(MPos.ix(), MPos.iy(), false, true);
+			if (CloseYUp == MPos.iy())
+			{
+				int _X = MPos.ix();
+				while (JPSPathResult.size() == 0)
+				{
+					CloseYDown--;
+					_X--;
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), _X, CloseYDown, JPSPathResult);
+
+					if (GlobalValue::Collision->IsOutBound(_X, CloseYDown))
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (abs(MPos.iy() - CloseYUp) >= abs(MPos.iy() - CloseYDown))
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), CloseYDown, JPSPathResult);
+				}
+				else
+				{
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), CloseYUp, JPSPathResult);
+				}
+			}
+		}
+	}
+
+	for (const JPSCoord& Point : JPSPathResult)
+	{
+		float4 ConvertPos = MapEditor::ConvertTileXYToPos(Point.m_x, Point.m_y);
+		PathPos.push_back(ConvertPos);
+
+	}
 }

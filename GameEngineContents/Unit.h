@@ -59,6 +59,7 @@ private:
 	std::list<PathIndex> PathResult;
 	std::list<JPSCoord> JPSPathResult;
 	std::list<float4> PathPos;
+	void PathCal();
 	float PathTime = 0.0f;
 };
 
