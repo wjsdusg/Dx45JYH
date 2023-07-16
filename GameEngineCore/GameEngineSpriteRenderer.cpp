@@ -291,7 +291,9 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
 	NewAnimation->ScaleToTexture = _Paramter.ScaleToTexture;
-
+	
+	
+	
 	return NewAnimation;
 }
 
@@ -313,6 +315,30 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 
 	CurAnimation = FindAnimation(_Name);
 	CurAnimation->Reset();
+
+	if (true == CurAnimation->ScaleToTexture)
+	{
+		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
+
+		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+
+		AtlasData = Info.CutData;
+
+		if (true == CurAnimation->ScaleToTexture)
+		{
+			std::shared_ptr<GameEngineTexture> Texture = Info.Texture;
+			CurTexture = Texture;
+			float4 Scale = Texture->GetScale();
+
+			Scale.x *= AtlasData.SizeX;
+			Scale.y *= AtlasData.SizeY;
+			Scale.z = 1.0f;
+
+			Scale *= ScaleRatio;
+
+			GetTransform()->SetLocalScale(Scale);
+		}
+	}
 
 	if (_Frame != -1)
 	{

@@ -15,6 +15,7 @@ void Gonisi::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
 	float4 sd = Render0->GetTransform()->GetLocalScale();
+	float4 sdsd = Render0->GetTransform()->GetLocalPosition();
 }
 
 void Gonisi::Start()

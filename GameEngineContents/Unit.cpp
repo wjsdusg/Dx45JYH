@@ -33,25 +33,6 @@ Unit::~Unit()
 }
 void Unit::Update(float _DeltaTime)
 {
-	PathTime += _DeltaTime;
-
-	if (0 != PathPos.size() && 0.1f <= PathTime)
-	{
-		float4 WPos = GetTransform()->GetWorldPosition();
-
-		PathTime = 0.0f;
-		float4 Pos = PathPos.front();
-		GetTransform()->SetWorldPosition(Pos);
-		PathPos.pop_front();
-		return;
-	}
-
-	if (0 != PathPos.size())
-	{
-		return;
-	}
-	
-
 	/*std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 	{
@@ -71,7 +52,7 @@ void Unit::Update(float _DeltaTime)
 		if (false == SelectionCircle->IsUpdate())
 		{
 			SelectionCircle->On();
-			SelectionCircle->GetTransform()->SetLocalPosition({ 0,-20.f });
+			
 			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
 	}
@@ -87,22 +68,23 @@ void Unit::Update(float _DeltaTime)
 	{
 		MousePickPos = MainMouse;		
 		IsHold = false;
-		//FSM.ChangeState("Move");
 		PathCal();
-		PathTime = 0.0f;
+		if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) != MapEditor::ConvertPosToTileXY(TargetPos))
+		{
+			FSM.ChangeState("Move");
+		}
 		
 	}
-
+	if (true == IsClick && true == GameEngineInput::IsUp("A"))
+	{
+		IsA = true;
+	}
 	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
 	{
 		TargetPos = MainMouse;
 		FSM.ChangeState("Move");
 		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 		IsM = false;
-	}
-	if (true == IsClick && true == GameEngineInput::IsUp("A"))
-	{
-		IsA = true;
 	}
 	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA)
 	{
@@ -150,7 +132,7 @@ void Unit::Update(float _DeltaTime)
 			}
 		}*/
 	}
-	
+
 	FSM.Update(_DeltaTime);
 }
 void Unit::Start()
@@ -158,7 +140,12 @@ void Unit::Start()
 	Units.push_back(DynamicThis<Unit>());
 	StateInit();
 	Object::Start();
+	float HalfY = Render0->GetTransform()->GetLocalScale().hy();
+	HalfY -= 10.f;
+	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });
+	//Render0->GetTransform()->SetLocalPosition({ 0,20 });
 	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
+	
 	SelectionCircle->Off();
 	//CreateTileFOV(GetTransform()->GetLocalPosition());
 }
@@ -270,7 +257,18 @@ void Unit::StateInit()
 	FSM.CreateState(
 		{ .Name = "Move",
 		.Start = [this]() {
+			//경로계산
+			
+
+			if (0 != PathPos.size())
+			{					
+				TargetPos = PathPos.front();				
+				PathPos.pop_front();			
+			}
+			
+
 			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+			
    			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LMove");
@@ -280,7 +278,7 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
-			if (Angle < 80 && Angle >= 10)
+			else if (Angle < 80 && Angle >= 10)
 			{
 				Render0->ChangeAnimation("LUp45Move");
 				
@@ -290,12 +288,11 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
-
-			if (Angle < 100 && Angle >= 80)
+			else if (Angle < 100 && Angle >= 80)
 			{
 				Render0->ChangeAnimation("UpMove");
 			}
-			if (Angle < 170 && Angle >= 100)
+			else if (Angle < 170 && Angle >= 100)
 			{
 				if (true == IsFlip)
 				{
@@ -304,7 +301,7 @@ void Unit::StateInit()
 				}
 				Render0->ChangeAnimation("LUp45Move");
 			}
-			if (Angle < 190 && Angle >= 170)
+			else if (Angle < 190 && Angle >= 170)
 			{
 				Render0->ChangeAnimation("LMove");
 				if (true == IsFlip)
@@ -313,7 +310,7 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 			}
-			if (Angle < 260 && Angle >= 190)
+			else if (Angle < 260 && Angle >= 190)
 			{
 				Render0->ChangeAnimation("LDown45Move");
 				if (true == IsFlip)
@@ -322,12 +319,12 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 			}
-			if (Angle < 280 && Angle >= 260)
+			else if (Angle < 280 && Angle >= 260)
 			{
 				Render0->ChangeAnimation("DownMove");
 
 			}
-			if (Angle < 350 && Angle >= 280)
+			else if (Angle < 350 && Angle >= 280)
 			{
 				Render0->ChangeAnimation("LDown45Move");
 				if (false == IsFlip)
@@ -344,9 +341,18 @@ void Unit::StateInit()
 		.Update = [this](float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
-			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 5.f)
+			float4 asd = GetTransform()->GetLocalPosition();
+			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
-				FSM.ChangeState("Stay");
+				GetTransform()->SetLocalPosition(TargetPos);
+				if (0 == PathPos.size())
+				{
+					FSM.ChangeState("Stay");
+				}
+				else
+				{
+					FSM.ChangeState("Move");
+				}
 			}
 			
 		},

@@ -21,6 +21,7 @@ MapEditor::~MapEditor()
 void MapEditor::Update(float _DeltaTime)
 {
 	float4 Pos= Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
+	float4 _Pos = ConvertPosToTileXY(Pos);
 	Pos -= MapUpP;
 	if (true==Render0->IsUpdate())
 	{
@@ -63,6 +64,8 @@ void MapEditor::Update(float _DeltaTime)
 		FontRender2->SetText(PostoTilePos);		
 	}
 	{
+		
+		
 		std::string str2 = "XÁÂÇ¥: ";
 		std::string str3 = std::to_string(x);
 		str2 += str3;
@@ -70,9 +73,10 @@ void MapEditor::Update(float _DeltaTime)
 		str2 += str3;
 		str3 = std::to_string(y);
 		str2 += str3;
-		str3 = "\n Ismove: ";
+		str3 = "\n Collison: ";
 		str2 += str3;
-		if (nullptr!= GetTIleInfo(Pos)&&true == GetTIleInfo(Pos)->IsMove)
+		bool sdaaa = GlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy());
+		if (/*nullptr!= GetTIleInfo(Pos)&&true == GetTIleInfo(Pos)->IsMove*/GlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy()))
 		{
 			str3 = "T";
 		}
@@ -332,14 +336,9 @@ void MapEditor::Save(GameEngineSerializer& _Ser)
 	SaveNum = MoveMarks.size();
 	_Ser.Write(SaveNum);
 	for (int i = 0; i < MoveMarks.size(); i++)
-	{
-		//MoveMarks[i]->GetTransform()->GetWorldPosition();
-		//MoveMarks[i]->GetTransform()->GetLocalScale();
+	{		
 		_Ser.Write(MoveMarks[i]->GetTransform()->GetWorldPosition().ix());
-		_Ser.Write(MoveMarks[i]->GetTransform()->GetWorldPosition().iy());
-		//_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().ix());
-		//_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().iy());
-		//_Ser.Write(MoveMarks[i]->GetTransform()->GetLocalScale().iz());
+		_Ser.Write(MoveMarks[i]->GetTransform()->GetWorldPosition().iy());	
 	}
 }
 void MapEditor::Load(GameEngineSerializer& _Ser)
@@ -361,10 +360,7 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 		
 		_Ser.Read(x);
 		_Ser.Read(y);
-		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });
-		//_Ser.Read(x);
-		//_Ser.Read(y);
-		//_Ser.Read(z);
+		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });		
 		NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
 		MoveMarks[i]=NewComponent;
 		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - MapUpP;
@@ -374,16 +370,11 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 		int Y = -1;
 		X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
 		Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
-		GlobalValue::AStart.SetPathData({ X, Y }, -1);
-		GlobalValue::Collision->SetAt(X, Y);
-		
-		//_Ser.Read(static_cast<int>(Pos.x));
-		
-		
+		//GlobalValue::AStart.SetPathData({ X, Y }, -1);
+		GlobalValue::Collision->SetAt(X, Y);		
+		//_Ser.Read(static_cast<int>(Pos.x));		
 	}
-
 	GlobalValue::JpsP.Init(GlobalValue::Collision);
-
 }
 
 float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
