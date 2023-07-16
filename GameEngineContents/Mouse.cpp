@@ -381,6 +381,11 @@ void Mouse::FSMInit()
 			{
 				NewDragBox->Off();
 			}
+			//우클릭시 무브마커표시
+			if (true == GameEngineInput::IsUp("EngineMouseRight"))
+			{
+				GetMoveMark(Collision->GetTransform()->GetLocalPosition());
+			}
 			DoubleClickTimer += _DeltaTime;
 		}
 		,
@@ -439,7 +444,6 @@ void Mouse::FSMInit()
 					FSM.ChangeState("UnitClick");
 				}
 			}
-
 			//빈공간클릭시 디폴트상태
 			else if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
 			{
@@ -502,7 +506,11 @@ void Mouse::FSMInit()
 			{
 				NewDragBox->Off();
 			}
-
+			//우클릭시 무브마커표시
+			if (true == GameEngineInput::IsUp("EngineMouseRight"))
+			{
+				GetMoveMark(Collision->GetTransform()->GetLocalPosition());
+			}
 		}
 		,
 		.End = []() {}

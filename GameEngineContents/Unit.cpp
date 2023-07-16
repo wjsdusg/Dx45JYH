@@ -75,9 +75,9 @@ void Unit::Update(float _DeltaTime)
 			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
 	}
-	if (false == IsClick)
+	else
 	{
-		if (nullptr != SelectionCircle)
+		if (nullptr != SelectionCircle&&true== SelectionCircle->IsUpdate())
 		{
 			SelectionCircle->Off();
 		}
@@ -85,15 +85,12 @@ void Unit::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick)
 	{
-		MousePickPos = MainMouse;
-		
+		MousePickPos = MainMouse;		
 		IsHold = false;
 		//FSM.ChangeState("Move");
-
 		PathCal();
-
 		PathTime = 0.0f;
-		Mouse::NewMainMouse->GetMoveMark(MousePickPos);
+		
 	}
 
 	if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
