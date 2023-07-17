@@ -37,6 +37,8 @@ protected:
 	float4 MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta);
 	float4 MousePickPos = { 0,0 };
 	float4 TargetPos = { 0,0 };
+	float4 InterTargetPos = { 0,0 };
+	float4 ShortTargetPos = { 0,0 };
 	float4 PrePos = { 0,0 };
 	bool IsMove = false;
 	bool IsFlip = false;
@@ -55,11 +57,16 @@ protected:
 	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;
 	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
+	int IndexX = -1;
+	int IndexY = -1;
 private:
 	std::list<PathIndex> PathResult;
 	std::list<JPSCoord> JPSPathResult;
 	std::list<float4> PathPos;
 	void PathCal();
+	int CalAngle(float4 _Pos1, float4 _Pos2);
 	float PathTime = 0.0f;
+	bool IsTileCollision();
+	float4 ReturnIndexPlusPos();
 };
 

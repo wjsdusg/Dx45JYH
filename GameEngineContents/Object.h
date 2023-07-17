@@ -40,7 +40,7 @@ protected:
 	std::shared_ptr<GameEngineButton> Button;
 	GameEngineFSM FSM;
 	
-	float Angle = 0.0f;
+	int Angle = 0;
 	Team MyTeam = Team::Max;
 	Field MyField = Field::Max;
 	virtual void StateInit() {};

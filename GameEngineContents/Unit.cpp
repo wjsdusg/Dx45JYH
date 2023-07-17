@@ -55,18 +55,19 @@ void Unit::Update(float _DeltaTime)
 			
 			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
-	}
+	}	
 	else
 	{
-		if (nullptr != SelectionCircle&&true== SelectionCircle->IsUpdate())
+		if (true== SelectionCircle->IsUpdate())
 		{
 			SelectionCircle->Off();
 		}
 	}
 
-	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick)
+	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick/*&&MyField==Field::DungeonMap*/)
 	{
-		MousePickPos = MainMouse;		
+		MousePickPos = MainMouse;	
+		TargetPos = MainMouse;
 		IsHold = false;
 		PathCal();
 		if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) != MapEditor::ConvertPosToTileXY(TargetPos))
@@ -142,18 +143,17 @@ void Unit::Start()
 	Object::Start();
 	float HalfY = Render0->GetTransform()->GetLocalScale().hy();
 	HalfY -= 10.f;
-	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });
-	//Render0->GetTransform()->SetLocalPosition({ 0,20 });
-	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
-	
+	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });	
+	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();	
 	SelectionCircle->Off();
 	//CreateTileFOV(GetTransform()->GetLocalPosition());
+	MyField = Field::DungeonMap;
 }
 
 float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta)
 {
 	float degree = CalAngle1To2(_Pos1, _Pos2);
-	Angle = degree;
+	Angle = static_cast<int>(degree);	
 	float radian = degree * GameEngineMath::DegToRad;
 	float4 AddPos;
 	AddPos.x = _Speed * _Delta * cosf(radian);
@@ -178,7 +178,7 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
-			if (Angle < 80 && Angle >= 10)
+			else if (Angle < 80 && Angle >= 10)
 			{
 				Render0->ChangeAnimation("LUp45Stay");
 				if (false == IsFlip)
@@ -188,11 +188,11 @@ void Unit::StateInit()
 				}
 			}
 
-			if (Angle < 100 && Angle >= 80)
+			else if (Angle < 100 && Angle >= 80)
 			{
 				Render0->ChangeAnimation("UpStay");
 			}
-			if (Angle < 170 && Angle >= 100)
+			else if (Angle < 170 && Angle >= 100)
 			{
 				if (true == IsFlip)
 				{
@@ -201,7 +201,7 @@ void Unit::StateInit()
 				}
 				Render0->ChangeAnimation("LUp45Stay");
 			}
-			if (Angle < 190 && Angle >= 170)
+			else if (Angle < 190 && Angle >= 170)
 			{
 				Render0->ChangeAnimation("LStay");
 				if (true == IsFlip)
@@ -210,7 +210,7 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 			}
-			if (Angle < 260 && Angle >= 190)
+			else if (Angle < 260 && Angle >= 190)
 			{
 				Render0->ChangeAnimation("LDown45Stay");
 				if (true == IsFlip)
@@ -219,12 +219,12 @@ void Unit::StateInit()
 					IsFlip = false;
 				}
 			}
-			if (Angle < 280 && Angle >= 260)
+			else if (Angle < 280 && Angle >= 260)
 			{
 				Render0->ChangeAnimation("DownStay");
 
 			}
-			if (Angle < 350 && Angle >= 280)
+			else if (Angle < 350 && Angle >= 280)
 			{
 				Render0->ChangeAnimation("LDown45Stay");
 				if (false == IsFlip)
@@ -233,6 +233,12 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
+			float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+			IndexX = _Pos.x;
+			IndexY = _Pos.y;
+			float4 _Pos2 = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
+			GetTransform()->SetLocalPosition(_Pos2);
+			GlobalValue::Collision->SetAt(IndexX, IndexY);
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -250,6 +256,21 @@ void Unit::StateInit()
 				TargetPos = Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
 				FSM.ChangeState("HoldAttack");
 			}
+			
+			float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+			if (IndexX != _Pos.x || IndexY != _Pos.y)
+			{
+				GlobalValue::Collision->ClrAt(IndexX, IndexY);
+				IndexX = _Pos.x;
+				IndexY = _Pos.y;
+				float4 _Pos2 = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
+				GetTransform()->SetLocalPosition(_Pos2);
+				GlobalValue::Collision->SetAt(IndexX, IndexY);
+			}
+			/*if (false == GlobalValue::Collision->IsCollision(IndexX, IndexY))
+			{
+				GlobalValue::Collision->SetAt(IndexX, IndexY);
+			}*/
 		},
 		.End = []() {}
 		}
@@ -258,17 +279,42 @@ void Unit::StateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			//경로계산
-			
-
 			if (0 != PathPos.size())
-			{					
-				TargetPos = PathPos.front();				
+			{
+				if (GetTransform()->GetLocalPosition() == PathPos.front())
+				{
+					PathPos.pop_front();
+				}
+				InterTargetPos = PathPos.front();
+				
 				PathPos.pop_front();			
 			}
-			
+			//각도계산
+			CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
+			//지금 내가 가는 방향에 장애물이 없다면 그영역을 미리선점하고 그쪽으로 움직인다.
+			if (false == IsTileCollision())
+			{				
+				GlobalValue::Collision->ClrAt(IndexX, IndexY);
+				//각도를 알기떄문에 그냥 쓰면된다
+				float4 Pos = ReturnIndexPlusPos();
+				GlobalValue::Collision->SetAt(Pos.x, Pos.y);
+				ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
+			}
+			else if(true == IsTileCollision())
+			{
+				PathCal();
+				if (0 != PathPos.size())
+				{
+					if (GetTransform()->GetLocalPosition() == PathPos.front())
+					{
+						PathPos.pop_front();
+					}
+					InterTargetPos = PathPos.front();
 
-			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
-			
+					PathPos.pop_front();
+				}
+			}
+
    			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LMove");
@@ -340,11 +386,11 @@ void Unit::StateInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
-			float4 asd = GetTransform()->GetLocalPosition();
-			if (TargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
+			float ss = InterTargetPos.XYDistance(GetTransform()->GetLocalPosition());
+			if (ShortTargetPos==InterTargetPos&&InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
-				GetTransform()->SetLocalPosition(TargetPos);
+				GetTransform()->SetLocalPosition(InterTargetPos);
 				if (0 == PathPos.size())
 				{
 					FSM.ChangeState("Stay");
@@ -352,6 +398,25 @@ void Unit::StateInit()
 				else
 				{
 					FSM.ChangeState("Move");
+				}
+			}
+			else
+			{
+				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
+				{
+					if (false == IsTileCollision())
+					{
+						GlobalValue::Collision->ClrAt(IndexX, IndexY);
+						//각도를 알기떄문에 그냥 쓰면된다
+						float4 Pos = ReturnIndexPlusPos();
+						GlobalValue::Collision->SetAt(Pos.x, Pos.y);
+						ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
+					}
+					else
+					{
+						PathCal();
+						FSM.ChangeState("Move");
+					}
 				}
 			}
 			
@@ -705,7 +770,7 @@ void Unit::StateInit()
 
 void Unit::PathCal()
 {
-	TargetPos = MainMouse;
+	
 	float4 MPos = MapEditor::ConvertPosToTileXY(TargetPos);
 	float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
 
@@ -854,4 +919,130 @@ void Unit::PathCal()
 		PathPos.push_back(ConvertPos);
 
 	}
+}
+
+bool Unit::IsTileCollision()
+{
+	int _IndexX = -1;
+	int _IndexY = -1;
+	if (0 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		_IndexY = IndexY - 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (26 == Angle)
+	{
+		
+		_IndexY = IndexY - 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (90 == Angle)
+	{
+		_IndexX = IndexX - 1;
+		_IndexY = IndexY - 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (153 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (180 == Angle)
+	{
+		_IndexX = IndexX - 1;
+		_IndexY = IndexY + 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (206 == Angle)
+	{
+		
+		_IndexY = IndexY + 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (270 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		_IndexY = IndexY + 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	else if (333 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
+	}
+	return false;
+}
+
+float4 Unit::ReturnIndexPlusPos()
+{
+	int _IndexX = -1;
+	int _IndexY = -1;
+	float4 _Pos = float4::Zero;
+	if (0 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		_IndexY = IndexY - 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (26 == Angle)
+	{
+
+		_IndexY = IndexY - 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (90 == Angle)
+	{
+		_IndexX = IndexX - 1;
+		_IndexY = IndexY - 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (153 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (180 == Angle)
+	{
+		_IndexX = IndexX - 1;
+		_IndexY = IndexY + 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (206 == Angle)
+	{
+
+		_IndexY = IndexY + 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (270 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		_IndexY = IndexY + 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else if (333 == Angle)
+	{
+		_IndexX = IndexX + 1;
+		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else
+	{
+		return _Pos;
+		//MsgAssert("말도안된다");
+	}
+}
+
+int Unit::CalAngle(float4 _Pos1, float4 _Pos2)
+{
+	float degree = CalAngle1To2(_Pos1, _Pos2);
+	Angle = static_cast<int>(degree);
+	return Angle;
 }

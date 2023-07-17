@@ -24,7 +24,7 @@ protected:
 
 private:
 
-	
+	std::shared_ptr<class GameEngineFontRenderer> FontRender0;
 
 
 

@@ -60,9 +60,9 @@ private:
 	bool IsTilemapCulling = false;
 
 	static std::vector<std::vector<TileInfo>> TileInfos;
+	static float4 TileSizeH;
 	float4 MapCount;	
 	float4 TileSize;
-	static float4 TileSizeH;
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;

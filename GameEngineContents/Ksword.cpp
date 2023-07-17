@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Ksword.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
 extern float4 MainMouse;
@@ -17,6 +18,8 @@ Ksword::~Ksword()
 void Ksword::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
+	std::string str3 = std::to_string(Angle);
+	FontRender0->SetText(str3);
 }
 //
 void Ksword::Start()
@@ -65,6 +68,13 @@ void Ksword::Start()
 
 	Unit::Start();
 	//Speed = 500.f;
+	{
+		FontRender0 = CreateComponent<GameEngineFontRenderer>();
+		//FontRender0->GetTransform()->SetParent(NewObject->GetTransform());
+		FontRender0->SetFont("휴먼둥근헤드라인");
+		FontRender0->SetScale({ 20.f });
+		FontRender0->GetTransform()->SetLocalPosition({0,20.f});
+	}
 }
 
 // 이건 디버깅용도나 

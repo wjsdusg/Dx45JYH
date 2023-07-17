@@ -256,7 +256,7 @@ float4 MapEditor::PosToTilePos(float4 _Pos)
 	}
 	else
 	{
-		return { static_cast<float>(Y),static_cast<float>(Y)};
+		return { static_cast<float>(Y),static_cast<float>(X)};
 	}
 
 
@@ -343,36 +343,37 @@ void MapEditor::Save(GameEngineSerializer& _Ser)
 }
 void MapEditor::Load(GameEngineSerializer& _Ser)
 {
-	for (int i = 0; i < MoveMarks.size(); i++)
+	/*for (int i = 0; i < MoveMarks.size(); i++)
 	{
 		MoveMarks[i]->Death();		
 	}
-	MoveMarks.clear();
+	MoveMarks.clear();*/
 
 	_Ser.Read(SaveNum);
-	MoveMarks.resize(SaveNum);
+	
+	//MoveMarks.resize(SaveNum);
 	
 	for (int i = 0; i < SaveNum; i++)
 	{
-		std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();		
+		//std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();		
 		int x;
 		int y;
 		
 		_Ser.Read(x);
 		_Ser.Read(y);
-		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });		
-		NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
-		MoveMarks[i]=NewComponent;
-		float4 CheckPos = NewComponent->GetTransform()->GetWorldPosition() - MapUpP;
-		GetTIleInfo(CheckPos)->IsMove = false;
+		//NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });		
+		//NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
+		//MoveMarks[i]=NewComponent;
+		// 
+		//MoveMarks.push_back(NewComponent);
+		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
+		//GetTIleInfo(CheckPos)->IsMove = false;
 				
-		int X = -1;
-		int Y = -1;
-		X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
-		Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
+		
 		//GlobalValue::AStart.SetPathData({ X, Y }, -1);
-		GlobalValue::Collision->SetAt(X, Y);		
-		//_Ser.Read(static_cast<int>(Pos.x));		
+		 
+		GlobalValue::Collision->SetAt(CheckPos.ix(), CheckPos.iy());
+			
 	}
 	GlobalValue::JpsP.Init(GlobalValue::Collision);
 }

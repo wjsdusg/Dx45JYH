@@ -114,7 +114,7 @@ void PlayLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsUp("G"))
 	{
 		
-		NewMonster->FSM.ChangeState("Die");
+		//NewMonster->FSM.ChangeState("Die");
 		IsDebugSwitch();
 	}
 	{
@@ -340,7 +340,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 				NewFile.SaveBin(Ser);
 			}
 		}
-		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
+		/*if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
 			GameEngineDirectory NewDir2;
 			NewDir2.MoveParentToDirectory("ContentsBin");
 			NewDir2.Move("ContentsBin");
@@ -348,9 +348,9 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			GameEngineSerializer Ser;
 			NewFile.LoadBin(Ser);
 			NewMapEditor->Load(Ser);
-		}
+		}*/
 	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
+	/*if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
 	{
 		if (true == NewMapEditor->IsUpdate())
 		{
@@ -362,8 +362,8 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			NewMapEditor->On();
 			NewDefenseMapEditor->Off();
 		}
-	}
-	{
+	}*/
+	/*{
 		if (nullptr != NewDefenseMapEditor && true==NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
 		{			
 			NewDefenseMapEditor->FSM.ChangeState("IsMove");
@@ -394,7 +394,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			NewFile.LoadBin(Ser);			
 			NewDefenseMapEditor->Load(Ser);
 		}
-	}
+	}*/
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -479,7 +479,7 @@ void PlayLevel::Start()
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
 	GlobalValue::Collision = std::make_shared<JPSCollision>();
 	GlobalValue::Collision->Create(180, 180);
-	GlobalValue::AStart.CreateTileData(180, 180, 1000);
+	//GlobalValue::AStart.CreateTileData(180, 180, 1000);
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
 	NewDefenseMapEditor->Off();
@@ -539,48 +539,61 @@ void PlayLevel::Start()
 	}
 
 	NewMouse = CreateActor<Mouse>();
-	//NewKsword = CreateActor<Ksword>();
+	for (int i = 0; i < 5; i++)
+	{
+	 NewKsword = CreateActor<Ksword>();
+	 
+	 NewKsword->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 + i, 90));
+	}
 	NewKsword2 = CreateActor<Ksword>();
-	NewKsword2->GetTransform()->SetLocalPosition({ -200.f,-100 });
-	NewKarcher = CreateActor<Karcher>();
-	NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
+	NewKsword2->GetTransform()->SetLocalPosition({ -100.f,-100.f });
+	//NewKarcher = CreateActor<Karcher>();
+	//NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);
 	
 	
-	{
-		NewMonster = CreateActor<Monster_01>();
-		NewForg = CreateActor<Frog>();
-		NewForg->GetTransform()->SetLocalPosition({ -100.f,-100 });
-		NewGangsi = CreateActor<Gangsi>();
-		NewGangsi->GetTransform()->SetLocalPosition({ -50.f,-100 });
-		NewGatpha = CreateActor<Gatpha>();
-		NewGatpha->GetTransform()->SetLocalPosition({ 0,-100 });
-		NewHungryDemon = CreateActor<HungryDemon>();
-		NewHungryDemon->GetTransform()->SetLocalPosition({ 50,-100 });
-		NewOnghwa = CreateActor<Onghwa>();
-		NewOnghwa->GetTransform()->SetLocalPosition({ 100,-100 });
-		NewRaccoondog = CreateActor<Raccoondog>();
-		NewRaccoondog->GetTransform()->SetLocalPosition({ 150,-100 });
-		NewSnowdemon = CreateActor<Snowdemon>();
-		NewSnowdemon->GetTransform()->SetLocalPosition({ 200,-100 });
-		NewSnowwoman = CreateActor<Snowwoman>();
-		NewSnowwoman->GetTransform()->SetLocalPosition({ 250,-100 });
-		NewSwordPirate = CreateActor<SwordPirate>();
-		NewSwordPirate->GetTransform()->SetLocalPosition({ 300,-100 });
-		NewTiger = CreateActor<Tiger>();
-		NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
-		NewWeirdPlant = CreateActor<WeirdPlant>();
-		NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
+	//{
+	//	NewMonster = CreateActor<Monster_01>();
+	//	NewForg = CreateActor<Frog>();
+	//	NewForg->GetTransform()->SetLocalPosition({ -100.f,-100 });
+	//	NewGangsi = CreateActor<Gangsi>();
+	//	NewGangsi->GetTransform()->SetLocalPosition({ -50.f,-100 });
+	//	NewGatpha = CreateActor<Gatpha>();
+	//	NewGatpha->GetTransform()->SetLocalPosition({ 0,-100 });
+	//	NewHungryDemon = CreateActor<HungryDemon>();
+	//	NewHungryDemon->GetTransform()->SetLocalPosition({ 50,-100 });
+	//	NewOnghwa = CreateActor<Onghwa>();
+	//	NewOnghwa->GetTransform()->SetLocalPosition({ 100,-100 });
+	//	NewRaccoondog = CreateActor<Raccoondog>();
+	//	NewRaccoondog->GetTransform()->SetLocalPosition({ 150,-100 });
+	//	NewSnowdemon = CreateActor<Snowdemon>();
+	//	NewSnowdemon->GetTransform()->SetLocalPosition({ 200,-100 });
+	//	NewSnowwoman = CreateActor<Snowwoman>();
+	//	NewSnowwoman->GetTransform()->SetLocalPosition({ 250,-100 });
+	//	NewSwordPirate = CreateActor<SwordPirate>();
+	//	NewSwordPirate->GetTransform()->SetLocalPosition({ 300,-100 });
+	//	NewTiger = CreateActor<Tiger>();
+	//	NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
+	//	NewWeirdPlant = CreateActor<WeirdPlant>();
+	//	NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
 
-		NewGonisi = CreateActor<Gonisi>();
-		NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
-		NewAsako = CreateActor<Asako>();
-		NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
+	//	NewGonisi = CreateActor<Gonisi>();
+	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
+	//	NewAsako = CreateActor<Asako>();
+	//	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
+	//}
+
+	if (nullptr != NewMapEditor) {
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewMapEditor->Load(Ser);
 	}
-
-	
 	
 }			
 
