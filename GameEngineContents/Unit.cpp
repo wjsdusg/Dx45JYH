@@ -297,8 +297,10 @@ void Unit::StateInit()
 				GlobalValue::Collision->ClrAt(IndexX, IndexY);
 				//각도를 알기떄문에 그냥 쓰면된다
 				float4 Pos = ReturnIndexPlusPos();
-				GlobalValue::Collision->SetAt(Pos.x, Pos.y);
-				ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
+				IndexX = Pos.ix();
+				IndexY = Pos.iy();
+				GlobalValue::Collision->SetAt(IndexX, IndexY);
+				ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 			}
 			else if(true == IsNextTileCollision())
 			{
@@ -317,8 +319,10 @@ void Unit::StateInit()
 					CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
 					GlobalValue::Collision->ClrAt(IndexX, IndexY);
 					float4 Pos = ReturnIndexPlusPos();
-					GlobalValue::Collision->SetAt(Pos.x, Pos.y);
-					ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
+					IndexX = Pos.ix();
+					IndexY = Pos.iy();
+					GlobalValue::Collision->SetAt(IndexX, IndexY);
+					ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 				}
 			}
 
@@ -416,8 +420,10 @@ void Unit::StateInit()
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
 						//각도를 알기떄문에 그냥 쓰면된다
 						float4 Pos = ReturnIndexPlusPos();
-						GlobalValue::Collision->SetAt(Pos.x, Pos.y);
-						ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
+						IndexX = Pos.ix();
+						IndexY = Pos.iy();
+						GlobalValue::Collision->SetAt(IndexX, IndexY);
+						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
 					else
 					{
@@ -995,7 +1001,7 @@ float4 Unit::ReturnIndexPlusPos()
 	}
 	else if (26 == Angle)
 	{
-
+		_IndexX = IndexX;
 		_IndexY = IndexY - 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
@@ -1010,6 +1016,7 @@ float4 Unit::ReturnIndexPlusPos()
 	else if (153 == Angle)
 	{
 		_IndexX = IndexX + 1;
+		_IndexY = IndexY;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
@@ -1022,7 +1029,7 @@ float4 Unit::ReturnIndexPlusPos()
 	}
 	else if (206 == Angle)
 	{
-
+		_IndexX = IndexX;
 		_IndexY = IndexY + 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
@@ -1037,6 +1044,7 @@ float4 Unit::ReturnIndexPlusPos()
 	else if (333 == Angle)
 	{
 		_IndexX = IndexX + 1;
+		_IndexY = IndexY;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
