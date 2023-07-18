@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
+#include "MapEditor.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 Ksword::Ksword()
@@ -18,7 +19,8 @@ Ksword::~Ksword()
 void Ksword::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
-	std::string str3 = std::to_string(Angle);
+	
+	std::string str3 = MapEditor::ConvertPosToTileXY(ShortTargetPos).ToString();
 	FontRender0->SetText(str3);
 }
 //

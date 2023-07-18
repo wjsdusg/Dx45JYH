@@ -68,5 +68,11 @@ private:
 	float PathTime = 0.0f;
 	bool IsNextTileCollision();
 	float4 ReturnIndexPlusPos();
+	int TestInt1 = 0;
+	int TestInt2 = 0;
+	int TestInt3 = 0;
+	int TestInt4 = 0;
+	int TestInt5 = 0;
+	int TestInt6 = 0;
 };
 

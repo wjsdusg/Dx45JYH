@@ -539,12 +539,12 @@ void PlayLevel::Start()
 	}
 
 	NewMouse = CreateActor<Mouse>();
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 	 NewKsword = CreateActor<Ksword>();
 	 
 	 NewKsword->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 + i, 90));
-	}
+	}*/
 	NewKsword2 = CreateActor<Ksword>();
 	NewKsword2->GetTransform()->SetLocalPosition({ -100.f,-100.f });
 	//NewKarcher = CreateActor<Karcher>();
