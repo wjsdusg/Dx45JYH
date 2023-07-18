@@ -292,7 +292,7 @@ void Unit::StateInit()
 			//각도계산
 			CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
 			//지금 내가 가는 방향에 장애물이 없다면 그영역을 미리선점하고 그쪽으로 움직인다.
-			if (false == IsTileCollision())
+			if (false == IsNextTileCollision())
 			{				
 				GlobalValue::Collision->ClrAt(IndexX, IndexY);
 				//각도를 알기떄문에 그냥 쓰면된다
@@ -300,8 +300,9 @@ void Unit::StateInit()
 				GlobalValue::Collision->SetAt(Pos.x, Pos.y);
 				ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
 			}
-			else if(true == IsTileCollision())
+			else if(true == IsNextTileCollision())
 			{
+				//경로계산
 				PathCal();
 				if (0 != PathPos.size())
 				{
@@ -312,6 +313,12 @@ void Unit::StateInit()
 					InterTargetPos = PathPos.front();
 
 					PathPos.pop_front();
+
+					CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
+					GlobalValue::Collision->ClrAt(IndexX, IndexY);
+					float4 Pos = ReturnIndexPlusPos();
+					GlobalValue::Collision->SetAt(Pos.x, Pos.y);
+					ShortTargetPos = MapEditor::ConvertTileXYToPos(Pos.x, Pos.y);
 				}
 			}
 
@@ -404,7 +411,7 @@ void Unit::StateInit()
 			{
 				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 				{
-					if (false == IsTileCollision())
+					if (false == IsNextTileCollision())
 					{
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
 						//각도를 알기떄문에 그냥 쓰면된다
@@ -921,7 +928,7 @@ void Unit::PathCal()
 	}
 }
 
-bool Unit::IsTileCollision()
+bool Unit::IsNextTileCollision()
 {
 	int _IndexX = -1;
 	int _IndexY = -1;

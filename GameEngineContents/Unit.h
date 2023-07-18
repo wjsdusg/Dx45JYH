@@ -66,7 +66,7 @@ private:
 	void PathCal();
 	int CalAngle(float4 _Pos1, float4 _Pos2);
 	float PathTime = 0.0f;
-	bool IsTileCollision();
+	bool IsNextTileCollision();
 	float4 ReturnIndexPlusPos();
 };
 
