@@ -256,6 +256,7 @@ float4 MapEditor::PosToTilePos(float4 _Pos)
 	}
 	else
 	{
+		MsgAssert("¸»µµ¾ÈµÊ");
 		return { static_cast<float>(Y),static_cast<float>(X)};
 	}
 
@@ -382,10 +383,10 @@ float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
 {
 	float4 CheckPos= _Pos - MapUpP;
 
-	int X = -1;
-	int Y = -1;
-	X = static_cast<int>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2);
-	Y = static_cast<int>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2);
+	size_t X = -1;
+	size_t Y = -1;
+	X = static_cast<size_t>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2.f);
+	Y = static_cast<size_t>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2.f);
 	float4 Pos = { static_cast<float>(X) , static_cast<float>(Y) };
 	return Pos;
 }
@@ -393,4 +394,19 @@ float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
 float4 MapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
 {
 	return TileInfos[_Y][_X].Pos;
+}
+
+float4  MapEditor::ConvertPosToTilePos(float4 _Pos)
+{
+	float4 CheckPos = _Pos - MapUpP;
+
+	size_t X = -1;
+	size_t Y = -1;
+	X = static_cast<size_t>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2.f);
+	Y = static_cast<size_t>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2.f);
+	if (X < 0 || Y < 0)
+	{
+		int a = 0;
+	}
+	return TileInfos[Y][X].Pos;
 }

@@ -31,13 +31,14 @@ public:
 	static float4 ConvertPosToTileXY(float4 _Pos);
 
 	static float4 ConvertTileXYToPos(size_t _X, size_t _Y);
+
+	static float4 ConvertPosToTilePos(float4 _Pos);
 	void CreateTileEditor(int _X, int _Y, const float4& _TileSize);
 
 	void Clear();	
 
 	size_t GetTIleIndex(const float4& _Pos);
 
-	float4 PosToTilePos(float4 _Pos);
 
 	TileInfo* GetTIleInfo(const float4& _Pos);
 
@@ -57,6 +58,7 @@ protected:
 	void Render(float _Delta) override;
 
 private:
+	float4 PosToTilePos(float4 _Pos);
 	bool IsTilemapCulling = false;
 
 	static std::vector<std::vector<TileInfo>> TileInfos;

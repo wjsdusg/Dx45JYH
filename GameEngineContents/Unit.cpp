@@ -72,7 +72,7 @@ void Unit::Update(float _DeltaTime)
 		
 		if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) != MapEditor::ConvertPosToTileXY(TargetPos))
 		{
-			GlobalValue::Collision->ClrAt(IndexX, IndexY);
+			//GlobalValue::Collision->ClrAt(IndexX, IndexY);
 			PathCal();
 			FSM.ChangeState("Move");
 		}
@@ -155,7 +155,7 @@ void Unit::Start()
 float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta)
 {
 	float degree = CalAngle1To2(_Pos1, _Pos2);
-	Angle = static_cast<int>(degree);	
+	Angle = degree;	
 	float radian = degree * GameEngineMath::DegToRad;
 	float4 AddPos;
 	AddPos.x = _Speed * _Delta * cosf(radian);
@@ -236,8 +236,8 @@ void Unit::StateInit()
 				}
 			}
 			float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-			IndexX = _Pos.x;
-			IndexY = _Pos.y;
+			IndexX = _Pos.ix();
+			IndexY = _Pos.iy();
 			float4 _Pos2 = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 			GetTransform()->SetLocalPosition(_Pos2);
 			GlobalValue::Collision->SetAt(IndexX, IndexY);
@@ -263,8 +263,8 @@ void Unit::StateInit()
 			if (IndexX != _Pos.x || IndexY != _Pos.y)
 			{
 				GlobalValue::Collision->ClrAt(IndexX, IndexY);
-				IndexX = _Pos.x;
-				IndexY = _Pos.y;
+				IndexX = _Pos.ix();
+				IndexY = _Pos.iy();
 				float4 _Pos2 = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 				GetTransform()->SetLocalPosition(_Pos2);
 				GlobalValue::Collision->SetAt(IndexX, IndexY);
@@ -285,16 +285,20 @@ void Unit::StateInit()
 			{
 				if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(PathPos.front()))
 				{
+					float4 Pos2 = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+					int a = 0;
 					PathPos.pop_front();
+					PathPosIndex.pop_front();
+					
 				}
 				InterTargetPos = PathPos.front();
+				PrePos2 = PathPosIndex.front();
 				
 				PathPos.pop_front();	
-
+				PathPosIndex.pop_front();
 				//각도계산
-				MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, 0.1f);
-				CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
-				//지금 내가 가는 방향에 장애물이 없다면 그영역을 미리선점하고 그쪽으로 움직인다.
+				CalAngle(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()), InterTargetPos);
+				//지금 내가 가는 방향에 장애물이 없다면 그타일을 미리선점하고 그쪽으로 움직인다.
 				if (false == IsNextTileCollision())
 				{
 					//현재위치콜리전 삭제
@@ -303,13 +307,14 @@ void Unit::StateInit()
 					float4 Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
 					IndexX = Pos.ix();
 					IndexY = Pos.iy();
-
+					Angle;
 					Pos=ReturnIndexPlusPos();
 					IndexX = Pos.ix();
 					IndexY = Pos.iy();
 					TestInt1 = IndexX;
 					TestInt2 = IndexY;
 					GlobalValue::Collision->SetAt(IndexX, IndexY);
+					PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
 					ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 				}
 				else if (true == IsNextTileCollision())
@@ -326,7 +331,7 @@ void Unit::StateInit()
 
 						PathPos.pop_front();
 
-						CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
+						CalAngle(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()), InterTargetPos);
 
 						//현재위치콜리전 삭제
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
@@ -427,7 +432,8 @@ void Unit::StateInit()
 			int d = TestInt4;
 			int e = TestInt5;
 			int f = TestInt6;
-			
+			float4 Pos34 = MapEditor::ConvertTileXYToPos(90,88);
+			float s = Angle;
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
 			float ss = InterTargetPos.XYDistance(GetTransform()->GetLocalPosition());
 			if (ShortTargetPos==InterTargetPos&&InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
@@ -448,7 +454,7 @@ void Unit::StateInit()
 				{
 					if (false == IsNextTileCollision())
 					{
-						CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
+						//CalAngle(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()), InterTargetPos);
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
 						//각도를 알기떄문에 그냥 쓰면된다
 						float4 Pos = ReturnIndexPlusPos();
@@ -456,6 +462,7 @@ void Unit::StateInit()
 						IndexY = Pos.iy();
 						TestInt5 = IndexX;
 						TestInt6 = IndexY;
+						PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
@@ -822,6 +829,7 @@ void Unit::PathCal()
 	float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
 
 	PathPos.clear();
+	PathPosIndex.clear();
 	//Angle계산	
 	CalAngle(GetTransform()->GetLocalPosition(), TargetPos);
 	GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), MPos.iy(), JPSPathResult);
@@ -962,6 +970,7 @@ void Unit::PathCal()
 	for (const JPSCoord& Point : JPSPathResult)
 	{
 		float4 ConvertPos = MapEditor::ConvertTileXYToPos(Point.m_x, Point.m_y);
+		PathPosIndex.push_back({ static_cast<float>(Point.m_x), static_cast<float>(Point.m_y) });
 		PathPos.push_back(ConvertPos);
 
 	}
@@ -1038,61 +1047,64 @@ float4 Unit::ReturnIndexPlusPos()
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
-	if (Angle < 80 && Angle >= 10)
+	else if (Angle < 80 && Angle >= 10)
 	{
 		_IndexX = IndexX;
 		_IndexY = IndexY - 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
-	}
-	
-	if (Angle < 100 && Angle >= 80)
+	}	
+	else if (Angle < 100 && Angle >= 80)
 	{
 		_IndexX = IndexX - 1;
 		_IndexY = IndexY - 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
-	if (Angle < 170 && Angle >= 100)
+	else if (Angle < 170 && Angle >= 100)
 	{
 		_IndexX = IndexX - 1;
 		_IndexY = IndexY;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
-	if (Angle < 190 && Angle >= 170)
+	else if (Angle < 190 && Angle >= 170)
 	{
 		_IndexX = IndexX - 1;
 		_IndexY = IndexY + 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
-	if (Angle < 260 && Angle >= 190)
+	else if (Angle < 260 && Angle >= 190)
 	{
 		_IndexX = IndexX;
 		_IndexY = IndexY + 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
-	if (Angle < 280 && Angle >= 260)
+	else if (Angle < 280 && Angle >= 260)
 	{
 		_IndexX = IndexX + 1;
 		_IndexY = IndexY + 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
 	}
-	if (Angle < 350 && Angle >= 280)
+	else if (Angle < 350 && Angle >= 280)
 	{
 		_IndexX = IndexX + 1;
 		_IndexY = IndexY;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
+		return _Pos;
+	}
+	else
+	{
 		return _Pos;
 	}
 }
 
-int Unit::CalAngle(float4 _Pos1, float4 _Pos2)
+float Unit::CalAngle(float4 _Pos1, float4 _Pos2)
 {
 	float degree = CalAngle1To2(_Pos1, _Pos2);
-	Angle = static_cast<int>(degree);
+	Angle = degree;
 	return Angle;
 }

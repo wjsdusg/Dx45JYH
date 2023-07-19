@@ -63,8 +63,9 @@ private:
 	std::list<PathIndex> PathResult;
 	std::list<JPSCoord> JPSPathResult;
 	std::list<float4> PathPos;
+	std::list<float4> PathPosIndex;
 	void PathCal();
-	int CalAngle(float4 _Pos1, float4 _Pos2);
+	float CalAngle(float4 _Pos1, float4 _Pos2);
 	float PathTime = 0.0f;
 	bool IsNextTileCollision();
 	float4 ReturnIndexPlusPos();
@@ -74,5 +75,7 @@ private:
 	int TestInt4 = 0;
 	int TestInt5 = 0;
 	int TestInt6 = 0;
+	float4 PrePos2;
+	std::list<float4> PathLog;
 };
 

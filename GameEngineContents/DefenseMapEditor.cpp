@@ -373,7 +373,7 @@ void DefenseMapEditor::Render(float _Delta)
 }
 void DefenseMapEditor::Save(GameEngineSerializer& _Ser)
 {
-	SaveNum = MoveMarks.size();
+	SaveNum = static_cast<int>(MoveMarks.size());
 	_Ser.Write(SaveNum);
 	for (int i = 0; i < MoveMarks.size(); i++)
 	{
