@@ -67,8 +67,8 @@ void Unit::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick/*&&MyField==Field::DungeonMap*/)
 	{
-		MousePickPos = MainMouse;	
-		TargetPos = MainMouse;
+		MousePickPos = MainMouse;
+		//TargetPos = MainMouse;
 		IsHold = false;
 		
 		if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) != MapEditor::ConvertPosToTileXY(TargetPos))
@@ -469,11 +469,11 @@ void Unit::StateInit()
 			}
 			else
 			{
-				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f/*&& ShortTargetPos!=InterTargetPos*/)
+				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 				{
 					if (false == IsNextTileCollision())
 					{
-						//CalAngle(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()), InterTargetPos);
+						
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
 						//각도를 알기떄문에 그냥 쓰면된다
 						bool sd =GlobalValue::Collision->IsCollision(IndexX, IndexY);

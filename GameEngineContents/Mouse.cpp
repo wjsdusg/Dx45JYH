@@ -9,6 +9,8 @@
 #include "Object.h"
 #include "DragBox.h"
 #include "UIButton.h"
+#include "MapEditor.h"
+#include "DefenseMapEditor.h"
 Mouse* Mouse::NewMainMouse;
 extern float4 MainMouse;
 Mouse::Mouse()
@@ -359,6 +361,10 @@ void Mouse::FSMInit()
 			{
 				FSM.ChangeState("UnitClickPatrol");
 			}
+			else if (true == GameEngineInput::IsUp("EngineMouseRight"))
+			{
+				CopyUnit->TargetPos = Collision->GetTransform()->GetLocalPosition();
+			}
 			else
 			{
 				Render0->ChangeAnimation("Default");
@@ -412,16 +418,18 @@ void Mouse::FSMInit()
 				return;
 			}
 			bool check = false;
+			float MinDistance = 100000.f;
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			//유닛클릭시 유닛클릭상태로 이동
 			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
+				
 				if (AnimationEnd == false)
 				{
 					Render0->ChangeAnimation("MyTeamCusor");
 					AnimationEnd = true;
 				}
-				bool check = false;
+			
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -443,6 +451,7 @@ void Mouse::FSMInit()
 					}
 					FSM.ChangeState("UnitClick");
 				}
+				
 			}
 			//빈공간클릭시 디폴트상태
 			else if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
@@ -482,11 +491,36 @@ void Mouse::FSMInit()
 				{
 					FSM.ChangeState("UnitClickPatrol");
 				}
+				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
+				{
+					//CopyUnit->TargetPos = Collision->GetTransform()->GetLocalPosition();
+					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+					for (auto Start = Units.begin(); Start != Units.end(); Start++)
+					{
+						if (true==(*Start)->IsClick&&(*Start)->GetTransform()->GetLocalPosition().XYDistance(Collision->GetTransform()->GetLocalPosition()) < MinDistance)
+						{
+							CopyUnit = *Start;
+						}
+					}
+					float4 TargetIndex = MapEditor::ConvertPosToTileXY(Collision->GetTransform()->GetLocalPosition());
+					int IndexX = TargetIndex.ix()-CopyUnit->IndexX ;
+					int IndexY = TargetIndex.iy()-CopyUnit->IndexY ;
+					for (auto Start = Units.begin(); Start != Units.end(); Start++)
+					{
+						float4 UnitIndex = MapEditor::ConvertPosToTileXY((*Start)->GetTransform()->GetLocalPosition());
+						int IndexUX = UnitIndex.ix();
+						int IndexUY = UnitIndex.iy();
+						IndexUX += IndexX;
+						IndexUY += IndexY;
+						(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
+					}
+				}
 				else
 				{
 					Render0->ChangeAnimation("Default");
 				}
-			}			
+			}
+			//가장가까운유닛 기준으로 이동
 			
 			//드래그박스
 			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
@@ -560,8 +594,7 @@ void Mouse::FSMInit()
 			.Name = "UnitClickAttack",
 		.Start = [this]()
 		{
-			Render0->ChangeAnimation("AClick");
-			
+			Render0->ChangeAnimation("AClick");			
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -582,12 +615,10 @@ void Mouse::FSMInit()
 				else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					FSM.ChangeState("UnitsClick");
-
 				}
 				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
 				{
 					FSM.ChangeState("UnitsClick");
-
 				}
 		}
 		,
