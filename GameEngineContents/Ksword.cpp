@@ -21,6 +21,9 @@ void Ksword::Update(float _DeltaTime)
 	Unit::Update(_DeltaTime);
 	
 	std::string str3 = MapEditor::ConvertPosToTileXY(ShortTargetPos).ToString();
+	std::string str4 =std::to_string(TestDistance);
+	str3 += "\n";
+	str3 += str4;
 	FontRender0->SetText(str3);
 }
 //

@@ -59,6 +59,7 @@ protected:
 	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
 	int IndexX = -1;
 	int IndexY = -1;
+	float TestDistance;
 private:
 	std::list<PathIndex> PathResult;
 	std::list<JPSCoord> JPSPathResult;

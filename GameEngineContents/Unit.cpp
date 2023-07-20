@@ -281,6 +281,7 @@ void Unit::StateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			//경로계산
+			GetTransform()->SetLocalPosition(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()));
 			if (0 != PathPos.size())
 			{
 				if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(PathPos.front()))
@@ -435,7 +436,7 @@ void Unit::StateInit()
 			float4 Pos34 = MapEditor::ConvertTileXYToPos(90,88);
 			float s = Angle;
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
-			float ss = InterTargetPos.XYDistance(GetTransform()->GetLocalPosition());
+			TestDistance = ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition());
 			if (ShortTargetPos==InterTargetPos&&InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
 				GetTransform()->SetLocalPosition(InterTargetPos);
@@ -450,7 +451,7 @@ void Unit::StateInit()
 			}
 			else
 			{
-				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
+				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f/*&& ShortTargetPos!=InterTargetPos*/)
 				{
 					if (false == IsNextTileCollision())
 					{
