@@ -46,6 +46,9 @@
     <Filter Include="MapEditor">
       <UniqueIdentifier>{3fad294e-a294-4950-a082-22305fa90a7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OptionSheet">
+      <UniqueIdentifier>{15a6903a-66a1-4c1f-bbcc-a4e6cbeb4238}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="GlobalValue.h">
       <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Optionsheet.h">
+      <Filter>OptionSheet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +410,9 @@
     </ClCompile>
     <ClCompile Include="GlobalValue.cpp">
       <Filter>Enum</Filter>
+    </ClCompile>
+    <ClCompile Include="Optionsheet.cpp">
+      <Filter>OptionSheet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
