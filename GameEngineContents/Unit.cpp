@@ -46,7 +46,8 @@ void Unit::Update(float _DeltaTime)
 			NewUnit->FSM.ChangeState("Stay");
 		}
 	}*/
-	
+	bool asd4 = IsNextTileCollision();
+	int sdg = 0;
 	if (true == IsClick)
 	{
 		if (false == SelectionCircle->IsUpdate())
@@ -281,10 +282,11 @@ void Unit::StateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			//경로계산
-			GetTransform()->SetLocalPosition(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()));
+			//GetTransform()->SetLocalPosition(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()));
 			if (0 != PathPos.size())
 			{
-				if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(PathPos.front()))
+				//if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(PathPos.front()))
+				if (GetTransform()->GetLocalPosition() == PathPos.front())
 				{
 					float4 Pos2 = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
 					int a = 0;
@@ -298,25 +300,40 @@ void Unit::StateInit()
 				PathPos.pop_front();	
 				PathPosIndex.pop_front();
 				//각도계산
-				CalAngle(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()), InterTargetPos);
+				PreAngle = Angle;
+				CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
 				//지금 내가 가는 방향에 장애물이 없다면 그타일을 미리선점하고 그쪽으로 움직인다.
 				if (false == IsNextTileCollision())
 				{
+
 					//현재위치콜리전 삭제
 					GlobalValue::Collision->ClrAt(IndexX, IndexY);
-					//각도를 알기떄문에 그냥 쓰면된다
-					float4 Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-					IndexX = Pos.ix();
-					IndexY = Pos.iy();
-					Angle;
-					Pos=ReturnIndexPlusPos();
-					IndexX = Pos.ix();
-					IndexY = Pos.iy();
-					TestInt1 = IndexX;
-					TestInt2 = IndexY;
-					GlobalValue::Collision->SetAt(IndexX, IndexY);
-					PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
-					ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
+					if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(InterTargetPos)/*&&180>abs(PreAngle-Angle)*/)
+					{
+						float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+						IndexX = _Pos.ix();
+						IndexY = _Pos.iy();
+						GlobalValue::Collision->SetAt(IndexX, IndexY);
+						PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
+						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
+					}
+					else 
+					{
+						//각도를 알기떄문에 그냥 쓰면된다
+						float4 Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+						IndexX = Pos.ix();
+						IndexY = Pos.iy();
+
+						Pos = ReturnIndexPlusPos();
+						IndexX = Pos.ix();
+						IndexY = Pos.iy();
+						TestInt1 = IndexX;
+						TestInt2 = IndexY;
+						GlobalValue::Collision->SetAt(IndexX, IndexY);
+						PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
+						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
+					}
+					
 				}
 				else if (true == IsNextTileCollision())
 				{
@@ -432,6 +449,7 @@ void Unit::StateInit()
 			int c = TestInt3;
 			int d = TestInt4;
 			int e = TestInt5;
+			
 			int f = TestInt6;
 			float4 Pos34 = MapEditor::ConvertTileXYToPos(90,88);
 			float s = Angle;
@@ -458,6 +476,8 @@ void Unit::StateInit()
 						//CalAngle(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()), InterTargetPos);
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
 						//각도를 알기떄문에 그냥 쓰면된다
+						bool sd =GlobalValue::Collision->IsCollision(IndexX, IndexY);
+						bool asd = IsNextTileCollision();
 						float4 Pos = ReturnIndexPlusPos();
 						IndexX = Pos.ix();
 						IndexY = Pos.iy();
@@ -467,9 +487,9 @@ void Unit::StateInit()
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
-					else
+					else if(true == IsNextTileCollision())
 					{
-						//PathCal();
+						PathCal();
 						FSM.ChangeState("Move");
 					}
 				}
@@ -982,7 +1002,7 @@ bool Unit::IsNextTileCollision()
 	int _IndexX = -1;
 	int _IndexY = -1;
 		
-	return false;
+	
 	if (Angle < 10 || Angle >= 350)
 	{
 		_IndexX = IndexX + 1;
