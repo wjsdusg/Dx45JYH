@@ -43,6 +43,7 @@ private:
 	std::vector<std::string> OptionsString;
 	std::vector<std::function<void()>> EpicFunctions;
 	std::vector<std::string> EpicOptionsString;
+	std::vector<int> Selectednumber;
 	static int Count;
 };
 
