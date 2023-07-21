@@ -499,7 +499,9 @@ void Mouse::FSMInit()
 					{
 						if (true==(*Start)->IsClick&&(*Start)->GetTransform()->GetLocalPosition().XYDistance(Collision->GetTransform()->GetLocalPosition()) < MinDistance)
 						{
+							MinDistance = (*Start)->GetTransform()->GetLocalPosition().XYDistance(Collision->GetTransform()->GetLocalPosition());
 							CopyUnit = *Start;
+						
 						}
 					}
 					float4 TargetIndex = MapEditor::ConvertPosToTileXY(Collision->GetTransform()->GetLocalPosition());
