@@ -24,24 +24,13 @@ Optionsheet::~Optionsheet()
 
 void Optionsheet::Update(float _DeltaTime)
 {
+	
+	FSM.Update(_DeltaTime);
+	if ( true == GameEngineInput::IsUp("F1"))
+	{
+		FSM.ChangeState("OpenNormalSheet");
 
-	if (Render0->IsAnimationEnd())
-	{
-		
-		Render0Select->On();
-		Render1Select->On();
-		Render2Select->On();		
-		FontRender0->SetText(OptionsString[0]);
 	}
-	/*if (GameEngineInput::IsUp("EngineMouseLeft"))
-	{
-		Render1->Off();
-		Render1Select->Off();
-	}*/
-	float4 asdadssds =Render0->GetTransform()->GetWorldPosition();
-	//Render0->GetTransform()->AddLocalPosition({ 1.f, 1.f });
-	float4 asdads = FontRender0->GetTransform()->GetWorldPosition();
-	float4 asdads2 = FontRender0->GetTransform()->GetWorldScale();
 	
 }
 
@@ -105,10 +94,9 @@ void Optionsheet::Start()
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->SetOrder(static_cast<int>(ColEnum::Optionsheet));
 	Collision->SetColType(ColType::AABBBOX2D);
-	FucntionsInit();
-	
-	
-	
+	ColRender = CreateComponent<GameEngineUIRenderer>();
+	ColRender->SetSprite("Button.png", 2);
+	ColRender->Off();
 	{
 		FontRender0 = CreateComponent<GameEngineFontUIRenderer>();		
 		FontRender0->SetFont("휴먼둥근헤드라인");
@@ -116,6 +104,7 @@ void Optionsheet::Start()
 		FontRender0->SetColor({ 1.f,1.f,1.f });
 		FontRender0->GetTransform()->SetLocalPosition({ -350.f,0.f });
 		FontRender0->GetTransform()->AddLocalPosition({ -100.f,10.f });
+		FontRender0->Off();
 	}
 	{
 		FontRender1 = CreateComponent<GameEngineFontUIRenderer>();		
@@ -124,19 +113,20 @@ void Optionsheet::Start()
 		FontRender1->SetColor({ 1.f,1.f,1.f });
 		FontRender1->GetTransform()->SetLocalPosition({ 0,0});
 		FontRender1->GetTransform()->AddLocalPosition({ -100.f,10.f });
+		FontRender1->Off();
 	}
 	{
-		FontRender2 = CreateComponent<GameEngineFontUIRenderer>();
-		FontRender2->GetTransform()->SetParent(Render2->GetTransform());
+		FontRender2 = CreateComponent<GameEngineFontUIRenderer>();		
 		FontRender2->SetFont("휴먼둥근헤드라인");
-		FontRender2->SetScale({ 20.f });
-		FontRender2->GetTransform()->SetLocalPosition({ 1.f,1.f });
+		FontRender2->SetScale({ 20.f });		
 		FontRender2->SetColor({ 1.f,1.f,1.f });
 		FontRender2->GetTransform()->SetLocalPosition({ 350.f,0.f });
 		FontRender2->GetTransform()->AddLocalPosition({ -100.f,10.f });
+		FontRender2->Off();
 	}
 
-	
+	FucntionsInit();
+	FSMInit();
 }
 
 // 이건 디버깅용도나 
@@ -181,16 +171,28 @@ void Optionsheet::FSMInit()
 			 Render0->On();			 
 			 Render1->On();			 
 			 Render2->On();
+			 
 			 Render0->ChangeAnimation("OpenNomalText");
 			 Render1->ChangeAnimation("OpenNomalText");
 			 Render2->ChangeAnimation("OpenNomalText");
-			 ColRender->SetSprite("Button.png", 2);
-			 ColRender->Off();
+			
 
 		},
 		.Update = [this](float _DeltaTime)
 		{
-
+			if (Render0->IsAnimationEnd())
+			{
+		
+				Render0Select->On();
+				Render1Select->On();
+				Render2Select->On();
+				FontRender0->On();
+				FontRender1->On();
+				FontRender2->On();
+				FontRender0->SetText(OptionsString[Selectednumber[0]]);
+				FontRender1->SetText(OptionsString[Selectednumber[1]]);
+				FontRender2->SetText(OptionsString[Selectednumber[2]]);
+			}
 			GameEngineCamera* Camera = GetLevel()->GetCamera(100).get();
 			float4 Mouse = GameEngineInput::GetMousePosition();
 			// 랜더러 
@@ -204,7 +206,7 @@ void Optionsheet::FSMInit()
 			MouseData.SPHERE.Center = Mouse.DirectFloat3;
 			MouseData.SPHERE.Radius = 0.0f;
 			CollisionData asd = Render0->GetTransform()->GetCollisionData();
-			//스탑
+			//1번선택지
 			if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
 			{
 				ColRender->On();
@@ -215,43 +217,41 @@ void Optionsheet::FSMInit()
 				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
-					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-					for (auto Start = Units.begin(); Start != Units.end(); Start++)
-					{
-						if (true == (*Start)->GetIsClick())
-						{
-							(*Start)->FSM.ChangeState("Stay");
-							//Mouse::NewMainMouse->FSM.ChangeState("UnitsClick");
-						}
-					}
+					int num = Selectednumber[0];
+					Functions[num]();
+					FSM.ChangeState("Default");
 				}
 			}
-			//이동
+			//2번선택지
 			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render1->GetTransform()->GetCollisionData(), MouseData))
 			{
 				ColRender->On();
 				Collision->On();
 				ColRender->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
-				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
-					//Mouse::NewMainMouse->FSM.ChangeState("UnitClickMove");
+					int num = Selectednumber[1];
+					Functions[num]();
+					FSM.ChangeState("Default");
 				}
 			}
-			//공격
+			//3번선택지
 			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render2->GetTransform()->GetCollisionData(), MouseData))
 			{
 				ColRender->On();
 				Collision->On();
 				ColRender->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
-				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
-					//Mouse::NewMainMouse->FSM.ChangeState("UnitClickAttack");
+					int num = Selectednumber[2];
+					Functions[num]();
+					FSM.ChangeState("Default");
 				}
 			}
 			
@@ -266,7 +266,13 @@ void Optionsheet::FSMInit()
 		{
 			Render0->Off();
 			Render1->Off();
-			Render2->Off();			
+			Render2->Off();	
+			Render0Select->Off();
+			Render1Select->Off();
+			Render2Select->Off();
+			FontRender0->Off();
+			FontRender1->Off();
+			FontRender2->Off();
 			ColRender->Off();
 			Collision->Off();
 
