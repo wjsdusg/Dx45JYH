@@ -4,7 +4,7 @@
 #include <GameEngineBase\GameEngineDirectory.h>
 #include <GameEngineCore\GameEngineCore.h>
 #include <GameEngineContents\ContentsCore.h>
-
+#include <GameEngineBase/GameEngineRandom.h>
 #pragma comment(lib, "GameEngineCore.lib")
 #pragma comment(lib, "GameEngineContents.lib")
 
@@ -19,8 +19,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	float4 ss2 = float4::AngleToDirection2DToDeg(0.f);
 	float4 ss3= ss.RotaitonZDegReturn(30.f);
 	float g=float4::GetAngleVectorToVectorDeg(ss3, ss2);
-	
-	
+	for (int i = 0; i < 10; i++)
+	{
+	int sd =GameEngineRandom::MainRandom.RandomInt(0, 6);
+	}
+
 	float sda = acosf(float(0.5))*GameEngineMath::RadToDeg;
 
 	{

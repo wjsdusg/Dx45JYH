@@ -11,6 +11,7 @@ class Object : public GameEngineActor
 	friend class Mouse;
 	friend class UIButton;
 	friend class PlayLevel;
+	friend class Optionsheet;
 public:
 	// constrcuter destructer
 	Object();
@@ -45,9 +46,19 @@ protected:
 	Field MyField = Field::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
-	float FightFOV = 300.f;
-	
+	float FightFOV = 300.f;	
 	static std::vector<std::shared_ptr<Object>> Objects;
+	int HP = 0;
+	int CurHp = 0;
+	int ATK = 0;
+	int Shield = 0;
+	float AttackSpeed = 1.f;
+	float AttackRange = 0;
+	static int AddHp;
+	static int AddATK;
+	static float AddAttackSpeed;
+	static float AddAttackRange;
+	static int AddShield;
 private:
 	void ObjectsSetTile();
 

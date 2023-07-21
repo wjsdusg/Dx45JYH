@@ -15,7 +15,7 @@ extern float4 MainMouse;
 extern float4 IsoTileScale;
 extern float4 MapUpP;
 std::vector<std::shared_ptr<Unit>> Unit::Units;
-
+float Unit::AddSpeed=0;
 std::vector<std::shared_ptr<Unit>> Unit::GetUnits()
 {
 	return Units;

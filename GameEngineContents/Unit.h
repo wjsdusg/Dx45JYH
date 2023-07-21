@@ -10,6 +10,7 @@ class Unit : public Object
 	friend class Mouse;
 	friend class UIButton;
 	friend class PlayLevel;
+	friend class Optionsheet;
 public:
 	// constrcuter destructer
 	Unit();
@@ -47,12 +48,12 @@ protected:
 	bool IsA=false;
 	bool IsM=false;
 	bool IsP=false;
-	float Speed = 100.f;
-	float attackRange = 0;
+	float Speed = 100.f;	
+	static float AddSpeed;
 	float AngleBetween = 0;
 	float PreAngle = 0;
-	float AttackRange = 0;
-	float AttackSpeed = 1.f;
+	
+	
 	int UnitID = -1;
 	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;

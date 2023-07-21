@@ -45,6 +45,7 @@
 #include "Wakizaka.h"
 #include "MapEditor.h"
 #include "DefenseMapEditor.h"
+#include "Optionsheet.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
@@ -84,6 +85,8 @@ std::shared_ptr<MapEditor> NewMapEditor = nullptr;
 std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
 std::shared_ptr<UIButton> NewUIButton = nullptr;
 std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
+std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
+
 PlayLevel::PlayLevel()
 {
 }
@@ -486,6 +489,7 @@ void PlayLevel::Start()
 	NewDefenseMapEditor->Off();
 	NewUIButton = CreateActor<UIButton>();
 	NewUIButton->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
+	NewOptionsheet = CreateActor<Optionsheet>();
 	{
 		std::shared_ptr<GameEngineButton> Button = CreateActor<GameEngineButton>();
 		Button->GetTransform()->SetLocalPosition(NewMiniMap->GetTransform()->GetLocalPosition());

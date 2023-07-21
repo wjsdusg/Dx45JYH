@@ -5,6 +5,9 @@
 #include "MapOverlay.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
+int Karcher::AddHp = 0;
+int Karcher::AddATK = 0;
+int Karcher::AddShield = 0;
 Karcher::Karcher()
 {
 }

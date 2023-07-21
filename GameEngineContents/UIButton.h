@@ -34,7 +34,7 @@ private:
 	
 	std::shared_ptr<class GameEngineUIRenderer> ColRender;
 	std::shared_ptr<class GameEngineCollision> Collision;
-	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
+	
 	class GameEngineFSM FSM;
 	void FSMInit();
 	float x = 55.f;

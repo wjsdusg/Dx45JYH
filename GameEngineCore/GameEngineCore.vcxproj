@@ -184,6 +184,7 @@
     <ClInclude Include="GameEngineEnum.h" />
     <ClInclude Include="GameEngineFont.h" />
     <ClInclude Include="GameEngineFontRenderer.h" />
+    <ClInclude Include="GameEngineFontUIRenderer.h" />
     <ClInclude Include="GameEngineFSM.h" />
     <ClInclude Include="GameEngineGUI.h" />
     <ClInclude Include="GameEngineIndexBuffer.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="GameEngineDirectBuffer.cpp" />
     <ClCompile Include="GameEngineFont.cpp" />
     <ClCompile Include="GameEngineFontRenderer.cpp" />
+    <ClCompile Include="GameEngineFontUIRenderer.cpp" />
     <ClCompile Include="GameEngineFSM.cpp" />
     <ClCompile Include="GameEngineGUI.cpp" />
     <ClCompile Include="GameEngineIndexBuffer.cpp" />

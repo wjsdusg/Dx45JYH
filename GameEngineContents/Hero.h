@@ -6,6 +6,7 @@ class Hero : public Unit
 {
 	
 public:
+	friend class Optionsheet;
 	// constrcuter destructer
 	Hero();
 	~Hero();
@@ -20,7 +21,9 @@ protected:
 	void Start();
 	void Update(float _DeltaTime);
 	virtual void Render(float _DeltaTime) {}
-	
+	static int AddHp;
+	static int AddATK;
+	static int AddShield;
 private:
 
 

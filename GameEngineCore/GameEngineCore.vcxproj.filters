@@ -160,6 +160,9 @@
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
       <Filter>ThirdParty\Fw1Font\Header</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineFontUIRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -310,6 +313,9 @@
       <Filter>Resources\Font</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineFontRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFontUIRenderer.cpp">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClCompile>
   </ItemGroup>

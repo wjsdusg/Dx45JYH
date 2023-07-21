@@ -8,7 +8,11 @@
 extern float4 IsoTileScale;
 extern float4 MiniViewRatio;
 std::vector<std::shared_ptr<Object>> Object::Objects;
-
+int Object::AddHp=0;
+int Object::AddATK=0;
+float Object::AddAttackSpeed=0;
+float Object::AddAttackRange=0;
+int Object::AddShield=0;
 Object::Object()
 {
 	int a = 0;

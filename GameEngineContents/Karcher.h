@@ -6,6 +6,7 @@
 class Karcher : public Unit
 {
 public:
+	friend class Optionsheet;
 	// constrcuter destructer
 	Karcher();
 	~Karcher();
@@ -20,7 +21,9 @@ protected:
 	void Start();
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
-
+	static int AddHp;
+	static int AddATK;
+	static int AddShield;
 
 private:
 	

@@ -1,11 +1,12 @@
 #pragma once
-#include "Minion.h"
+#include "Unit.h"
 
 // Ό³Έν :
 
-class Ksword : public Minion
+class Ksword : public Unit
 {
 public:
+	friend class Optionsheet;
 	// constrcuter destructer
 	Ksword();
 	~Ksword();
@@ -20,7 +21,9 @@ protected:
 	void Start();
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
-
+	static int AddHp;
+	static int AddATK;
+	static int AddShield;
 
 private:
 
