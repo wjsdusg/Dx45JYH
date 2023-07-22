@@ -289,16 +289,15 @@ void Unit::StateInit()
 				if (GetTransform()->GetLocalPosition() == PathPos.front())
 				{
 					float4 Pos2 = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-					int a = 0;
+					
 					PathPos.pop_front();
-					PathPosIndex.pop_front();
+					
 					
 				}
 				InterTargetPos = PathPos.front();
-				PrePos2 = PathPosIndex.front();
-				
+								
 				PathPos.pop_front();	
-				PathPosIndex.pop_front();
+				\
 				//각도계산
 				PreAngle = Angle;
 				CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
@@ -314,7 +313,7 @@ void Unit::StateInit()
 						IndexX = _Pos.ix();
 						IndexY = _Pos.iy();
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
-						PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
+						
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
 					else 
@@ -327,10 +326,9 @@ void Unit::StateInit()
 						Pos = ReturnIndexPlusPos();
 						IndexX = Pos.ix();
 						IndexY = Pos.iy();
-						TestInt1 = IndexX;
-						TestInt2 = IndexY;
+						
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
-						PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
+						
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
 					
@@ -361,8 +359,7 @@ void Unit::StateInit()
 						Pos = ReturnIndexPlusPos();
 						IndexX = Pos.ix();
 						IndexY = Pos.iy();
-						TestInt3 = IndexX;
-						TestInt4 = IndexY;
+						
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
@@ -443,18 +440,8 @@ void Unit::StateInit()
 			}
 		},
 		.Update = [this](float _DeltaTime)
-		{
-			int a = TestInt1;
-			int b = TestInt2;
-			int c = TestInt3;
-			int d = TestInt4;
-			int e = TestInt5;
-			
-			int f = TestInt6;
-			float4 Pos34 = MapEditor::ConvertTileXYToPos(90,88);
-			float s = Angle;
-			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
-			TestDistance = ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition());
+		{			
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));			
 			if (ShortTargetPos==InterTargetPos&&InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
 				GetTransform()->SetLocalPosition(InterTargetPos);
@@ -475,15 +462,10 @@ void Unit::StateInit()
 					{
 						
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
-						//각도를 알기떄문에 그냥 쓰면된다
-						bool sd =GlobalValue::Collision->IsCollision(IndexX, IndexY);
-						bool asd = IsNextTileCollision();
+						//각도를 알기떄문에 그냥 쓰면된다						
 						float4 Pos = ReturnIndexPlusPos();
 						IndexX = Pos.ix();
-						IndexY = Pos.iy();
-						TestInt5 = IndexX;
-						TestInt6 = IndexY;
-						PathLog.push_back({ static_cast<float>(IndexX) ,static_cast<float>(IndexY) });
+						IndexY = Pos.iy();						
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
@@ -850,7 +832,7 @@ void Unit::PathCal()
 	float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
 
 	PathPos.clear();
-	PathPosIndex.clear();
+	
 	//Angle계산	
 	CalAngle(GetTransform()->GetLocalPosition(), TargetPos);
 	GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), MPos.iy(), JPSPathResult);
@@ -991,7 +973,7 @@ void Unit::PathCal()
 	for (const JPSCoord& Point : JPSPathResult)
 	{
 		float4 ConvertPos = MapEditor::ConvertTileXYToPos(Point.m_x, Point.m_y);
-		PathPosIndex.push_back({ static_cast<float>(Point.m_x), static_cast<float>(Point.m_y) });
+		
 		PathPos.push_back(ConvertPos);
 
 	}

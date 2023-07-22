@@ -132,8 +132,8 @@ void UIButton::FSMInit()
 				Collision->On();
 				ColRender->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
-				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					Mouse::NewMainMouse->FSM.ChangeState("UnitClickMove");
@@ -146,8 +146,8 @@ void UIButton::FSMInit()
 				Collision->On();
 				ColRender->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
-				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					Mouse::NewMainMouse->FSM.ChangeState("UnitClickAttack");
@@ -160,8 +160,8 @@ void UIButton::FSMInit()
 				Collision->On();
 				ColRender->GetTransform()->SetLocalScale(Render3->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render3->GetTransform()->GetLocalPosition());
-				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render3->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render3->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					Mouse::NewMainMouse->FSM.ChangeState("UnitClickPatrol");
@@ -174,8 +174,8 @@ void UIButton::FSMInit()
 				Collision->On();
 				ColRender->GetTransform()->SetLocalScale(Render4->GetTransform()->GetLocalScale());
 				ColRender->GetTransform()->SetLocalPosition(Render4->GetTransform()->GetLocalPosition());
-				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render4->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render4->GetTransform()->GetLocalPosition());
 				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();

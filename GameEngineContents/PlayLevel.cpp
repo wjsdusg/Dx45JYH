@@ -46,6 +46,7 @@
 #include "MapEditor.h"
 #include "DefenseMapEditor.h"
 #include "Optionsheet.h"
+#include "RuinObject.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
@@ -86,6 +87,7 @@ std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
 std::shared_ptr<UIButton> NewUIButton = nullptr;
 std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
 std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
+std::shared_ptr<RuinObject> NewRuinObject = nullptr;
 
 PlayLevel::PlayLevel()
 {
@@ -437,7 +439,7 @@ void PlayLevel::Start()
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
 		NewDir.Move("Test");
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png",".Bmp" });
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png",".Bmp",".Tga"});
 		for (size_t i = 0; i < File.size(); i++)
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
@@ -554,6 +556,11 @@ void PlayLevel::Start()
 	NewKsword2->GetTransform()->SetLocalPosition({ -100.f,-100.f });
 	//NewKarcher = CreateActor<Karcher>();
 	//NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
+
+
+	NewRuinObject = CreateActor<RuinObject>();
+	NewRuinObject->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 , 85));
+
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);

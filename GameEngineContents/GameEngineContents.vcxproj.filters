@@ -49,6 +49,9 @@
     <Filter Include="OptionSheet">
       <UniqueIdentifier>{15a6903a-66a1-4c1f-bbcc-a4e6cbeb4238}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Building">
+      <UniqueIdentifier>{02bb987b-fc27-4f2a-96f2-c1e35f19606f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -230,6 +233,13 @@
     <ClInclude Include="Optionsheet.h">
       <Filter>OptionSheet</Filter>
     </ClInclude>
+    <ClInclude Include="RuinObject.h">
+      <Filter>Object\Building</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Object\Building</Filter>
+    </ClInclude>
+    <ClInclude Include="RUINobject0.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -414,6 +424,13 @@
     <ClCompile Include="Optionsheet.cpp">
       <Filter>OptionSheet</Filter>
     </ClCompile>
+    <ClCompile Include="RuinObject.cpp">
+      <Filter>Object\Building</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Object\Building</Filter>
+    </ClCompile>
+    <ClCompile Include="RUINobject0.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngineContents.rc" />
