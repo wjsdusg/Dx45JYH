@@ -64,11 +64,12 @@ void Unit::Update(float _DeltaTime)
 			SelectionCircle->Off();
 		}
 	}
-
+	//누르는순간 마우스에서 타겟포스를 정해준다.
 	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick/*&&MyField==Field::DungeonMap*/)
 	{
 		MousePickPos = MainMouse;
 		//TargetPos = MainMouse;
+		
 		IsHold = false;
 		
 		if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) != MapEditor::ConvertPosToTileXY(TargetPos))
@@ -246,17 +247,25 @@ void Unit::StateInit()
 		.Update = [this](float _DeltaTime)
 		{
 			
-			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Enemy,ColType::SPHERE2D,ColType::AABBBOX2D)&&false==IsHold)
+			if (nullptr != FOVCollision&&nullptr != FOVCollision->Collision(ColEnum::Unit,ColType::SPHERE2D,ColType::AABBBOX2D)&&false==IsHold)
 			{				
-				TargetCol = FOVCollision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D);
+				TargetCol = FOVCollision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
 				PrePos = GetTransform()->GetLocalPosition();
 				float s2 = GetTransform()->GetLocalPosition().XYDistance(TargetCol->GetTransform()->GetWorldPosition());
 				FSM.ChangeState("Chase");
 			}
-			if (true == IsHold && nullptr!= Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D))
+			else if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::Building, ColType::SPHERE2D, ColType::AABBBOX2D) && false == IsHold())
 			{
-				TargetPos = Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
+				TargetCol = FOVCollision->Collision(ColEnum::Building, ColType::SPHERE2D, ColType::AABBBOX2D);
+				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
+				PrePos = GetTransform()->GetLocalPosition();
+				float s2 = GetTransform()->GetLocalPosition().XYDistance(TargetCol->GetTransform()->GetWorldPosition());
+				FSM.ChangeState("Chase");
+			}
+			if (true == IsHold && nullptr!= Collision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				TargetPos = Collision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
 				FSM.ChangeState("HoldAttack");
 			}
 			
