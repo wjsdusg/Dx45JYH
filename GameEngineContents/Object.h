@@ -44,7 +44,7 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
-	
+	std::shared_ptr<class GameEngineCollision> TargetCol = nullptr;
 	
 	GameEngineFSM FSM;
 	
@@ -58,6 +58,8 @@ protected:
 	static std::vector<std::shared_ptr<Object>> Objects;
 	int HP = 0;
 	int CurHp = 0;
+	int Mp = 0;
+	int CurMp = 0;
 	int ATK = 0;
 	int Shield = 0;
 	int IndexX = -1;

@@ -560,7 +560,7 @@ void PlayLevel::Start()
 
 
 	NewRuinObject = CreateActor<RuinObject>();
-	NewRuinObject->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 , 85));
+	NewRuinObject->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(90 , 85));
 	NewRuinObject->SetTileCollsion();
 
 	GetMainCamera()->SetSortType(0, SortType::ZSort);

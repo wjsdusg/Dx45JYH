@@ -11,6 +11,7 @@ class Unit : public Object
 	friend class UIButton;
 	friend class PlayLevel;
 	friend class Optionsheet;
+	friend class Building;
 public:
 	// constrcuter destructer
 	Unit();
@@ -57,7 +58,7 @@ protected:
 	int UnitID = -1;
 	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;
-	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
+	
 	int IndexX = -1;
 	int IndexY = -1;
 	float TestDistance;
@@ -71,6 +72,7 @@ private:
 	
 	bool IsNextTileCollision();
 	float4 ReturnIndexPlusPos();
-	
+	std::shared_ptr<Unit> CopyUnit; 
+	std::shared_ptr<Building> CopyBuilding;
 };
 

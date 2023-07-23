@@ -9,11 +9,13 @@
 #include "Mouse.h"
 #include "GlobalValue.h"
 #include "MapEditor.h"
+#include "Building.h"
 
 extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 extern float4 IsoTileScale;
 extern float4 MapUpP;
+extern float4 TileScale;
 std::vector<std::shared_ptr<Unit>> Unit::Units;
 float Unit::AddSpeed=0;
 std::vector<std::shared_ptr<Unit>> Unit::GetUnits()
@@ -152,6 +154,10 @@ void Unit::Start()
 	SelectionCircle->Off();
 	//CreateTileFOV(GetTransform()->GetLocalPosition());
 	MyField = Field::DungeonMap;
+	Collision = CreateComponent<GameEngineCollision>();
+	Collision->GetTransform()->SetLocalScale(TileScale);
+	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
+	Collision->SetColType(ColType::AABBBOX2D);
 }
 
 float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta)
@@ -255,7 +261,7 @@ void Unit::StateInit()
 				float s2 = GetTransform()->GetLocalPosition().XYDistance(TargetCol->GetTransform()->GetWorldPosition());
 				FSM.ChangeState("Chase");
 			}
-			else if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::Building, ColType::SPHERE2D, ColType::AABBBOX2D) && false == IsHold())
+			else if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::Building, ColType::SPHERE2D, ColType::AABBBOX2D) && false == IsHold)
 			{
 				TargetCol = FOVCollision->Collision(ColEnum::Building, ColType::SPHERE2D, ColType::AABBBOX2D);
 				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
@@ -294,19 +300,18 @@ void Unit::StateInit()
 			
 			if (0 != PathPos.size())
 			{
-				//if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(PathPos.front()))
+				
 				if (GetTransform()->GetLocalPosition() == PathPos.front())
 				{
 					float4 Pos2 = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
 					
-					PathPos.pop_front();
-					
+					PathPos.pop_front();					
 					
 				}
 				InterTargetPos = PathPos.front();
 								
 				PathPos.pop_front();	
-				\
+				
 				//각도계산
 				PreAngle = Angle;
 				CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
@@ -493,117 +498,136 @@ void Unit::StateInit()
 		}
 		}
 	);
+	//쫒기전에 타겟콜을 미리 지정해줘야한다.
 	FSM.CreateState(
 		{ .Name = "Chase",
 		.Start = [this]() {
-			//Angle계산
-			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
-			if (Angle < 10 || Angle >= 350)
-			{
-				Render0->ChangeAnimation("LMove");
-				if (false == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = true;
-				}
-			}
-			if (Angle < 80 && Angle >= 10)
-			{
-				Render0->ChangeAnimation("LUp45Move");
-				if (false == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = true;
-				}
-			}
-
-			if (Angle < 100 && Angle >= 80)
-			{
-				Render0->ChangeAnimation("UpMove");
-			}
-			if (Angle < 170 && Angle >= 100)
-			{
-				if (true == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = false;
-				}
-				Render0->ChangeAnimation("LUp45Move");
-			}
-			if (Angle < 190 && Angle >= 170)
-			{
-				Render0->ChangeAnimation("LMove");
-				if (true == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = false;
-				}
-			}
-			if (Angle < 260 && Angle >= 190)
-			{
-				Render0->ChangeAnimation("LDown45Move");
-				if (true == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = false;
-				}
-			}
-			if (Angle < 280 && Angle >= 260)
-			{
-				Render0->ChangeAnimation("DownMove");
-
-			}
-			if (Angle < 350 && Angle >= 280)
-			{
-				Render0->ChangeAnimation("LDown45Move");
-				if (false == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = true;
-				}
-			}
-			PreAngle = Angle;
+						
+			CopyUnit = nullptr;
+			CopyBuilding = nullptr;
 		},
 		.Update = [this](float _DeltaTime)
 		{
-			float s = abs(FOVCollision->GetTransform()->GetLocalScale().x);
-			float s2 = GetTransform()->GetLocalPosition().XYDistance(TargetCol->GetTransform()->GetWorldPosition());
-
-			if (nullptr != FOVCollision && nullptr != TargetCol)
-			{							
-				TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
-			}
-			if (20.f <= abs(PreAngle - Angle))
+			float Min =10000.f;
+			if (nullptr == FOVCollision)
 			{
-				FSM.ChangeState("Chase");
+				return;
 			}
-
+			// 가장가까운대상에게 타겟팅된다.
+			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+			if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
+			{
+				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				{
+					std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
+					if (nullptr == NewUnit)
+					{
+						continue;
+					}
+					else if (NewUnit == DynamicThis<Unit>())
+					{
+						continue;
+					}
+					else if (MyTeam != NewUnit->GetTeam())
+					{
+						if (Min > NewUnit->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition()))
+						{
+							Min = NewUnit->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
+							CopyUnit = NewUnit;
+						}					
+					}					
+				}
+				if (nullptr != CopyUnit && nullptr != TargetCol && CopyUnit->GetCollsion() != TargetCol)
+				{
+					TargetCol = CopyUnit->GetCollsion();
+					TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
+					PathCal();
+					FSM.ChangeState("Chase");
+					return;
+				}
+			}
+			else if(FOVCollision->CollisionAll(static_cast<int>(ColEnum::Building), ColTest, ColType::OBBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
+			{
+				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				{
+					std::shared_ptr<Building> NewBuilding = Col->GetActor()->DynamicThis<Building>();
+					if (nullptr == NewBuilding)
+					{
+						continue;
+					}					
+					else if (MyTeam != NewBuilding->GetTeam())
+					{
+						if (Min > NewBuilding->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition()))
+						{
+							Min = NewBuilding->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
+							CopyBuilding = NewBuilding;
+						}
+					}
+				}
+				if (nullptr != CopyBuilding && nullptr != TargetCol && CopyBuilding->GetCollsion() != TargetCol)
+				{
+					TargetCol = CopyBuilding->GetCollsion();
+					TargetPos = TargetCol->GetActor()->GetTransform()->GetLocalPosition();
+					PathCal();
+					FSM.ChangeState("Chase");
+					return;
+				}
+			}			
+			//타겟이사라지면대기상태로변경
 			if (nullptr == TargetCol || true == TargetCol->GetActor()->IsDeath())
 			{
 				TargetCol = nullptr;
 				FSM.ChangeState("Stay");
+				return;
 			}			
-			//시야 범위 벗어나면 기존자리 복귀
-			
-			else if (s
-				<s2
+			//시야 범위 벗어나면 기존자리 복귀			
+			else if (abs(FOVCollision->GetTransform()->GetLocalScale().x)
+				< GetTransform()->GetLocalPosition().XYDistance(TargetCol->GetTransform()->GetWorldPosition())
 				)
-			{
-				//TargetCol = FOVCollision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D);
+			{				
 				TargetCol = nullptr;
 				TargetPos = PrePos;
+				PathCal();
 				FSM.ChangeState("Move");
-			}
-			//적크기와같아지면 공격
-			else if (
-				TargetPos.XYDistance(GetTransform()->GetLocalPosition()) 
-				<= (TargetCol->GetActor()->DynamicThis<Unit>()->GetCollsion()->GetTransform()->GetLocalScale().x)
-				)
-			{
-				FSM.ChangeState("Attack");
-			}
+				return;
+			}			
+			
 			//안에서 각도계산도해줌
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, _DeltaTime));
+			if (ShortTargetPos == InterTargetPos && InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
+			{
+				GetTransform()->SetLocalPosition(InterTargetPos);
+				if (0 == PathPos.size())
+				{
+					FSM.ChangeState("Attack");
+				}
+				else
+				{
+					FSM.ChangeState("Move");
+				}
+			}
+			else
+			{
+				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
+				{
+					if (false == IsNextTileCollision())
+					{
+
+						GlobalValue::Collision->ClrAt(IndexX, IndexY);
+						//각도를 알기떄문에 그냥 쓰면된다						
+						float4 Pos = ReturnIndexPlusPos();
+						IndexX = Pos.ix();
+						IndexY = Pos.iy();
+						GlobalValue::Collision->SetAt(IndexX, IndexY);
+						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
+					}
+					else if (true == IsNextTileCollision())
+					{
+						PathCal();
+						FSM.ChangeState("Move");
+					}
+				}
+			}
 		},
 		.End = []() {}
 		}
@@ -793,12 +817,13 @@ void Unit::StateInit()
 		{
 			if (Render0->IsAnimationEnd())
 			{
-			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
+			
+			CalAngle(GetTransform()->GetLocalPosition(), TargetPos);
 				if (20.f <= abs(PreAngle - Angle))
 				{
 					FSM.ChangeState("HoldAttack");
 				}
-				if (nullptr == Collision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D))
+				if (nullptr == Collision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D))
 				{
 					FSM.ChangeState("Stay");
 				}

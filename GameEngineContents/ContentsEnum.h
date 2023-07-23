@@ -10,6 +10,7 @@ enum class ColEnum
 	Monster,
 	Hero,
 	Player,
+	Enemy,
 	UnitFOV,
 	MonsterFOV,
 	HeroFOV,	
@@ -38,5 +39,12 @@ enum class AttackType
 {
 	Far,
 	Near,
+	Max
+};
+
+enum class BuildingType
+{
+	IncludeUnit,
+	NotUnit,
 	Max
 };

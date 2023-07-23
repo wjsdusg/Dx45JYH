@@ -47,6 +47,17 @@ public:
 
 	void Update(float _DeltaTime);
 
+	std::string GetCurStateName()
+	{
+		if (nullptr != CurState)
+		{
+			return CurState->Name;
+		}
+		else
+		{
+			return "";
+		}
+	}
 protected:
 	GameEngineFSM::State* FindState(const std::string_view& _Name);
 

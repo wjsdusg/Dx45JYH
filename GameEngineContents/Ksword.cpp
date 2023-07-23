@@ -7,6 +7,7 @@
 #include "MapEditor.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
+
 int Ksword::AddHp = 0;
 int Ksword::AddATK = 0;
 int Ksword::AddShield = 0;
@@ -69,9 +70,7 @@ void Ksword::Start()
 	Render0->CreateAnimation({ "DownAttack", "swordk.png",80,87,AttackSpeed / 8.f,true,true });
 	Render0->CreateAnimation({ "Die", "swordk.png",40,47,0.1f,false,true});
 	
-	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
+	
 	/*FOVCollision = CreateComponent<GameEngineCollision>();
 	FOVCollision->GetTransform()->SetLocalScale({ FightFOV,0,1.f });
 	FOVCollision->SetColType(ColType::SPHERE2D);

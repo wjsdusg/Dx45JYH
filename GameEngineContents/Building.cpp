@@ -59,22 +59,44 @@ void Building::Update(float _DeltaTime)
 		}
 	}
 
+	
+	
+	if (true == OpenDoor&&nullptr != Collision->Collision(ColEnum::Unit, ColType::AABBBOX2D, ColType::SPHERE2D))
 	{
-		/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
-		for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
+		TargetCol = Collision->Collision(ColEnum::Unit, ColType::AABBBOX2D, ColType::SPHERE2D);
+		auto it=std::find(EnemyUnits.begin(), EnemyUnits.end(), TargetCol->GetActor()->DynamicThis<Unit>());
+		if (it != EnemyUnits.end())
 		{
-			for (float j = GetTransform()->GetWorldPosition().x - FOV; j <= GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x/2)
-			{
-				float4 Pos2{ j,i };
-
-				if (FOV >= Pos2.XYDistance(GetTransform()->GetWorldPosition()))
-				{
-					MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 1);
-				}
-			}
-		}*/
+			
+			TargetCol->GetActor()->Off();
+		}
+		
 	}
+	if (BuildingType::IncludeUnit == MyBuildingType)
+	{
+		for (int i = 0; i < EnemyUnits.size(); i++)
+		{
+			if (nullptr == EnemyUnits[i])
+			{
+				break;
+			}
+			float pp = EnemyUnits[i]->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
+			if (EnemyUnits[i]->IsDeath())
+			{
+				std::swap(EnemyUnits[i], EnemyUnits.back());
+				EnemyUnits.pop_back();
+				EnemyNum--;
+			}
 
+			if (300.f < pp && false == OpenDoor)
+			{
+				ComeBackHome();
+			}
+
+
+		}
+	}
+	
 	FSM.Update(_DeltaTime);
 }
 void Building::Start()
@@ -92,8 +114,6 @@ void Building::Start()
 	
 	StateInit();
 }
-
-
 
 void Building::StateInit()
 {
@@ -138,7 +158,7 @@ void Building::StateInit()
 				//각도계산용
 				CalAngle(GetTransform()->GetLocalPosition(), TargetPos);
 
-				if (true == TargetCol->GetActor()->IsDeath()|| nullptr == FOVCollision->Collision(ColEnum::Enemy, ColType::SPHERE2D, ColType::AABBBOX2D))
+				if (true == TargetCol->GetActor()->IsDeath()|| nullptr == FOVCollision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D))
 				{
 					TargetCol = nullptr;
 					FSM.ChangeState("Stay");
@@ -232,6 +252,7 @@ void Building::SetTileCollsion()
 
 void Building::ArrEnemyunit()
 {
+	OpenDoor = false;
 	int x = IndexX;
 	int y = IndexY;
 	int num = 0;
@@ -269,5 +290,24 @@ void Building::ArrEnemyunit()
 				
 			}
 		}
+	}
+}
+
+void Building::ComeBackHome(std::shared_ptr<Unit> _Unit)
+{
+	OpenDoor = true;
+	_Unit->TargetPos = GetTransform()->GetLocalPosition();
+	_Unit->FSM.ChangeState("Move");
+
+}
+
+void Building::ComeBackHome()
+{
+	OpenDoor = true;
+	for (int i = 0; i < EnemyUnits.size(); i++)
+	{
+		EnemyUnits[i]->TargetPos = GetTransform()->GetLocalPosition();
+		EnemyUnits[i]->PathCal();
+		EnemyUnits[i]->FSM.ChangeState("Move");
 	}
 }

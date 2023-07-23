@@ -23,12 +23,15 @@ bool check = false;
 void RuinObject::Update(float _DeltaTime)
 {
 	Building::Update(_DeltaTime);
-	if (GetLiveTime() > 5.f&&check==false)
+	if (GetLiveTime() > 2.f&&check==false)
 	{
 		//FSM.ChangeState("Die");
 		ArrEnemyunit();
 		check = true;
 	}
+	float4 Pos = GetTransform()->GetLocalPosition();
+	float4 Pos2 =Render0->GetTransform()->GetLocalPosition();
+	Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
 	/*std::string str3 = MapEditor::ConvertPosToTileXY(ShortTargetPos).ToString();
 	std::string str4 =std::to_string(TestDistance);
 	str3 += "\n";
@@ -64,12 +67,14 @@ void RuinObject::Start()
 	Render0->CreateAnimation({ "Die", "exp11.png",0,18,0.1f,false,true });
 	Render0->SetScaleRatio(1.5f);
 	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
+	//float4 sdsd = Render0->GetTransform()->GetLocalScale();
+	
+	Collision->SetColType(ColType::AABBBOX2D);
 	Collision->SetOrder(static_cast<int>(ColEnum::Building));
 	
 
 	MyTeam = Team::Enemy;
-
+	MyBuildingType = BuildingType::IncludeUnit;
 
 	//Speed = 500.f;
 	{
