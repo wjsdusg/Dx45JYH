@@ -65,7 +65,7 @@ void RuinObject::Start()
 	Render0->SetScaleRatio(1.5f);
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Enemy));
+	Collision->SetOrder(static_cast<int>(ColEnum::Building));
 	
 
 	MyTeam = Team::Enemy;

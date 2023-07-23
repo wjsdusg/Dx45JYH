@@ -282,7 +282,7 @@ void Unit::StateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			//경로계산
-			//GetTransform()->SetLocalPosition(MapEditor::ConvertPosToTilePos(GetTransform()->GetLocalPosition()));
+			
 			if (0 != PathPos.size())
 			{
 				//if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(PathPos.front()))
