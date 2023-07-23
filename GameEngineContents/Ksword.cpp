@@ -22,12 +22,17 @@ Ksword::~Ksword()
 void Ksword::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
+	if (MyTeam == Team::Enemy)
+	{
+		std::string str3 = "Àû";
+		//std::string str4 =std::to_string(TestDistance);
+		//str3 += "\n";
+		//str3 += str4;
+		FontRender0->SetText(str3);
+	}
+
+	int as = static_cast<int>(MyTeam);
 	
-	/*std::string str3 = MapEditor::ConvertPosToTileXY(ShortTargetPos).ToString();
-	std::string str4 =std::to_string(TestDistance);
-	str3 += "\n";
-	str3 += str4;
-	FontRender0->SetText(str3);*/
 }
 //
 void Ksword::Start()
@@ -42,7 +47,7 @@ void Ksword::Start()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("swordk.png").GetFullPath(), 16, 12);
 	}
 	
-	GetTransform()->AddLocalPosition({ 0.f,-200.f });
+	
 	//MousePickPos = GetTransform()->GetLocalPosition();
 	
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();

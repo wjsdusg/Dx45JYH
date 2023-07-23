@@ -2,9 +2,12 @@
 #include "RuinObject.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include <GameEngineBase/GameEngineRandom.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
 #include "MapEditor.h"
+#include "Ksword.h"
+#include "Karcher.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 
@@ -16,11 +19,16 @@ RuinObject::~RuinObject()
 {
 }
 
-
+bool check = false;
 void RuinObject::Update(float _DeltaTime)
 {
 	Building::Update(_DeltaTime);
-
+	if (GetLiveTime() > 5.f&&check==false)
+	{
+		//FSM.ChangeState("Die");
+		ArrEnemyunit();
+		check = true;
+	}
 	/*std::string str3 = MapEditor::ConvertPosToTileXY(ShortTargetPos).ToString();
 	std::string str4 =std::to_string(TestDistance);
 	str3 += "\n";
@@ -54,7 +62,7 @@ void RuinObject::Start()
 	//Render0->GetTransform()->SetLocalScale({ 100.f,100.f });
 	Render0->CreateAnimation({ "Stay", "RUINobject0.tga",0,0,0.1f,true,true });	
 	Render0->CreateAnimation({ "Die", "exp11.png",0,18,0.1f,false,true });
-
+	Render0->SetScaleRatio(1.5f);
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
 	Collision->SetOrder(static_cast<int>(ColEnum::Enemy));
@@ -62,7 +70,7 @@ void RuinObject::Start()
 
 	MyTeam = Team::Enemy;
 
-	Building::Start();
+
 	//Speed = 500.f;
 	{
 		FontRender0 = CreateComponent<GameEngineFontRenderer>();
@@ -70,6 +78,15 @@ void RuinObject::Start()
 		FontRender0->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
 		FontRender0->SetScale({ 20.f });
 		FontRender0->GetTransform()->SetLocalPosition({ 0,20.f });
+	}
+	Building::Start();
+	
+	EnemyNum = GameEngineRandom::MainRandom.RandomInt(4, 6);
+	EnemyUnits.resize(EnemyNum);
+	for (int i = 0; i < EnemyNum; i++)
+	{
+		EnemyUnits[i] = GetLevel()->CreateActor<Ksword>();
+		EnemyUnits[i]->Off();
 	}
 }
 

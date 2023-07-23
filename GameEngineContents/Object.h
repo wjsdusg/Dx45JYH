@@ -23,7 +23,10 @@ public:
 	Object& operator=(const Object& _Other) = delete;
 	Object& operator=(Object&& _Other) noexcept = delete;
 	bool IsClick = false;
-
+	void SetTeam(Team _Team)
+	{
+		MyTeam = _Team;
+	}
 	inline std::shared_ptr<class GameEngineCollision> GetCollsion()
 	{
 		return Collision;
@@ -38,7 +41,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
 	std::shared_ptr<class GameEngineCollision> EnemyFOVCollision;
-	std::shared_ptr<GameEngineButton> Button;
+	
 	GameEngineFSM FSM;
 	
 	float Angle = 0;

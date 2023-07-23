@@ -73,7 +73,7 @@ void Karcher::Start()
 	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
 
 	Unit::Start();
-	MyTeam = Team::Mine;
+	
 	
 	TestComponent = CreateComponent<GameEngineComponent>();
 	TestComponent->GetTransform()->SetWorldPosition({ 60,0,0 });
