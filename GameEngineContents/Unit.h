@@ -59,8 +59,7 @@ protected:
 	void StateInit() override;
 	static std::vector<std::shared_ptr<Unit>> Units;
 	
-	int IndexX = -1;
-	int IndexY = -1;
+	
 	float TestDistance;
 private:
 	std::list<PathIndex> PathResult;

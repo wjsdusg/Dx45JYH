@@ -12,6 +12,7 @@ class Object : public GameEngineActor
 	friend class UIButton;
 	friend class PlayLevel;
 	friend class Optionsheet;
+	friend class Unit;
 public:
 	// constrcuter destructer
 	Object();
@@ -64,6 +65,8 @@ protected:
 	int Shield = 0;
 	int IndexX = -1;
 	int IndexY = -1;
+	int CopyIndexX = -1;
+	int CopyIndexY = -1;
 	float AttackSpeed = 1.f; //√ 
 	float AttackRange = 0;
 	static int AddHp;

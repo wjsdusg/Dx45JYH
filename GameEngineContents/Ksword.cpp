@@ -26,9 +26,10 @@ void Ksword::Update(float _DeltaTime)
 	if (MyTeam == Team::Enemy)
 	{
 		std::string str3 = "Àû";
-		//std::string str4 =std::to_string(TestDistance);
-		//str3 += "\n";
-		//str3 += str4;
+		str3 += "\n";
+		std::string str4 = TargetPos.ToString();
+		
+		str3 += str4;
 		FontRender0->SetText(str3);
 	}
 
@@ -71,10 +72,7 @@ void Ksword::Start()
 	Render0->CreateAnimation({ "Die", "swordk.png",40,47,0.1f,false,true});
 	
 	
-	/*FOVCollision = CreateComponent<GameEngineCollision>();
-	FOVCollision->GetTransform()->SetLocalScale({ FightFOV,0,1.f });
-	FOVCollision->SetColType(ColType::SPHERE2D);
-	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
+	
 		
 	MyTeam = Team::Mine;
 	MyAttackType = AttackType::Near;
