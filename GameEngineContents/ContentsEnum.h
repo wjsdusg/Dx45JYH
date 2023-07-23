@@ -34,3 +34,10 @@ enum class Field
 	DefenseMap,
 	Max
 };
+
+enum class AttackType
+{
+	Far,
+	Near,
+	Max
+};

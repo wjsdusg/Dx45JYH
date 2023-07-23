@@ -39,8 +39,7 @@ protected:
 	void SetTileCollsion();
 	void ArrEnemyunit();
 	std::shared_ptr<GameEngineCollision> TargetCol = nullptr;
-	int IndexX = -1;
-	int IndexY = -1;
+	
 	std::vector<float4> TileCollsionSetPos;
 	std::vector<std::shared_ptr<Unit>> EnemyUnits;
 	int EnemyNum = -1;

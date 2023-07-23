@@ -73,11 +73,10 @@ void Karcher::Start()
 	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
 
 	Unit::Start();
+	MyTeam = Team::Mine;
+	MyAttackType = AttackType::Far;
 	
 	
-	TestComponent = CreateComponent<GameEngineComponent>();
-	TestComponent->GetTransform()->SetWorldPosition({ 60,0,0 });
-	TestComponent->GetTransform()->SetLocalScale({ 3,3 });
 	
 }
 

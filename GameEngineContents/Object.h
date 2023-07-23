@@ -27,6 +27,10 @@ public:
 	{
 		MyTeam = _Team;
 	}
+	Team GetTeam()
+	{
+		return MyTeam;
+	}
 	inline std::shared_ptr<class GameEngineCollision> GetCollsion()
 	{
 		return Collision;
@@ -40,13 +44,14 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
-	std::shared_ptr<class GameEngineCollision> EnemyFOVCollision;
+	
 	
 	GameEngineFSM FSM;
 	
 	float Angle = 0;
 	Team MyTeam = Team::Max;
 	Field MyField = Field::Max;
+	AttackType MyAttackType = AttackType::Max;
 	virtual void StateInit() {};
 	float FOV = 300.f;
 	float FightFOV = 300.f;	
@@ -55,7 +60,9 @@ protected:
 	int CurHp = 0;
 	int ATK = 0;
 	int Shield = 0;
-	float AttackSpeed = 1.f;
+	int IndexX = -1;
+	int IndexY = -1;
+	float AttackSpeed = 1.f; //√ 
 	float AttackRange = 0;
 	static int AddHp;
 	static int AddATK;

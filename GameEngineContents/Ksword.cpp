@@ -78,7 +78,7 @@ void Ksword::Start()
 	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
 		
 	MyTeam = Team::Mine;
-
+	MyAttackType = AttackType::Near;
 	Unit::Start();
 	//Speed = 500.f;
 	{
