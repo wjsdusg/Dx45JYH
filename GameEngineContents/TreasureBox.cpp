@@ -42,6 +42,10 @@ void TreasureBox::Update(float _DeltaTime)
 			 FSM.ChangeState("Die");
 		 }
 	}
+	else
+	{
+		Gage = 0;
+	}
 }
 //
 void TreasureBox::Start()
@@ -70,7 +74,7 @@ void TreasureBox::Start()
 	
 
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->CreateAnimation({ .AnimationName = "Dse", .SpriteName = "boxCopen",.Loop = false,.ScaleToTexture = true ,});
+	Render0->CreateAnimation({ .AnimationName = "Die", .SpriteName = "boxCopen",.Loop = false,.ScaleToTexture = true ,});
 	Render0->CreateAnimation({ "Stay", "boxC0.tga",0,0,10.f,true,true });
 	Render0->SetFlipX();
 	//Render0->SetScaleRatio(1.5f);
