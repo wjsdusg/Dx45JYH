@@ -145,10 +145,10 @@ void Optionsheet::FSMInit()
 			Selectednumber[0] = -1;
 			Selectednumber[1] = -1;
 			Selectednumber[2] = -1;
-			Selectednumber[0]=GameEngineRandom::MainRandom.RandomInt(0, Functions.size() - 1);
+			Selectednumber[0]=GameEngineRandom::MainRandom.RandomInt(0, static_cast<int>(Functions.size()) - 1);
 			while (1)
 			{
-				int num = GameEngineRandom::MainRandom.RandomInt(0, Functions.size() - 1);
+				int num = GameEngineRandom::MainRandom.RandomInt(0, static_cast<int>(Functions.size()) - 1);
 				if (Selectednumber[0] != num)
 				{
 					Selectednumber[1] = num;
@@ -157,7 +157,7 @@ void Optionsheet::FSMInit()
 			}
 			while (1)
 			{
-				int num = GameEngineRandom::MainRandom.RandomInt(0, Functions.size() - 1);
+				int num = GameEngineRandom::MainRandom.RandomInt(0, static_cast<int>(Functions.size()) - 1);
 				if (Selectednumber[0] != num)
 				{
 					if (Selectednumber[1] != num)

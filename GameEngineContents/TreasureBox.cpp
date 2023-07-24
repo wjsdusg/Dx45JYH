@@ -29,16 +29,19 @@ void TreasureBox::Update(float _DeltaTime)
 	Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
 	std::string str3 = std::to_string(Gage);	
 	FontRender0->SetText(str3);
-	if (nullptr != Collision->Collision(static_cast<int>(ColEnum::Unit), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	if (nullptr != Collision->Collision(static_cast<int>(ColEnum::Unit), ColType::AABBBOX2D, ColType::AABBBOX2D)&&false==IsOpen)
 	{
+		
 		 RealGage  += _DeltaTime;
-		 if (0.05 <= RealGage)
+		 if (0.03 <= RealGage)
 		 {
 			 Gage += 1;
 			 RealGage = 0;
 		 }
 		 if (100 <= Gage)
 		 {
+			 Gage = 100;
+			 IsOpen = true;
 			 FSM.ChangeState("Die");
 		 }
 	}
@@ -74,13 +77,13 @@ void TreasureBox::Start()
 	
 
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->CreateAnimation({ .AnimationName = "Die", .SpriteName = "boxCopen",.Loop = false,.ScaleToTexture = true ,});
+	Render0->CreateAnimation({ .AnimationName = "Die", .SpriteName = "boxCopen",.FrameInter = 0.2f,.Loop = false,.ScaleToTexture = true ,});
 	Render0->CreateAnimation({ "Stay", "boxC0.tga",0,0,10.f,true,true });
 	Render0->SetFlipX();
 	//Render0->SetScaleRatio(1.5f);
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->SetColType(ColType::AABBBOX2D);
-	Collision->SetOrder(static_cast<int>(ColEnum::Building));
+	Collision->SetOrder(static_cast<int>(ColEnum::Treasure));
 
 	
 

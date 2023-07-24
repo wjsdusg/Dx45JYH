@@ -26,7 +26,7 @@ protected:
 private:
 	int Gage = 0;
 	float RealGage = 0;
-
+	bool IsOpen = false;
 
 
 };

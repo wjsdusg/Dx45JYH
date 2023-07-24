@@ -100,8 +100,8 @@ int CalculateSideRhombusCount()
 	Pos.x /= 2;
 	Pos.y /= 2;
 	//IsoTileScale /= 10.f;
-	float _Big = sqrtf(pow(MapUpP.y, 2) + pow(MapRightP.x, 2));
-	float _Small = sqrtf(pow(Pos.y, 2) + pow(Pos.x, 2));
+	float _Big = sqrtf(static_cast<float>(pow(MapUpP.y, 2)) + static_cast<float>(pow(MapRightP.x, 2)));
+	float _Small = sqrtf(static_cast<float>(pow(Pos.y, 2)) + static_cast<float>(pow(Pos.x, 2)));
 	int num = static_cast<int>(_Big / _Small);
 	num++;
 	return num;

@@ -7,6 +7,7 @@ enum class ColEnum
 	MapOverlay = 10,
 	Unit,
 	Building,
+	Treasure,
 	Monster,
 	Hero,
 	Player,
