@@ -27,12 +27,15 @@ void Ksword::Update(float _DeltaTime)
 	{
 		std::string str3 = "Àû";
 		str3 += "\n";
-		std::string str4 = TargetPos.ToString();
-		
+		std::string str4 = std::to_string(CurHp);
 		str3 += str4;
+		str3 += "/";
+		str4= std::to_string(HP);
+		str3 += str4;
+		
 		FontRender0->SetText(str3);
 	}
-
+	
 	int as = static_cast<int>(MyTeam);
 	
 }

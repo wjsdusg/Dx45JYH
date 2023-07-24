@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include "GlobalValue.h"
 #include "ContentsEnum.h"
@@ -41,7 +42,18 @@ void Building::Update(float _DeltaTime)
 			NewBuilding->FSM.ChangeState("Stay");
 		}
 	}*/
-	
+	if (MyTeam == Team::Enemy)
+	{
+		std::string str3 = "Àû";
+		str3 += "\n";
+		std::string str4 = std::to_string(CurHp);
+		str3 += str4;
+		str3 += "/";
+		str4 = std::to_string(HP);
+		str3 += str4;
+
+		FontRender0->SetText(str3);
+	}
 	if (true == IsClick)
 	{
 		if (false == SelectionCircle->IsUpdate())
@@ -88,7 +100,7 @@ void Building::Update(float _DeltaTime)
 				EnemyNum--;
 			}
 
-			if (300.f < pp && false == OpenDoor)
+			if (500.f < pp && false == OpenDoor)
 			{
 				ComeBackHome();
 			}
@@ -101,18 +113,23 @@ void Building::Update(float _DeltaTime)
 }
 void Building::Start()
 {
-	
+	{
+		FontRender0 = CreateComponent<GameEngineFontRenderer>();		
+		FontRender0->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+		FontRender0->SetScale({ 20.f });
+		FontRender0->GetTransform()->SetLocalPosition({ 0,20.f });
+	}
 	
 	Object::Start();
 	float HalfY = Render0->GetTransform()->GetLocalScale().hy();
 	HalfY -= 10.f;
 	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });
 	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
-	SelectionCircle->Off();
-	//CreateTileFOV(GetTransform()->GetLocalPosition());
-	MyField = Field::DungeonMap;
-	
+	SelectionCircle->Off();	
+	MyField = Field::DungeonMap;	
 	StateInit();
+	HP = 50;
+	CurHp = 50;
 }
 
 void Building::StateInit()
@@ -122,12 +139,12 @@ void Building::StateInit()
 		.Start = [this]()
 		{			
 			Render0->ChangeAnimation("Stay");
-			float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+			/*float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
 			IndexX = _Pos.ix();
 			IndexY = _Pos.iy();
 			float4 _Pos2 = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 			GetTransform()->SetLocalPosition(_Pos2);
-			GlobalValue::Collision->SetAt(IndexX, IndexY);
+			GlobalValue::Collision->SetAt(IndexX, IndexY);*/
 		},
 		.Update = [this](float _DeltaTime)
 		{

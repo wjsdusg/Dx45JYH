@@ -52,6 +52,12 @@
     <Filter Include="Object\Building">
       <UniqueIdentifier>{02bb987b-fc27-4f2a-96f2-c1e35f19606f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Building\Enemy">
+      <UniqueIdentifier>{59b4b3db-bd06-48be-8f83-86ba290acb3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Building\Mine">
+      <UniqueIdentifier>{ba0ab073-31af-48ea-af0f-50bb15e25700}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -233,13 +239,19 @@
     <ClInclude Include="Optionsheet.h">
       <Filter>OptionSheet</Filter>
     </ClInclude>
-    <ClInclude Include="RuinObject.h">
-      <Filter>Object\Building</Filter>
-    </ClInclude>
     <ClInclude Include="Building.h">
       <Filter>Object\Building</Filter>
     </ClInclude>
     <ClInclude Include="RUINobject0.h" />
+    <ClInclude Include="TreasureBox.h">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalObject1.h">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="RuinObject.h">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -424,13 +436,19 @@
     <ClCompile Include="Optionsheet.cpp">
       <Filter>OptionSheet</Filter>
     </ClCompile>
-    <ClCompile Include="RuinObject.cpp">
-      <Filter>Object\Building</Filter>
-    </ClCompile>
     <ClCompile Include="Building.cpp">
       <Filter>Object\Building</Filter>
     </ClCompile>
     <ClCompile Include="RUINobject0.cpp" />
+    <ClCompile Include="NormalObject1.cpp">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="RuinObject.cpp">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="TreasureBox.cpp">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngineContents.rc" />

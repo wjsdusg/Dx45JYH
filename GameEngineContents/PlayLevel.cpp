@@ -47,6 +47,8 @@
 #include "DefenseMapEditor.h"
 #include "Optionsheet.h"
 #include "RuinObject.h"
+#include "NormalObject1.h"
+#include "TreasureBox.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
@@ -87,7 +89,9 @@ std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
 std::shared_ptr<UIButton> NewUIButton = nullptr;
 std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
 std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
-std::shared_ptr<RuinObject> NewRuinObject = nullptr;
+std::shared_ptr<RuinObject> NewRuinObject = nullptr; 
+std::shared_ptr<NormalObject1> NewNormalObject1 = nullptr;
+std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
 
 PlayLevel::PlayLevel()
 {
@@ -563,6 +567,13 @@ void PlayLevel::Start()
 	NewRuinObject->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(90 , 85));
 	NewRuinObject->SetTileCollsion();
 
+	NewNormalObject1 = CreateActor<NormalObject1>();
+	NewNormalObject1->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(90, 95));
+	NewNormalObject1->SetTileCollsion();
+
+	NewTreasureBox = CreateActor<TreasureBox>();
+	NewTreasureBox->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(95, 95));
+	NewTreasureBox->SetTileCollsion();
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);
