@@ -71,7 +71,8 @@ private:
 	
 	bool IsNextTileCollision();
 	float4 ReturnIndexPlusPos();
-	std::shared_ptr<Unit> CopyUnit; 
-	std::shared_ptr<Building> CopyBuilding;
+	
+	std::shared_ptr<Object> CopyObject;
+	
 };
 
