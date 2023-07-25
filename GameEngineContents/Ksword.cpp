@@ -19,14 +19,14 @@ Ksword::~Ksword()
 {
 }
 
-
 void Ksword::Update(float _DeltaTime)
 {
 	Unit::Update(_DeltaTime);
 	if (MyTeam == Team::Enemy)
 	{
-		std::string str3 = "Àû";
-		str3 += "\n";
+		//std::string str3 = "Àû";
+		//str3 += "\n";
+		std::string str3;
 		std::string str4 = std::to_string(CurHp);
 		str3 += str4;
 		str3 += "/";
@@ -36,7 +36,7 @@ void Ksword::Update(float _DeltaTime)
 		FontRender0->SetText(str3);
 	}
 	
-	int as = static_cast<int>(MyTeam);
+	
 	
 }
 //
@@ -50,18 +50,13 @@ void Ksword::Start()
 		NewDir.Move("Texture");
 		NewDir.Move("Unit");
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("swordk.png").GetFullPath(), 16, 12);
-	}
-	
-	
-	//MousePickPos = GetTransform()->GetLocalPosition();
-	
-	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	
-	Render0->CreateAnimation({ "LDown45Stay", "swordk.png",128,137,0.1f,true,true});
-	Render0->CreateAnimation({ "LStay", "swordk.png",138,147,0.1f,true,true});
-	Render0->CreateAnimation({ "LUp45Stay", "swordk.png",148,157,0.1f,true,true});
-	Render0->CreateAnimation({ "UpStay", "swordk.png",158,167,0.1f,true,true});
-	Render0->CreateAnimation({ "DownStay", "swordk.png",168,177,0.1f,true,true});
+	}	
+	Render0 = CreateComponent<GameEngineSpriteRenderer>();	
+	Render0->CreateAnimation({ "LDown45Stay", "swordk.png",128,137,0.15f,true,true});
+	Render0->CreateAnimation({ "LStay", "swordk.png",138,147,0.15f,true,true});
+	Render0->CreateAnimation({ "LUp45Stay", "swordk.png",148,157,0.15f,true,true});
+	Render0->CreateAnimation({ "UpStay", "swordk.png",158,167,0.15f,true,true});
+	Render0->CreateAnimation({ "DownStay", "swordk.png",168,177,0.15f,true,true});
 	Render0->CreateAnimation({ "LDown45Move", "swordk.png",0,7,0.1f,true,true});
 	Render0->CreateAnimation({ "LMove", "swordk.png",8,15 ,0.1f,true,true});
 	Render0->CreateAnimation({ "LUp45Move", "swordk.png",16,23,0.1f,true,true});
@@ -73,17 +68,13 @@ void Ksword::Start()
 	Render0->CreateAnimation({ "UpAttack", "swordk.png",72,79,AttackSpeed / 8.f,true,true });
 	Render0->CreateAnimation({ "DownAttack", "swordk.png",80,87,AttackSpeed / 8.f,true,true });
 	Render0->CreateAnimation({ "Die", "swordk.png",40,47,0.1f,false,true});
-	
-	
-	
-		
+			
 	MyTeam = Team::Mine;
 	MyAttackType = AttackType::Near;
 	Unit::Start();
 	//Speed = 500.f;
 	{
-		FontRender0 = CreateComponent<GameEngineFontRenderer>();
-		//FontRender0->GetTransform()->SetParent(NewObject->GetTransform());
+		FontRender0 = CreateComponent<GameEngineFontRenderer>();		
 		FontRender0->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
 		FontRender0->SetScale({ 20.f });
 		FontRender0->GetTransform()->SetLocalPosition({0,20.f});

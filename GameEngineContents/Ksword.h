@@ -7,6 +7,7 @@ class Ksword : public Unit
 {
 public:
 	friend class Optionsheet;
+	
 	// constrcuter destructer
 	Ksword();
 	~Ksword();

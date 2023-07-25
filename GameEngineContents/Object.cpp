@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Object.h"
+#include "Building.h"
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
 #include "MapOverlay.h"
 #include "Unit.h"
@@ -35,6 +36,10 @@ void Object::Update(float _DeltaTime)
 	while (StartObject != EndObject)
 	{
 		(*StartRenders)->GetTransform()->SetLocalPosition((*StartObject)->GetTransform()->GetWorldPosition() * MiniViewRatio);
+		if ((*StartObject)->MyTeam==Team::Enemy&&"GREENBOX.PNG"== (*StartRenders)->GetTexName())
+		{
+			(*StartRenders)->SetTexture("RedBox.png");
+		}
 		StartObject++;
 		StartRenders++;
 	}
@@ -48,6 +53,31 @@ void Object::Start()
 		std::shared_ptr<GameEngineUIRenderer> NewPoint = CreateComponent<GameEngineUIRenderer>();
 		NewPoint->GetTransform()->SetParent(MiniMap::MainMiniMap->GetTransform());
 		NewPoint->GetTransform()->SetLocalScale({ 3.f,3.f,1.f });
+		if (MyTeam == Team::Mine)
+		{
+			NewPoint->SetTexture("GreenBox.png");
+			
+		}
+		else
+		{
+			NewPoint->SetTexture("RedBox.png");
+		}
+		MiniMap::MainMiniMap->MiniPoints.push_back(NewPoint);
+	}
+	if (nullptr != DynamicThis<Building>())
+	{
+		Objects.push_back(DynamicThis<Object>());
+		std::shared_ptr<GameEngineUIRenderer> NewPoint = CreateComponent<GameEngineUIRenderer>();
+		NewPoint->GetTransform()->SetParent(MiniMap::MainMiniMap->GetTransform());
+		NewPoint->GetTransform()->SetLocalScale({ 3.f,3.f,1.f });
+		if (MyTeam == Team::Mine)
+		{
+			NewPoint->SetTexture("GreenBox.png");
+		}
+		else
+		{
+			NewPoint->SetTexture("RedBox.png");
+		}
 		MiniMap::MainMiniMap->MiniPoints.push_back(NewPoint);
 	}
 }

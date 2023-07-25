@@ -12,6 +12,7 @@ class Unit : public Object
 	friend class PlayLevel;
 	friend class Optionsheet;
 	friend class Building;
+	
 public:
 	// constrcuter destructer
 	Unit();

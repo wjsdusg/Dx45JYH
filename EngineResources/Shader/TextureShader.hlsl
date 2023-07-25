@@ -115,6 +115,7 @@ cbuffer ColorOption : register(b0)
 {
     float4 MulColor;
     float4 PlusColor;
+    float4 Switch;
 }
 
 Texture2D DiffuseTex : register(t0);
@@ -164,8 +165,24 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
         }
     }
     
-    Color *= MulColor;
     Color += PlusColor;
+    Color *= MulColor;
+    
+    if (Switch.x != 0)
+    {
+        float sd = 68.f / 255.f;
+        if (1.f == Color.z)
+       {
+         float Temp = Color.x;
+         Color.x = 1;
+         Color.z = Temp;
+       }        
+       if(Color.x==0&&Color.y==0&&Color.z>sd)
+        {
+            Color.x = 1;
+            Color.z = 0;
+        }
+    }
     
     return Color;
 }

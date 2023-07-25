@@ -80,6 +80,7 @@ void RuinObject::Start()
 	for (int i = 0; i < EnemyNum; i++)
 	{
 		EnemyUnits[i] = GetLevel()->CreateActor<Ksword>();
+		EnemyUnits[i]->Render0->ColorOptionValue.Switch.x = 1;
 		EnemyUnits[i]->Off();
 	}
 }

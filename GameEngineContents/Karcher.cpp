@@ -27,8 +27,7 @@ void Karcher::Start()
 {
 	
 
-	GetTransform()->AddLocalPosition({ 0.f,-200.f });
-	//MousePickPos = GetTransform()->GetLocalPosition();
+	
 	if (nullptr == GameEngineSprite::Find("archerk.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -40,29 +39,25 @@ void Karcher::Start()
 	}
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 
-	Render0->GetTransform()->SetLocalScale({ 60.f,60.f,1.f });
-	//Render0->CreateAnimation({ .AnimationName = "Move", .SpriteName = "archerk.png", .ScaleToTexture = false });
+	Render0->GetTransform()->SetLocalScale({ 60.f,60.f,1.f });	
 	Render0->CreateAnimation({ "LDown45Stay", "archerk.png",0,7});
 	Render0->CreateAnimation({ "LStay", "archerk.png",8,15});
 	Render0->CreateAnimation({ "LUp45Stay", "archerk.png",16,23});
 	Render0->CreateAnimation({ "UpStay", "archerk.png",24,31});
 	Render0->CreateAnimation({ "DownStay", "archerk.png",32,39});
-
 	Render0->CreateAnimation({ "LDown45Move", "archerk.png",80,87});
 	Render0->CreateAnimation({ "LMove", "archerk.png",88,95});
 	Render0->CreateAnimation({ "LUp45Move", "archerk.png",96,103});
 	Render0->CreateAnimation({ "UpMove", "archerk.png",104,111});
 	Render0->CreateAnimation({ "DownMove", "archerk.png",112,119});
-
 	Render0->CreateAnimation({ "LDown45Attack", "archerk.png",120,127,AttackSpeed/8.f});
 	Render0->CreateAnimation({ "LAttack", "archerk.png",128,135,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "LUp45Attack", "archerk.png",136,143,AttackSpeed / 8.f });
 	Render0->CreateAnimation({ "UpAttack", "archerk.png",144,151,AttackSpeed / 8.f });
-	Render0->CreateAnimation({ "DownAttack", "archerk.png",152,159,AttackSpeed / 8.f });
-	
+	Render0->CreateAnimation({ "DownAttack", "archerk.png",152,159,AttackSpeed / 8.f });	
 	Render0->CreateAnimation({ "Die", "archerk.png",160,167});
 
-	Render0->ChangeAnimation("LStay");
+	
 	
 	/*Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
@@ -72,10 +67,10 @@ void Karcher::Start()
 	FOVCollision->GetTransform()->SetLocalScale({ 400,400,1.f });
 	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));*/
 
-	Unit::Start();
 	MyTeam = Team::Mine;
 	MyAttackType = AttackType::Far;
 	
+	Unit::Start();
 	
 	
 }

@@ -35,29 +35,21 @@ Unit::~Unit()
 }
 void Unit::Update(float _DeltaTime)
 {
-	/*std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-	if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
-	{
-		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-		{
-			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-			if (NewUnit == DynamicThis<Unit>())
-			{
-				continue;
-			}
-			NewUnit->FSM.ChangeState("Stay");
-		}
-	}*/
-	bool asd4 = IsNextTileCollision();
-	int sdg = 0;
-	
 	if (true == IsClick)
 	{
 		if (false == SelectionCircle->IsUpdate())
 		{
 			SelectionCircle->On();
+			SelectionCircle->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale()*0.6f);
+			if (MyTeam == Team::Mine)
+			{
+				SelectionCircle->SetTexture("SelectCircleMine.png");
+			}
+			else
+			{
+				SelectionCircle->SetTexture("SelectCircleEnemy.png");
+			}
 			
-			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
 		}
 	}	
 	else
@@ -70,31 +62,27 @@ void Unit::Update(float _DeltaTime)
 	//누르는순간 마우스에서 타겟포스를 정해준다.
 	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick/*&&MyField==Field::DungeonMap*/)
 	{
-		MousePickPos = MainMouse;
-		//TargetPos = MainMouse;
-		
+		MousePickPos = MainMouse;	
 		IsHold = false;
-		
+		IsA = false;
 		if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) != MapEditor::ConvertPosToTileXY(TargetPos))
-		{
-			//GlobalValue::Collision->ClrAt(IndexX, IndexY);
+		{			
 			PathCal();
 			FSM.ChangeState("Move");
-		}
-		
+		}		
 	}
 	{
 		if (true == IsClick && true == GameEngineInput::IsUp("A"))
 		{
 			IsA = true;
 		}
-		if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
+		/*if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
 		{
 			TargetPos = MainMouse;
 			FSM.ChangeState("Move");
 			Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 			IsM = false;
-		}
+		}*/
 		if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA)
 		{
 			//여기이상함
@@ -104,27 +92,21 @@ void Unit::Update(float _DeltaTime)
 			Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 			//IsA = false;
 		}
-		if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsP)
-		{
-			//여기이상함
-			MousePickPos = MainMouse;
-			TargetPos = MainMouse;
-			FSM.ChangeState("Move");
-			Mouse::NewMainMouse->GetMoveMark(MousePickPos);
-			//IsA = false;
-		}
-		if (true == GameEngineInput::IsUp("H") && true == IsClick)
+		//if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsP)
+		//{
+		//	//여기이상함
+		//	MousePickPos = MainMouse;
+		//	TargetPos = MainMouse;
+		//	FSM.ChangeState("Move");
+		//	Mouse::NewMainMouse->GetMoveMark(MousePickPos);
+		//	//IsA = false;
+		//}
+		if (true == GameEngineInput::IsUp("H") && true == IsClick&&Team::Mine==MyTeam)
 		{
 			IsHold = true;
-			FSM.ChangeState("Stay");
+			//FSM.ChangeState("Stay");
 		}
-		if (true == IsClick && true == GameEngineInput::IsUp("EngineMouseRight") && (true == IsP || true == IsM || true == IsHold || true == IsA))
-		{
-			IsP = false;
-			IsM = false;
-			IsHold = false;
-			IsA = false;
-		}
+		
 
 	}
 	
@@ -155,6 +137,8 @@ void Unit::Start()
 	HalfY -= 10.f;
 	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });	
 	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();	
+	
+	SelectionCircle->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
 	SelectionCircle->Off();
 	//CreateTileFOV(GetTransform()->GetLocalPosition());
 	MyField = Field::DungeonMap;
@@ -286,7 +270,7 @@ void Unit::StateInit()
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			if (nullptr != FOVCollision
 				&&FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)
-				&& 0!=ColTest.size()
+				&& 1<ColTest.size()
 				&&false==IsHold)
 			{				
 				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -314,17 +298,31 @@ void Unit::StateInit()
 				}				
 			}
 			
-			if (true == IsHold && nullptr!= Collision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D))
+			if (nullptr != Collision
+				&& Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D)
+				&& 1 < ColTest.size()
+				&& true == IsHold)
 			{
-				TargetPos = Collision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D)->GetActor()->GetTransform()->GetLocalPosition();
-				FSM.ChangeState("HoldAttack");
-			}
-			
-			
-			/*if (false == GlobalValue::Collision->IsCollision(IndexX, IndexY))
-			{
-				GlobalValue::Collision->SetAt(IndexX, IndexY);
-			}*/
+				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				{
+					std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+					if (nullptr == NewObject)
+					{
+						continue;
+					}
+					else if (NewObject == DynamicThis<Object>())
+					{
+						continue;
+					}
+					else if (MyTeam != NewObject->GetTeam())
+					{
+						CopyObject = NewObject;						
+						FSM.ChangeState("HoldAttack");
+						return;
+					}
+				}
+				
+			}			
 		},
 		.End = []() {}
 		}
@@ -520,6 +518,10 @@ void Unit::StateInit()
 				{
 					FSM.ChangeState("Stay");
 				}
+				else if (true == IsHold)
+				{
+					FSM.ChangeState("Stay");
+				}
 				else
 				{
 					FSM.ChangeState("Move");
@@ -529,7 +531,11 @@ void Unit::StateInit()
 			{
 				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 				{
-					if (false == IsNextTileCollision())
+					if (true == IsHold)
+					{
+						FSM.ChangeState("Stay");
+					}
+					else if (false == IsNextTileCollision())
 					{
 						
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
@@ -741,7 +747,12 @@ void Unit::StateInit()
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
 			if (ShortTargetPos == InterTargetPos && InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
-				GetTransform()->SetLocalPosition(InterTargetPos);							
+				GetTransform()->SetLocalPosition(InterTargetPos);			
+					if (true == IsHold)
+					{
+						FSM.ChangeState("Stay");
+						return;
+					}
 					if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 < ColTest.size())
 					{
 						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -786,7 +797,11 @@ void Unit::StateInit()
 				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 				{
 					GetTransform()->SetLocalPosition(ShortTargetPos);
-					
+					if (true == IsHold)
+					{
+						FSM.ChangeState("Stay");
+						return;
+					}
 					if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1< ColTest.size())
 					{
 						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -996,7 +1011,13 @@ void Unit::StateInit()
 				}
 				else if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
 				{
+					
 					CopyObject->CurHp -= (AddATK + ATK);
+					if (true == IsHold)
+					{
+						FSM.ChangeState("Stay");
+						return;
+					}
 					TargetPos = CopyObject->GetTransform()->GetLocalPosition();
 					PathCal();
 					CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
@@ -1031,8 +1052,8 @@ void Unit::StateInit()
 		.Start = [this]() 
 		{
 			//각도계산용
-			MovePointTowardsTarget(GetTransform()->GetLocalPosition(), TargetPos, Speed, 0);
 			
+			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetLocalPosition());			
 			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LAttack");
@@ -1103,16 +1124,18 @@ void Unit::StateInit()
 		{
 			if (Render0->IsAnimationEnd())
 			{
-			
-			CalAngle(GetTransform()->GetLocalPosition(), TargetPos);
-				if (20.f <= abs(PreAngle - Angle))
+				
+				if (nullptr == CopyObject || true == CopyObject->IsDeath())
 				{
-					FSM.ChangeState("HoldAttack");
-				}
-				if (nullptr == Collision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D))
+					CopyObject = nullptr;
+					FSM.ChangeState("Stay");
+					return;
+				}else
 				{
+					CopyObject->CurHp -= (AddATK + ATK);
 					FSM.ChangeState("Stay");
 				}
+				
 			}
 		},
 		.End = []() {}

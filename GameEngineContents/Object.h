@@ -13,6 +13,7 @@ class Object : public GameEngineActor
 	friend class PlayLevel;
 	friend class Optionsheet;
 	friend class Unit;
+	friend class RuinObject;
 public:
 	// constrcuter destructer
 	Object();
