@@ -296,12 +296,12 @@ void Mouse::FSMInit()
 
 						}
 					}
-					if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f && true == check)
+					if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f && true == check&& CopyUnit->MyTeam == Team::Mine)
 					{
 						std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 						for (auto Start = Units.begin(); Start != Units.end(); Start++)
 						{
-							if ((*Start)->MyTeam == Team::Mine)
+							if ((*Start)->MyTeam == Team::Mine&&true== (*Start)->IsUpdate())
 							{
 								(*Start)->SetIsClick(true);
 							}
@@ -353,14 +353,14 @@ void Mouse::FSMInit()
 			{
 				FSM.ChangeState("UnitClickAttack");
 			}
-			else if (true == GameEngineInput::IsUp("M"))
+			/*else if (true == GameEngineInput::IsUp("M"))
 			{
 				FSM.ChangeState("UnitClickMove");
 			}
 			else if (true == GameEngineInput::IsUp("P"))
 			{
 				FSM.ChangeState("UnitClickPatrol");
-			}
+			}*/
 			else if (true == GameEngineInput::IsUp("EngineMouseRight"))
 			{
 				CopyUnit->TargetPos = Collision->GetTransform()->GetLocalPosition();
@@ -481,19 +481,19 @@ void Mouse::FSMInit()
 				}
 				else if (true==check&& true == GameEngineInput::IsUp("A"))
 				{
-					FSM.ChangeState("UnitClickAttack");
+					FSM.ChangeState("UnitsClickAttack");
 				}	
-				else if (true == check && true == GameEngineInput::IsUp("M"))
+				/*else if (true == check && true == GameEngineInput::IsUp("M"))
 				{
 					FSM.ChangeState("UnitClickMove");
 				}
 				else if (true == check && true == GameEngineInput::IsUp("P"))
 				{
 					FSM.ChangeState("UnitClickPatrol");
-				}
+				}*/
 				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
 				{
-					//CopyUnit->TargetPos = Collision->GetTransform()->GetLocalPosition();
+					
 					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 					for (auto Start = Units.begin(); Start != Units.end(); Start++)
 					{
@@ -507,14 +507,31 @@ void Mouse::FSMInit()
 					float4 TargetIndex = MapEditor::ConvertPosToTileXY(Collision->GetTransform()->GetLocalPosition());
 					int IndexX = TargetIndex.ix()-CopyUnit->IndexX ;
 					int IndexY = TargetIndex.iy()-CopyUnit->IndexY ;
+					float TargetAngle = CopyUnit->CalAngle(CopyUnit->GetTransform()->GetLocalPosition(), Collision->GetTransform()->GetLocalPosition());
 					for (auto Start = Units.begin(); Start != Units.end(); Start++)
 					{
-						float4 UnitIndex = MapEditor::ConvertPosToTileXY((*Start)->GetTransform()->GetLocalPosition());
-						int IndexUX = UnitIndex.ix();
-						int IndexUY = UnitIndex.iy();
-						IndexUX += IndexX;
-						IndexUY += IndexY;
-						(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
+						if (true == (*Start)->GetIsClick())
+						{
+							float4 UnitIndex = MapEditor::ConvertPosToTileXY((*Start)->GetTransform()->GetLocalPosition());
+							int IndexUX = UnitIndex.ix();
+							int IndexUY = UnitIndex.iy();
+							IndexUX += IndexX;
+							IndexUY += IndexY;
+							(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
+							/*float Angle = (*Start)->CalAngle((*Start)->GetTransform()->GetLocalPosition(), Collision->GetTransform()->GetLocalPosition());
+														
+						
+							if (90 > abs(TargetAngle - Angle))
+							{
+								
+							}
+							else
+							{								
+								IndexUX -= IndexX;
+								IndexUY -= IndexY;
+								(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
+							}*/
+						}						
 					}
 				}
 				else
@@ -599,8 +616,42 @@ void Mouse::FSMInit()
 			Render0->ChangeAnimation("AClick");			
 		},
 		.Update = [this](float _DeltaTime)
+		{			
+			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+			
+			if (true == CopyUnit->IsDeath())
+			{
+				FSM.ChangeState("Default");
+			}
+			else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+			{
+				CopyUnit->TargetPos = Collision->GetTransform()->GetLocalPosition();
+				FSM.ChangeState("UnitsClick");
+			}
+			else if (true == GameEngineInput::IsUp("EngineMouseRight"))
+			{
+				FSM.ChangeState("UnitsClick");
+			}
+		}
+		,
+		.End = []() 
+		{
+			
+		}
+		}
+	);
+	FSM.CreateState
+	(
+		{
+			.Name = "UnitsClickAttack",
+		.Start = [this]()
+		{
+			Render0->ChangeAnimation("AClick");
+		},
+		.Update = [this](float _DeltaTime)
 		{
 			bool check = false;
+			float MinDistance = 100000.f;
 			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 				for (auto Start = Units.begin(); Start != Units.end(); Start++)
 				{
@@ -616,6 +667,45 @@ void Mouse::FSMInit()
 				}
 				else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
+					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+					for (auto Start = Units.begin(); Start != Units.end(); Start++)
+					{
+						if (true == (*Start)->IsClick && (*Start)->GetTransform()->GetLocalPosition().XYDistance(Collision->GetTransform()->GetLocalPosition()) < MinDistance)
+						{
+							MinDistance = (*Start)->GetTransform()->GetLocalPosition().XYDistance(Collision->GetTransform()->GetLocalPosition());
+							CopyUnit = *Start;
+
+						}
+					}
+					float4 TargetIndex = MapEditor::ConvertPosToTileXY(Collision->GetTransform()->GetLocalPosition());
+					int IndexX = TargetIndex.ix() - CopyUnit->IndexX;
+					int IndexY = TargetIndex.iy() - CopyUnit->IndexY;
+					float TargetAngle = CopyUnit->CalAngle(CopyUnit->GetTransform()->GetLocalPosition(), Collision->GetTransform()->GetLocalPosition());
+					for (auto Start = Units.begin(); Start != Units.end(); Start++)
+					{
+						if (true == (*Start)->GetIsClick())
+						{
+							float4 UnitIndex = MapEditor::ConvertPosToTileXY((*Start)->GetTransform()->GetLocalPosition());
+							int IndexUX = UnitIndex.ix();
+							int IndexUY = UnitIndex.iy();
+							IndexUX += IndexX;
+							IndexUY += IndexY;
+							(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
+							/*float Angle = (*Start)->CalAngle((*Start)->GetTransform()->GetLocalPosition(), Collision->GetTransform()->GetLocalPosition());
+
+
+							if (90 > abs(TargetAngle - Angle))
+							{
+
+							}
+							else
+							{
+								IndexUX -= IndexX;
+								IndexUY -= IndexY;
+								(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
+							}*/
+						}
+					}
 					FSM.ChangeState("UnitsClick");
 				}
 				else if (true == GameEngineInput::IsUp("EngineMouseRight"))
@@ -624,9 +714,9 @@ void Mouse::FSMInit()
 				}
 		}
 		,
-		.End = []() 
+		.End = []()
 		{
-			
+
 		}
 		}
 	);

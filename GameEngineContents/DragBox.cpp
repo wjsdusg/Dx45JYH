@@ -35,6 +35,7 @@ void DragBox::Update(float _DeltaTime)
 void DragBox::Start()
 {
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
+	Render0->SetTexture("DragBox.png");
 	Collision = CreateComponent<GameEngineCollision>();
 }
 
@@ -48,7 +49,7 @@ bool DragBox::AllCollision()
 		{
 			std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
 
-			if (nullptr != NewUnit && 120.f < Area)
+			if (nullptr != NewUnit &&Team::Mine== NewUnit->MyTeam &&120.f < Area)
 			{
 				if (false == check)
 				{

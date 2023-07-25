@@ -92,7 +92,7 @@ void Optionsheet::Start()
 		Render2Select->Off();
 	}
 	Collision = CreateComponent<GameEngineCollision>();
-	Collision->SetOrder(static_cast<int>(ColEnum::Optionsheet));
+	Collision->SetOrder(static_cast<int>(ColEnum::UIPannel));
 	Collision->SetColType(ColType::AABBBOX2D);
 	ColRender = CreateComponent<GameEngineUIRenderer>();
 	ColRender->SetSprite("Button.png", 2);
