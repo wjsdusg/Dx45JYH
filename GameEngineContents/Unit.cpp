@@ -90,6 +90,7 @@ void Unit::Update(float _DeltaTime)
 		}*/
 		if (true == IsClick && true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA)
 		{			
+			MousePickPos = MainMouse;
 			PathCal();
 			FSM.ChangeState("MoveChase");			
 			return;
@@ -1372,6 +1373,10 @@ void Unit::StateInit()
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
 			if (ShortTargetPos == InterTargetPos && InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
+				if (true == IsClick)
+				{
+					int a = 0;
+				}
 				GetTransform()->SetLocalPosition(InterTargetPos);
 				if (nullptr != FOVCollision
 					&& FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)
@@ -1413,17 +1418,16 @@ void Unit::StateInit()
 				}
 				else
 				{
-					FSM.ChangeState("Move");
+					FSM.ChangeState("MoveChase");
 				}
 			}
 			else
 			{
 				if (ShortTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 				{
-					if (true == IsHold)
+					if (true == IsClick)
 					{
-						FSM.ChangeState("Stay");
-						return;
+						int a = 0;
 					}
 					if (nullptr != FOVCollision
 						&& FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)
@@ -1454,6 +1458,11 @@ void Unit::StateInit()
 							}
 						}
 					}
+					if (true == IsHold)
+					{
+						FSM.ChangeState("Stay");
+						return;
+					}					
 					else if (false == IsNextTileCollision())
 					{
 
@@ -1468,8 +1477,10 @@ void Unit::StateInit()
 					else if (true == IsNextTileCollision())
 					{
 						PathCal();
-						FSM.ChangeState("Move");
+						FSM.ChangeState("MoveChase");
 					}
+
+					
 				}
 			}
 

@@ -617,7 +617,7 @@ void Mouse::FSMInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{			
-			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+			
 			
 			if (true == CopyUnit->IsDeath())
 			{
@@ -650,9 +650,17 @@ void Mouse::FSMInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{
+			if (nullptr != Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				return;
+			}
 			bool check = false;
 			float MinDistance = 100000.f;
-			std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+						
+			//유닛이 한마리라도 클릭중인지 체크			
+			
+				std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
 				for (auto Start = Units.begin(); Start != Units.end(); Start++)
 				{
 					if (true == (*Start)->GetIsClick())
@@ -664,7 +672,7 @@ void Mouse::FSMInit()
 				if (false == check)
 				{
 					FSM.ChangeState("Default");
-				}
+				}							
 				else if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 				{
 					std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
@@ -691,19 +699,7 @@ void Mouse::FSMInit()
 							IndexUX += IndexX;
 							IndexUY += IndexY;
 							(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
-							/*float Angle = (*Start)->CalAngle((*Start)->GetTransform()->GetLocalPosition(), Collision->GetTransform()->GetLocalPosition());
-
-
-							if (90 > abs(TargetAngle - Angle))
-							{
-
-							}
-							else
-							{
-								IndexUX -= IndexX;
-								IndexUY -= IndexY;
-								(*Start)->TargetPos = MapEditor::ConvertTileXYToPos(IndexUX, IndexUY);
-							}*/
+							
 						}
 					}
 					FSM.ChangeState("UnitsClick");
