@@ -248,7 +248,155 @@ void PlayLevel::Update(float _DeltaTime)
 	}
 	else if (Field::DungeonMap == MyField)
 	{
+		if (
+			true == GameEngineInput::IsPress("Left")
+			&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
+			||
+			(
+				(
+					UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2))
+				&& (UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
+				&& (
+					UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
+					||
+					(
+						UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+						&& UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 40)
+						)
+					)
+				)
+			)
+		{
+			if (true == CheckPointOnUpLine(MapUpP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else if (true == CheckPointOnDownLine(MapDownP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else
+			{
+				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime;
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 
+
+			}
+		}
+
+		if (
+			true == GameEngineInput::IsPress("Right")
+			&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
+			||
+			(
+				(
+					UIMouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
+				&& (UIMouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
+				&& UIMouse.y >= -GameEngineWindow::GetScreenSize().y / 2
+				)
+			)
+		{
+			if (true == CheckPointOnUpLine(MapUpP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else if (true == CheckPointOnDownLine(MapDownP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else
+			{
+				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldRightVector() * Speed * _DeltaTime;
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+
+			}
+		}
+		if (
+			true == GameEngineInput::IsPress("Up")
+			&& GetMainCamera()->GetTransform()->GetLocalPosition().y <= (MapSize.y / 2 - (GameEngineWindow::GetScreenSize().y / 2))
+			||
+			(
+				UIMouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20)
+				&& UIMouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
+				)
+
+			)
+		{
+			if (true == CheckPointOnUpLine(MapUpP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+
+				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else if (true == CheckPointOnUpLine(MapUpP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else
+			{
+				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldUpVector() * Speed * _DeltaTime;
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+
+
+			}
+
+			//GetMainCamera()->GetTransform()->AddLocalPosition(float4::AngleToDirection2DToDeg(180.f) * Speed * _DeltaTime);
+		}
+		if (
+			true == GameEngineInput::IsPress("Down")
+			&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
+			||
+			(
+				UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
+				&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+				&& (
+					UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
+					||
+					(
+						UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)
+						&& UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 60)
+						)
+					)
+				)
+			)
+		{
+			if (true == CheckPointOnDownLine(MapDownP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+
+				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else if (true == CheckPointOnDownLine(MapDownP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
+			{
+				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			else
+			{
+				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldDownVector() * Speed * _DeltaTime;
+				OutlineCheck(Pos);
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+
+
+
+			}
+		}
 	}
 
 
@@ -572,7 +720,7 @@ void PlayLevel::Start()
 
 	NewWeirdPlant = CreateActor<WeirdPlant>();
 
-
+	MyField = Field::DungeonMap;
 	//	NewGonisi = CreateActor<Gonisi>();
 	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
 	//	NewAsako = CreateActor<Asako>();
