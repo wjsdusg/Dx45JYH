@@ -89,7 +89,7 @@ std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
 std::shared_ptr<UIButton> NewUIButton = nullptr;
 std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
 std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
-std::shared_ptr<RuinObject> NewRuinObject = nullptr; 
+std::shared_ptr<RuinObject> NewRuinObject = nullptr;
 std::shared_ptr<NormalObject1> NewNormalObject1 = nullptr;
 std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
 
@@ -122,7 +122,7 @@ void PlayLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsUp("G"))
 	{
-		
+
 		//NewMonster->FSM.ChangeState("Die");
 		IsDebugSwitch();
 	}
@@ -158,177 +158,106 @@ void PlayLevel::Update(float _DeltaTime)
 	//y>= a*x+b 이면 x,y점이 닿거나 위에있다.
 	float Speed = 1000.f;
 	//마우스 외각시 맵이동
+	if (Field::DefenseMap == MyField)
 	{
-
-
-		if (
-			true == GameEngineInput::IsPress("Left")
-			&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
-			||
-			(
+		{
+			if (
+				true == GameEngineInput::IsPress("Left")
+				&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
+				||
 				(
-					UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2))
-				&& (UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
-				&& (
-					UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
-					||
 					(
-						UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
-						&& UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 40)
+						UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2))
+					&& (UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 20))
+					&& (
+						UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().y)
+						||
+						(
+							UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+							&& UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 40)
+							)
 						)
 					)
 				)
-			)
-		{
-			/*if (true == CheckPointOnUpLine(MapUpP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
 			{
-				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else if (true == CheckPointOnDownLine(MapDownP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
-			{
-				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else
-			{
+
 				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime;
-				OutlineCheck(Pos);
+
 				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
 
-
-			}*/
-			float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime;
-			
-			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-		}
-
-		if (
-			true == GameEngineInput::IsPress("Right")
-			&& GetMainCamera()->GetTransform()->GetLocalPosition().x >= -(MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2))
-			||
-			(
+			if (
 				(
-					UIMouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
-				&& (UIMouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
-				&& UIMouse.y >= -GameEngineWindow::GetScreenSize().y / 2
-				)
-			)
-		{
-			/*if (true == CheckPointOnUpLine(MapUpP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
-			{
-				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else if (true == CheckPointOnDownLine(MapDownP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
-			{
-				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else
-			{
-				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldRightVector() * Speed * _DeltaTime;
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-
-			}*/
-float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldRightVector() * Speed * _DeltaTime;
-
-GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-		}
-		if (
-			true == GameEngineInput::IsPress("Up")
-			&& GetMainCamera()->GetTransform()->GetLocalPosition().y <= (MapSize.y / 2 - (GameEngineWindow::GetScreenSize().y / 2))
-			||
-			(
-				UIMouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20)
-				&& UIMouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
-				)
-
-			)
-		{
-			/*if (true == CheckPointOnUpLine(MapUpP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
-			{
-
-				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else if (true == CheckPointOnUpLine(MapUpP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
-			{
-				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else
-			{
-				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldUpVector() * Speed * _DeltaTime;
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-
-
-			}*/
-			float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldUpVector() * Speed * _DeltaTime;
-			
-			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			
-		}
-		if (
-			true == GameEngineInput::IsPress("Down")
-			//&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
-			||
-			(
-				UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
-				&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
-				&& (
-					UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
+					true == GameEngineInput::IsPress("Right")
 					||
 					(
-						UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)
-						&& UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 60)
+						UIMouse.x >= (GameEngineWindow::GetScreenSize().x / 2 - 20))
+					&& (UIMouse.x <= (GameEngineWindow::GetScreenSize().x / 2))
+					&& UIMouse.y >= -GameEngineWindow::GetScreenSize().y / 2
+					)
+
+				 && GetMainCamera()->GetTransform()->GetLocalPosition().x <= (MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2)-40.f
+					)
+				)
+			{
+				float dfsf = (MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2));
+				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldRightVector() * Speed * _DeltaTime;
+
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
+			if (
+				true == GameEngineInput::IsPress("Up")
+				&& GetMainCamera()->GetTransform()->GetLocalPosition().y <= (MapSize.y / 2 - (GameEngineWindow::GetScreenSize().y / 2))
+				||
+				(
+					UIMouse.y >= (GameEngineWindow::GetScreenSize().y / 2 - 20)
+					&& UIMouse.y <= (GameEngineWindow::GetScreenSize().y / 2)
+					)
+
+				)
+			{
+
+				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldUpVector() * Speed * _DeltaTime;
+
+				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+
+			}
+			if (
+				true == GameEngineInput::IsPress("Down")
+				&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
+				||
+				(
+					UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
+					&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
+					&& (
+						UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
+						||
+						(
+							UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)
+							&& UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 60)
+							)
 						)
 					)
 				)
-			)
-		{
-			/*if (true == CheckPointOnDownLine(MapDownP, MapRightP, GetMainCamera()->GetTransform()->GetLocalPosition()))
 			{
 
-				float4 Pos = MovePointLeftOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else if (true == CheckPointOnDownLine(MapDownP, MapLeftP, GetMainCamera()->GetTransform()->GetLocalPosition()))
-			{
-				float4 Pos = MovePointRightOnLine(GetMainCamera()->GetTransform()->GetLocalPosition(), Speed, _DeltaTime);
-				OutlineCheck(Pos);
-				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}
-			else
-			{
 				float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldDownVector() * Speed * _DeltaTime;
-				OutlineCheck(Pos);
 				GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
-			}*/
-			float4 Pos = GetMainCamera()->GetTransform()->GetLocalPosition() + GetTransform()->GetWorldDownVector() * Speed * _DeltaTime;
-			GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
+			}
 		}
 	}
+	else if (Field::DungeonMap == MyField)
+	{
 
-		
-	
+	}
+
+
+
+
 	if (true == GameEngineInput::IsUp("Space"))
 	{
 		GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
-	    //float4 sd = NewMapEditor->NewObject->GetTransform()->GetWorldPosition();
-		//float4 df= NewMapEditor->FontRender0->GetTransform()->GetWorldPosition(); 
-		//GetMainCamera()->GetTransform()->SetLocalPosition(NewMapEditor->NewObject->GetTransform()->GetWorldPosition());
-		
-		//GetMainCamera()->GetTransform()->SetLocalPosition(FontRender-> GetTransform()->GetLocalPosition());
+		MyField = Field::DefenseMap;
 	}
 	{
 		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
@@ -374,19 +303,19 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 		}
 	}
 	{
-		if (nullptr != NewDefenseMapEditor && true==NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
-		{			
+		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
+		{
 			NewDefenseMapEditor->FSM.ChangeState("IsMove");
 
 		}
 		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F8"))
 		{
-			
+
 			NewDefenseMapEditor->FSM.ChangeState("Default");
 		}
 		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
 			{
-				GameEngineSerializer Ser;				
+				GameEngineSerializer Ser;
 				NewDefenseMapEditor->Save(Ser);
 				GameEngineDirectory NewDir2;
 				NewDir2.MoveParentToDirectory("ContentsBin");
@@ -401,7 +330,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			NewDir2.Move("ContentsBin");
 			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("DefenseMapIsMove.data").GetFullPath());
 			GameEngineSerializer Ser;
-			NewFile.LoadBin(Ser);			
+			NewFile.LoadBin(Ser);
 			NewDefenseMapEditor->Load(Ser);
 		}
 	}
@@ -429,7 +358,7 @@ void PlayLevel::OutlineCheck(float4& _Pos)
 		_Pos.x = (MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2));
 		_Pos.y = 0.f;
 	}
-	
+
 }
 
 void PlayLevel::Start()
@@ -441,7 +370,7 @@ void PlayLevel::Start()
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
 		NewDir.Move("Test");
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png",".Bmp",".Tga"});
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png",".Bmp",".Tga" });
 		for (size_t i = 0; i < File.size(); i++)
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
@@ -468,7 +397,7 @@ void PlayLevel::Start()
 		GameEngineInput::CreateKey("G", 'G');
 		GameEngineInput::CreateKey("A", 'A');
 		GameEngineInput::CreateKey("S", 'S');
-		GameEngineInput::CreateKey("H", 'H'); 
+		GameEngineInput::CreateKey("H", 'H');
 		GameEngineInput::CreateKey("M", 'M');
 		GameEngineInput::CreateKey("P", 'P');
 		GameEngineInput::CreateKey("F1", VK_F1);
@@ -485,7 +414,7 @@ void PlayLevel::Start()
 	//std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
 	GameEngineFont::Load("휴먼둥근헤드라인");
 	Map1 = CreateActor<Map>();
-	
+
 	NewUIPannel = CreateActor<UIPannel>();
 	NewMiniMap = CreateActor<MiniMap>();
 
@@ -495,7 +424,7 @@ void PlayLevel::Start()
 	NewMapOverlay = CreateActor<MapOverlay>();
 	NewMapOverlay->GetTransform()->SetLocalPosition(MapUpP);
 	NewDefenseMap = CreateActor<DefenseMap>();
-	NewMapEditor = CreateActor<MapEditor>();	
+	NewMapEditor = CreateActor<MapEditor>();
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
 	GlobalValue::Collision = std::make_shared<JPSCollision>();
 	GlobalValue::Collision->Create(180, 180);
@@ -565,7 +494,7 @@ void PlayLevel::Start()
 	/*for (int i = 0; i < 5; i++)
 	{
 	 NewKsword = CreateActor<Ksword>();
-	 
+
 	 NewKsword->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 + i, 90));
 	}
 	NewKsword2 = CreateActor<Ksword>();
@@ -586,7 +515,7 @@ void PlayLevel::Start()
 	NewTreasureBox = CreateActor<TreasureBox>();
 	NewTreasureBox->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(95, 95));
 	NewTreasureBox->SetTileCollsion();
-	
+
 	*/
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
@@ -620,29 +549,29 @@ void PlayLevel::Start()
 		Minion::InSideTargetPosLoad(Ser);
 	}
 	//{
-		NewMonster = CreateActor<Monster_01>();
-		NewForg = CreateActor<Frog>();
-		
-		NewGangsi = CreateActor<Gangsi>();
-		
-		NewGatpha = CreateActor<Gatpha>();
-		
-		NewHungryDemon = CreateActor<HungryDemon>();
-		
-		NewOnghwa = CreateActor<Onghwa>();
-		
-		NewRaccoondog = CreateActor<Raccoondog>();
-		
-		NewSnowdemon = CreateActor<Snowdemon>();
-		
-		NewSnowwoman = CreateActor<Snowwoman>();
-		
-		NewSwordPirate = CreateActor<SwordPirate>();
-		
-		NewTiger = CreateActor<Tiger>();
-		
-		NewWeirdPlant = CreateActor<WeirdPlant>();
-		
+	NewMonster = CreateActor<Monster_01>();
+	NewForg = CreateActor<Frog>();
+
+	NewGangsi = CreateActor<Gangsi>();
+
+	NewGatpha = CreateActor<Gatpha>();
+
+	NewHungryDemon = CreateActor<HungryDemon>();
+
+	NewOnghwa = CreateActor<Onghwa>();
+
+	NewRaccoondog = CreateActor<Raccoondog>();
+
+	NewSnowdemon = CreateActor<Snowdemon>();
+
+	NewSnowwoman = CreateActor<Snowwoman>();
+
+	NewSwordPirate = CreateActor<SwordPirate>();
+
+	NewTiger = CreateActor<Tiger>();
+
+	NewWeirdPlant = CreateActor<WeirdPlant>();
+
 
 	//	NewGonisi = CreateActor<Gonisi>();
 	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
@@ -659,8 +588,8 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewMapEditor->Load(Ser);
 	}*/
-	
-}			
+
+}
 
 void PlayLevel::LevelChangeStart()
 {

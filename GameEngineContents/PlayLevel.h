@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore\GameEngineLevel.h>
 #include <GameEngineBase/GameEngineAstar.h>
+#include "ContentsEnum.h"
 // Ό³Έν :
 class PlayLevel : public GameEngineLevel
 {
@@ -14,7 +15,10 @@ public:
 	PlayLevel(PlayLevel&& _Other) noexcept = delete;
 	PlayLevel& operator=(const PlayLevel& _Other) = delete;
 	PlayLevel& operator=(PlayLevel&& _Other) noexcept = delete;
-
+	Field GetField()
+	{
+		return MyField;
+	}
 	
 protected:
 	void Update(float _DeltaTime) override;
@@ -26,7 +30,7 @@ protected:
 private:
 	void OutlineCheck(float4& _Pos);
 	void PlayerCreate();
-	
+	Field MyField = Field::Max;
 
 };
 
