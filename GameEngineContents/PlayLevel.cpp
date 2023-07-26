@@ -696,6 +696,15 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		Minion::InSideTargetPosLoad(Ser);
 	}
+	{
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("OutsideMonsterTargetPos.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		Minion::OutSideTargetPosLoad(Ser);
+	}
 	//{
 	NewMonster = CreateActor<Monster_01>();
 	NewForg = CreateActor<Frog>();
