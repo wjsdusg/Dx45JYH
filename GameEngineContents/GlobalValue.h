@@ -13,6 +13,12 @@ public:
 	// jps.Init(spCollision);
 
 };
+class DefenseGlobalValue
+{
+public:	
+	static std::shared_ptr<JPSCollision> Collision;
+	static JPSPath JpsP;	
+};
 //
 //if (Angle < 10 || Angle >= 350)
 //{

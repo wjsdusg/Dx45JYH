@@ -79,14 +79,7 @@ void Unit::Update(float _DeltaTime)
 		if (true == IsClick && true == GameEngineInput::IsUp("A") && Team::Mine == MyTeam)
 		{
 			IsA = true;
-		}
-		/*if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsM)
-		{
-			TargetPos = MainMouse;
-			FSM.ChangeState("Move");
-			Mouse::NewMainMouse->GetMoveMark(MousePickPos);
-			IsM = false;
-		}*/
+		}		
 		if (true == IsClick && true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA && Team::Mine == MyTeam)
 		{			
 			MousePickPos = MainMouse;
@@ -94,19 +87,10 @@ void Unit::Update(float _DeltaTime)
 			FSM.ChangeState("MoveChase");			
 			return;
 		}
-		//if (true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsP)
-		//{
-		//	//여기이상함
-		//	MousePickPos = MainMouse;
-		//	TargetPos = MainMouse;
-		//	FSM.ChangeState("Move");
-		//	Mouse::NewMainMouse->GetMoveMark(MousePickPos);
-		//	//IsA = false;
-		//}
+		
 		if (true == GameEngineInput::IsUp("H") && true == IsClick&&Team::Mine==MyTeam)
 		{
-			IsHold = true;
-			//FSM.ChangeState("Stay");
+			IsHold = true;			
 		}
 		
 
@@ -130,6 +114,7 @@ void Unit::Update(float _DeltaTime)
 
 	FSM.Update(_DeltaTime);
 }
+
 void Unit::Start()
 {
 	

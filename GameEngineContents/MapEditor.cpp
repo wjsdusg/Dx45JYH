@@ -4,12 +4,12 @@
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "GlobalValue.h"
 #include <GameEngineBase/JPSCollision.h>
-
 #include "Mouse.h"
 extern float4 TileScale;
 extern float4 MapUpP;
 float4 MapEditor::TileSizeH=float4::Zero;
 std::vector<std::vector<TileInfo>> MapEditor::TileInfos;
+std::vector<float4> MapEditor::RespawnPos;
 MapEditor::MapEditor()
 {
 }
@@ -344,39 +344,53 @@ void MapEditor::Save(GameEngineSerializer& _Ser)
 }
 void MapEditor::Load(GameEngineSerializer& _Ser)
 {
-	/*for (int i = 0; i < MoveMarks.size(); i++)
+	for (int i = 0; i < MoveMarks.size(); i++)
 	{
 		MoveMarks[i]->Death();		
 	}
-	MoveMarks.clear();*/
+	MoveMarks.clear();
 
 	_Ser.Read(SaveNum);
 	
-	//MoveMarks.resize(SaveNum);
-	
+	MoveMarks.resize(SaveNum);
+	int x;
+	int y;
 	for (int i = 0; i < SaveNum; i++)
 	{
-		//std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();		
-		int x;
-		int y;
+		std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();		
+		
 		
 		_Ser.Read(x);
 		_Ser.Read(y);
-		//NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });		
-		//NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
-		//MoveMarks[i]=NewComponent;
+		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });		
+		NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
+		MoveMarks[i]=NewComponent;
 		// 
 		//MoveMarks.push_back(NewComponent);
 		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
-		//GetTIleInfo(CheckPos)->IsMove = false;
-				
-		
-		//GlobalValue::AStart.SetPathData({ X, Y }, -1);
-		 
+		//GetTIleInfo(CheckPos)->IsMove = false;		 
 		GlobalValue::Collision->SetAt(CheckPos.ix(), CheckPos.iy());
 			
 	}
 	GlobalValue::JpsP.Init(GlobalValue::Collision);
+}
+
+void MapEditor::RespawnPosLoad(GameEngineSerializer& _Ser)
+{
+	_Ser.Read(SaveNum);
+	int x;
+	int y;
+	RespawnPos.resize(SaveNum);
+	for (int i = 0; i < SaveNum; i++)
+	{
+		
+		_Ser.Read(x);
+		_Ser.Read(y);
+		
+		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
+		
+		RespawnPos[i] = CheckPos;
+	}
 }
 
 float4 MapEditor::ConvertPosToTileXY(float4 _Pos)

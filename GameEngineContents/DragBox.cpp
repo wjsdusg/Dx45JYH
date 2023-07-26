@@ -36,6 +36,7 @@ void DragBox::Start()
 {
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	Render0->SetTexture("DragBox.png");
+	Render0->ColorOptionValue.MulColor.a = 0.4f;
 	Collision = CreateComponent<GameEngineCollision>();
 }
 

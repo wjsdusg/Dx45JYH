@@ -54,6 +54,8 @@ public:
 	}
 	void Save(GameEngineSerializer& _Ser);
 	void Load(GameEngineSerializer& _Ser);
+	void RespawnPosLoad(GameEngineSerializer& _Ser);
+	static std::vector<float4> RespawnPos;
 protected:
 	void Render(float _Delta) override;
 

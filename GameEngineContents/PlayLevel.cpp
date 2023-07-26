@@ -346,7 +346,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 				GameEngineDirectory NewDir2;
 				NewDir2.MoveParentToDirectory("ContentsBin");
 				NewDir2.Move("ContentsBin");
-				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
+				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("RespawnPosSave.data").GetFullPath());
 				NewFile.SaveBin(Ser);
 			}
 		}
@@ -360,7 +360,7 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			NewMapEditor->Load(Ser);
 		}*/
 	}
-	/*if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
+	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
 	{
 		if (true == NewMapEditor->IsUpdate())
 		{
@@ -372,8 +372,8 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			NewMapEditor->On();
 			NewDefenseMapEditor->Off();
 		}
-	}*/
-	/*{
+	}
+	{
 		if (nullptr != NewDefenseMapEditor && true==NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
 		{			
 			NewDefenseMapEditor->FSM.ChangeState("IsMove");
@@ -399,12 +399,12 @@ GetMainCamera()->GetTransform()->SetLocalPosition(Pos);
 			GameEngineDirectory NewDir2;
 			NewDir2.MoveParentToDirectory("ContentsBin");
 			NewDir2.Move("ContentsBin");
-			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
+			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("DefenseMapIsMove.data").GetFullPath());
 			GameEngineSerializer Ser;
 			NewFile.LoadBin(Ser);			
 			NewDefenseMapEditor->Load(Ser);
 		}
-	}*/
+	}
 }
 
 void PlayLevel::OutlineCheck(float4& _Pos)
@@ -504,6 +504,8 @@ void PlayLevel::Start()
 	//GlobalValue::AStart.CreateTileData(180, 180, 1000);
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
+	DefenseGlobalValue::Collision = std::make_shared<JPSCollision>();
+	DefenseGlobalValue::Collision->Create(30, 30);
 	NewDefenseMapEditor->Off();
 	NewUIButton = CreateActor<UIButton>();
 	NewUIButton->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
@@ -562,7 +564,7 @@ void PlayLevel::Start()
 	}
 
 	NewMouse = CreateActor<Mouse>();
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 	 NewKsword = CreateActor<Ksword>();
 	 
@@ -586,10 +588,11 @@ void PlayLevel::Start()
 	NewTreasureBox = CreateActor<TreasureBox>();
 	NewTreasureBox->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(95, 95));
 	NewTreasureBox->SetTileCollsion();
+	
+	*/
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);
-	
 	
 	//{
 	//	NewMonster = CreateActor<Monster_01>();
@@ -622,7 +625,7 @@ void PlayLevel::Start()
 	//	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
 	//}
 
-	if (nullptr != NewMapEditor) {
+	/*if (nullptr != NewMapEditor) {
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
 		NewDir2.Move("ContentsBin");
@@ -630,6 +633,15 @@ void PlayLevel::Start()
 		GameEngineSerializer Ser;
 		NewFile.LoadBin(Ser);
 		NewMapEditor->Load(Ser);
+	}*/
+	if (nullptr != NewMapEditor) {
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("RespawnPosSave.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewMapEditor->RespawnPosLoad(Ser);
 	}
 	
 }			
