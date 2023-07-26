@@ -18,6 +18,7 @@ public:
 	Minion& operator=(Minion&& _Other) noexcept = delete;
 	static void OutSideTargetPosLoad(GameEngineSerializer& _Ser);
 	static void InSideTargetPosLoad(GameEngineSerializer& _Ser);
+	
 protected:
 	void Start();
 	void Update(float _DeltaTime);
@@ -25,7 +26,7 @@ protected:
 	static std::vector<float4> OutSideTargetPos;
 	static std::vector<float4> InSideTargetPos;
 private:
-	
+	std::vector<float4> MPathPos;
 
 
 };

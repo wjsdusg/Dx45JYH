@@ -29,7 +29,7 @@
 #include "Raccoondog.h"
 #include "Snowdemon.h"
 #include "Snowwoman.h"
-#include "Starfish.h"
+
 #include "Tiger.h"
 #include "WeirdPlant.h"
 #include "SwordPirate.h"
