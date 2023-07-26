@@ -416,7 +416,7 @@ void PlayLevel::Update(float _DeltaTime)
 		{
 			NewMapEditor->FSM.ChangeState("Default");
 		}
-		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
+		/*if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
 			{
 				GameEngineSerializer Ser;
 				NewMapEditor->Save(Ser);
@@ -426,7 +426,7 @@ void PlayLevel::Update(float _DeltaTime)
 				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("RespawnPosSave.data").GetFullPath());
 				NewFile.SaveBin(Ser);
 			}
-		}
+		}*/
 		/*if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
 			GameEngineDirectory NewDir2;
 			NewDir2.MoveParentToDirectory("ContentsBin");
@@ -461,7 +461,7 @@ void PlayLevel::Update(float _DeltaTime)
 
 			NewDefenseMapEditor->FSM.ChangeState("Default");
 		}
-		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
+		/*if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
 			{
 				GameEngineSerializer Ser;
 				NewDefenseMapEditor->Save(Ser);
@@ -471,8 +471,8 @@ void PlayLevel::Update(float _DeltaTime)
 				GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave.data").GetFullPath());
 				NewFile.SaveBin(Ser);
 			}
-		}
-		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
+		}*/
+		/*if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F3")) {
 			GameEngineDirectory NewDir2;
 			NewDir2.MoveParentToDirectory("ContentsBin");
 			NewDir2.Move("ContentsBin");
@@ -480,7 +480,7 @@ void PlayLevel::Update(float _DeltaTime)
 			GameEngineSerializer Ser;
 			NewFile.LoadBin(Ser);
 			NewDefenseMapEditor->Load(Ser);
-		}
+		}*/
 	}
 }
 
@@ -571,17 +571,19 @@ void PlayLevel::Start()
 	NewMiniMap->GetTransform()->AddLocalPosition({ -458.f,-27.f });
 	NewMapOverlay = CreateActor<MapOverlay>();
 	NewMapOverlay->GetTransform()->SetLocalPosition(MapUpP);
+
 	NewDefenseMap = CreateActor<DefenseMap>();
-	NewMapEditor = CreateActor<MapEditor>();
-	NewMapEditor->CreateTileEditor(180, 180, TileScale);
-	GlobalValue::Collision = std::make_shared<JPSCollision>();
-	GlobalValue::Collision->Create(180, 180);
-	//GlobalValue::AStart.CreateTileData(180, 180, 1000);
+
+	//NewMapEditor = CreateActor<MapEditor>();
+	//NewMapEditor->CreateTileEditor(180, 180, TileScale);
+	//GlobalValue::Collision = std::make_shared<JPSCollision>();
+	//GlobalValue::Collision->Create(180, 180);	
+
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
 	DefenseGlobalValue::Collision = std::make_shared<JPSCollision>();
 	DefenseGlobalValue::Collision->Create(30, 30);
-	NewDefenseMapEditor->Off();
+	//NewDefenseMapEditor->Off();
 	NewUIButton = CreateActor<UIButton>();
 	NewUIButton->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewOptionsheet = CreateActor<Optionsheet>();
@@ -677,16 +679,6 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewMapEditor->RespawnPosLoad(Ser);
 	}
-
-	{
-		GameEngineDirectory NewDir2;
-		NewDir2.MoveParentToDirectory("ContentsBin");
-		NewDir2.Move("ContentsBin");
-		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("OutsideMonsterTargetPos.data").GetFullPath());
-		GameEngineSerializer Ser;
-		NewFile.LoadBin(Ser);
-		Minion::OutSideTargetPosLoad(Ser);
-	}
 	{
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
@@ -705,29 +697,50 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		Minion::OutSideTargetPosLoad(Ser);
 	}
+	if (nullptr != NewDefenseMapEditor)
+	{
+		{
+			GameEngineDirectory NewDir2;
+			NewDir2.MoveParentToDirectory("ContentsBin");
+			NewDir2.Move("ContentsBin");
+			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("DefenseMapIsMove.data").GetFullPath());
+			GameEngineSerializer Ser;
+			NewFile.LoadBin(Ser);
+			NewDefenseMapEditor->Load(Ser);
+		}
+	}
+	/*if (nullptr != NewMapEditor) {
+			GameEngineDirectory NewDir2;
+			NewDir2.MoveParentToDirectory("ContentsBin");
+			NewDir2.Move("ContentsBin");
+			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
+			GameEngineSerializer Ser;
+			NewFile.LoadBin(Ser);
+			NewMapEditor->Load(Ser);
+		}*/
 	//{
-	NewMonster = CreateActor<Monster_01>();
-	NewForg = CreateActor<Frog>();
+	//NewMonster = CreateActor<Monster_01>();
+	//NewForg = CreateActor<Frog>();
 
-	NewGangsi = CreateActor<Gangsi>();
+	//NewGangsi = CreateActor<Gangsi>();
 
-	NewGatpha = CreateActor<Gatpha>();
+	//NewGatpha = CreateActor<Gatpha>();
 
-	NewHungryDemon = CreateActor<HungryDemon>();
+	//NewHungryDemon = CreateActor<HungryDemon>();
 
-	NewOnghwa = CreateActor<Onghwa>();
+	//NewOnghwa = CreateActor<Onghwa>();
 
-	NewRaccoondog = CreateActor<Raccoondog>();
+	//NewRaccoondog = CreateActor<Raccoondog>();
 
-	NewSnowdemon = CreateActor<Snowdemon>();
+	//NewSnowdemon = CreateActor<Snowdemon>();
 
-	NewSnowwoman = CreateActor<Snowwoman>();
+	//NewSnowwoman = CreateActor<Snowwoman>();
 
-	NewSwordPirate = CreateActor<SwordPirate>();
+	//NewSwordPirate = CreateActor<SwordPirate>();
 
-	NewTiger = CreateActor<Tiger>();
+	//NewTiger = CreateActor<Tiger>();
 
-	NewWeirdPlant = CreateActor<WeirdPlant>();
+	//NewWeirdPlant = CreateActor<WeirdPlant>();
 
 	MyField = Field::DungeonMap;
 	//	NewGonisi = CreateActor<Gonisi>();

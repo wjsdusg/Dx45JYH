@@ -76,7 +76,7 @@ void MapEditor::Update(float _DeltaTime)
 		str3 = "\n Collison: ";
 		str2 += str3;
 		bool sdaaa = GlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy());
-		if (/*nullptr!= GetTIleInfo(Pos)&&true == GetTIleInfo(Pos)->IsMove*/GlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy()))
+		if (sdaaa)
 		{
 			str3 = "T";
 		}

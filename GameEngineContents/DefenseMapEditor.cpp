@@ -22,9 +22,10 @@ DefenseMapEditor::~DefenseMapEditor()
 void DefenseMapEditor::Update(float _DeltaTime)
 {
 	float4 Pos = Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
+	float4 _Pos = ConvertPosToTileXY(Pos);
 	Pos -= DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition();
 	Pos.y-= DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
-	float4 _Pos = ConvertPosToTileXY(Pos);
+	
 	if (true == Render0->IsUpdate())
 	{
 		float4 sd = PosToTilePos(Pos);
@@ -76,8 +77,9 @@ void DefenseMapEditor::Update(float _DeltaTime)
 		str2 += str3;
 		str3 = "\n Collison: ";
 		str2 += str3;
+		_Pos;
 		bool sdaaa = DefenseGlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy());
-		if (/*nullptr!= GetDefenseTileInfo(Pos)&&true == GetDefenseTileInfo(Pos)->IsMove*/DefenseGlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy()))
+		if (true== sdaaa)
 		{
 			str3 = "T";
 		}
@@ -371,7 +373,7 @@ void DefenseMapEditor::Load(GameEngineSerializer& _Ser)
 		// 
 		//MoveMarks.push_back(NewComponent);
 		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
-		//GetDefenseTileInfo(CheckPos)->IsMove = false;		 
+		//GetTIleInfo(CheckPos)->IsMove = false;		 
 		DefenseGlobalValue::Collision->SetAt(CheckPos.ix(), CheckPos.iy());
 
 	}
