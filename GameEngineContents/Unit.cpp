@@ -48,8 +48,7 @@ void Unit::Update(float _DeltaTime)
 			else
 			{
 				SelectionCircle->SetTexture("SelectCircleEnemy.png");
-			}
-			
+			}			
 		}
 	}	
 	else
@@ -77,7 +76,7 @@ void Unit::Update(float _DeltaTime)
 		}		
 	}
 	{
-		if (true == IsClick && true == GameEngineInput::IsUp("A"))
+		if (true == IsClick && true == GameEngineInput::IsUp("A") && Team::Mine == MyTeam)
 		{
 			IsA = true;
 		}
@@ -88,7 +87,7 @@ void Unit::Update(float _DeltaTime)
 			Mouse::NewMainMouse->GetMoveMark(MousePickPos);
 			IsM = false;
 		}*/
-		if (true == IsClick && true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA)
+		if (true == IsClick && true == GameEngineInput::IsUp("EngineMouseLeft") && true == IsA && Team::Mine == MyTeam)
 		{			
 			MousePickPos = MainMouse;
 			PathCal();
@@ -133,9 +132,9 @@ void Unit::Update(float _DeltaTime)
 }
 void Unit::Start()
 {
+	
 	Units.push_back(DynamicThis<Unit>());
 	StateInit();
-	Object::Start();
 	float HalfY = Render0->GetTransform()->GetLocalScale().hy();
 	HalfY -= 10.f;
 	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });	
@@ -159,6 +158,7 @@ void Unit::Start()
 	HP = 50;
 	CurHp = 50;
 	ATK = 10;
+	Object::Start();
 
 }
 
@@ -295,37 +295,80 @@ void Unit::StateInit()
 						PathCal();
 						CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
 						CopyIndexY = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
-						FSM.ChangeState("Chase");
-						return;
+						if (AttackType::Far == MyAttackType)
+						{
+							CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+							FSM.ChangeState("Attack");
+							return;
+						}
+						else
+						{
+							FSM.ChangeState("Chase");
+							return;
+						}
+						
 					}
 				}				
 			}
-			
-			if (nullptr != Collision
-				&& Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D)
-				&& 1 < ColTest.size()
-				&& true == IsHold)
+			if (AttackType::Near == MyAttackType)
 			{
-				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				if (nullptr != Collision
+					&& Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D)
+					&& 1 < ColTest.size()
+					&& true == IsHold)
 				{
-					std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
-					if (nullptr == NewObject)
+					for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 					{
-						continue;
+						std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+						if (nullptr == NewObject)
+						{
+							continue;
+						}
+						else if (NewObject == DynamicThis<Object>())
+						{
+							continue;
+						}
+						else if (MyTeam != NewObject->GetTeam())
+						{
+							CopyObject = NewObject;
+							FSM.ChangeState("HoldAttack");
+							return;
+						}
 					}
-					else if (NewObject == DynamicThis<Object>())
-					{
-						continue;
-					}
-					else if (MyTeam != NewObject->GetTeam())
-					{
-						CopyObject = NewObject;						
-						FSM.ChangeState("HoldAttack");
-						return;
-					}
+
 				}
-				
-			}			
+			}
+			else if (AttackType::Far == MyAttackType)
+			{
+				if (nullptr != FOVCollision
+					&& FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)
+					&& 1 < ColTest.size()
+					&& true == IsHold)
+				{
+					for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+					{
+						std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+						if (nullptr == NewObject)
+						{
+							continue;
+						}
+						else if (NewObject == DynamicThis<Object>())
+						{
+							continue;
+						}
+						else if (MyTeam != NewObject->GetTeam())
+						{
+							CopyObject = NewObject;
+							FSM.ChangeState("HoldAttack");
+							return;
+						}
+					}
+
+				}
+			}
+			
+
+			
 		},
 		.End = []() {}
 		}
@@ -756,33 +799,65 @@ void Unit::StateInit()
 						FSM.ChangeState("Stay");
 						return;
 					}
-					if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 < ColTest.size())
+					if (AttackType::Near == MyAttackType)
 					{
-						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+						if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 < ColTest.size())
 						{
-							std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
-							if (nullptr == NewObject)
+							for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 							{
-								continue;
-							}
-							else if (NewObject == DynamicThis<Unit>())
-							{
-								continue;
-							}
-							else if (MyTeam != NewObject->GetTeam())
-							{								
-								CopyObject = NewObject;
-								if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+								std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+								if (nullptr == NewObject)
 								{
 									continue;
 								}
-								CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
-								FSM.ChangeState("Attack");
-								return;
+								else if (NewObject == DynamicThis<Unit>())
+								{
+									continue;
+								}
+								else if (MyTeam != NewObject->GetTeam())
+								{
+									CopyObject = NewObject;
+									if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+									{
+										continue;
+									}
+									CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+									FSM.ChangeState("Attack");
+									return;
 
+								}
 							}
 						}
 					}
+					else if (AttackType::Far == MyAttackType)
+					{
+						if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 1 < ColTest.size())
+						{
+							for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+							{
+								std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+								if (nullptr == NewObject)
+								{
+									continue;
+								}
+								else if (NewObject == DynamicThis<Unit>())
+								{
+									continue;
+								}
+								else if (MyTeam != NewObject->GetTeam())
+								{
+									CopyObject = NewObject;									
+									CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+
+									FSM.ChangeState("Attack");
+									return;
+
+								}
+							}
+						}
+					}
+					
+
 					if (0 != PathPos.size())
 					{
 						FSM.ChangeState("Chase");
@@ -835,26 +910,52 @@ void Unit::StateInit()
 					if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 1< ColTest.size())
 					{
 						Min = CopyObject->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
-						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+						if (AttackType::Far == MyAttackType)
 						{
-							std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
-							if (nullptr == NewObject)
+							for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 							{
-								continue;
-							}
-							else if (NewObject == DynamicThis<Object>())
-							{
-								continue;
-							}
-							else if (MyTeam != NewObject->GetTeam())
-							{
-								if (Min > NewObject->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition()))
+								std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+								if (nullptr == NewObject)
 								{
-									Min = NewObject->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
+									continue;
+								}
+								else if (NewObject == DynamicThis<Object>())
+								{
+									continue;
+								}
+								else if (MyTeam != NewObject->GetTeam())
+								{
 									CopyObject = NewObject;
+									CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+									FSM.ChangeState("Attack");
+									return;
 								}
 							}
 						}
+						else if (AttackType::Near == MyAttackType)
+						{
+							for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+							{
+								std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
+								if (nullptr == NewObject)
+								{
+									continue;
+								}
+								else if (NewObject == DynamicThis<Object>())
+								{
+									continue;
+								}
+								else if (MyTeam != NewObject->GetTeam())
+								{
+									if (Min > NewObject->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition()))
+									{
+										Min = NewObject->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
+										CopyObject = NewObject;
+									}
+								}
+							}
+						}
+						
 						
 					}
 					int _IndexX = CopyObject->IndexX;
@@ -920,8 +1021,16 @@ void Unit::StateInit()
 		{ .Name = "Attack",
 		.Start = [this]() 
 		{
-			
-			
+			if (AttackType::Far == MyAttackType&&nullptr!= MissileRender)
+			{
+				//float4 _Index = ReturnIndexPlusPos();
+				//float4 _Pos = MapEditor::ConvertTileXYToPos(_Index.ix(), _Index.iy());
+
+				MissileRender->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				float _Angle = CalAngle(MissileRender->GetTransform()->GetWorldPosition(), CopyObject->GetTransform()->GetWorldPosition());
+				MissileRender->GetTransform()->SetLocalRotation({ 0,0,_Angle });				
+				MissileRender->On();
+			}
 			PreAngle = Angle;
 			if (Angle < 10 || Angle >= 350)
 			{
@@ -999,6 +1108,26 @@ void Unit::StateInit()
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			float InterDistance= CopyObject->GetTransform()->GetWorldPosition().XYDistance(GetTransform()->GetLocalPosition());
 			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+			if (nullptr == CopyObject || true == CopyObject->IsDeath())
+			{
+				CopyObject = nullptr;
+				FSM.ChangeState("Stay");
+				return;
+			}
+			else if (AttackType::Far == MyAttackType)
+			{						
+				MissileRender->GetTransform()->AddWorldPosition(MovePointTowardsTarget
+				(
+					MissileRender->GetTransform()->GetWorldPosition(),
+					CopyObject->GetTransform()->GetWorldPosition(),
+					MissileRender->GetTransform()->GetWorldPosition().XYDistance(MapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())) / AttackSpeed,
+					_DeltaTime) * 3.f
+				);
+				if (3.f>MissileRender->GetTransform()->GetWorldPosition().XYDistance(MapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())))
+				{
+					MissileRender->Off();
+				}
+			}
 			if (0 >= CurHp)
 			{
 				FSM.ChangeState("Die");
@@ -1008,58 +1137,80 @@ void Unit::StateInit()
 			{
 				if (nullptr == CopyObject || true == CopyObject->IsDeath())
 				{
-					CopyObject = nullptr;
+					CopyObject = nullptr;					
 					FSM.ChangeState("Stay");
 					return;
 				}
-				else if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+				if (true == IsHold)
+				{					
+					FSM.ChangeState("Stay");
+					return;
+				}
+				if (AttackType::Near == MyAttackType)
 				{
-					
-					if (0 < CopyObject->CurHp)
+					if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
 					{
-						CopyObject->CurHp -= (AddATK + ATK);
 
-					}
-					if (true == IsHold)
-					{
-						FSM.ChangeState("Stay");
+						if (0 < CopyObject->CurHp)
+						{
+							CopyObject->CurHp -= (AddATK + ATK);
+						}
+						TargetPos = CopyObject->GetTransform()->GetLocalPosition();
+						PathCal();
+						CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
+						CopyIndexY = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
+						FSM.ChangeState("Chase");
 						return;
 					}
-					TargetPos = CopyObject->GetTransform()->GetLocalPosition();
-					PathCal();
-					CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
-					CopyIndexY = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
-					FSM.ChangeState("Chase");
-					return;
+					else if (abs(PreAngle - Angle) > 25.f)
+					{
+						if (0 < CopyObject->CurHp)
+						{
+							CopyObject->CurHp -= (AddATK + ATK);
+						}
+						CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+						FSM.ChangeState("Attack");
+						if (true == IsClick)
+						{
+							int a = 0;
+						}
+						return;
+					}
+					else
+					{
+						if (0 < CopyObject->CurHp)
+						{
+							CopyObject->CurHp -= (AddATK + ATK);
+
+						}
+						
+					}
 				}
-				else if (abs(PreAngle - Angle) > 25.f)
-				{
+				else if (AttackType::Far == MyAttackType)
+				{						
 					if (0 < CopyObject->CurHp)
 					{
 						CopyObject->CurHp -= (AddATK + ATK);
 
 					}
-					CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
 					FSM.ChangeState("Attack");
-					if (true == IsClick)
-					{
-						int a = 0;
-					}
 					return;
+					
 				}
-				else
-				{
-					if (0 < CopyObject->CurHp)
-					{
-						CopyObject->CurHp -= (AddATK + ATK);
 
-					}
-				}
+			
 			}
 			
 			
 		},
-		.End = []() {}
+		.End = [this]()
+		 {
+			 if (AttackType::Far == MyAttackType && nullptr != MissileRender)
+			 {
+				
+				 MissileRender->Off();
+			 }
+		 }
 		}
 	);
 	FSM.CreateState(

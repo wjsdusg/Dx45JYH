@@ -211,7 +211,6 @@
     <ClInclude Include="Raccoondog.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RuinObject.h" />
-    <ClInclude Include="RUINobject0.h" />
     <ClInclude Include="RyuSeongryong.h" />
     <ClInclude Include="Samyeongdaesa.h" />
     <ClInclude Include="Seisho.h" />
@@ -287,7 +286,6 @@
     </ClCompile>
     <ClCompile Include="Raccoondog.cpp" />
     <ClCompile Include="RuinObject.cpp" />
-    <ClCompile Include="RUINobject0.cpp" />
     <ClCompile Include="RyuSeongryong.cpp" />
     <ClCompile Include="Samyeongdaesa.cpp" />
     <ClCompile Include="Seisho.cpp" />

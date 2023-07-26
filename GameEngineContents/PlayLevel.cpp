@@ -450,6 +450,18 @@ void PlayLevel::Start()
 		}
 	}
 	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		NewDir.Move("Missile");
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png",".Bmp",".Tga" });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	{
 		GameEngineInput::CreateKey("Left", VK_LEFT);
 		GameEngineInput::CreateKey("Right", VK_RIGHT);
 		GameEngineInput::CreateKey("Up", VK_UP);
@@ -559,8 +571,8 @@ void PlayLevel::Start()
 	NewKsword2 = CreateActor<Ksword>();
 	NewKsword2->GetTransform()->SetLocalPosition({ -100.f,-100.f });
 
-	//NewKarcher = CreateActor<Karcher>();
-	//NewKarcher->GetTransform()->SetLocalPosition({ 100.f,100.f });
+	NewKarcher = CreateActor<Karcher>();
+	NewKarcher->GetTransform()->SetLocalPosition({ -100.f,-50.f });
 
 
 	NewRuinObject = CreateActor<RuinObject>();

@@ -242,7 +242,6 @@
     <ClInclude Include="Building.h">
       <Filter>Object\Building</Filter>
     </ClInclude>
-    <ClInclude Include="RUINobject0.h" />
     <ClInclude Include="TreasureBox.h">
       <Filter>Object\Building\Enemy</Filter>
     </ClInclude>
@@ -439,7 +438,6 @@
     <ClCompile Include="Building.cpp">
       <Filter>Object\Building</Filter>
     </ClCompile>
-    <ClCompile Include="RUINobject0.cpp" />
     <ClCompile Include="NormalObject1.cpp">
       <Filter>Object\Building\Enemy</Filter>
     </ClCompile>

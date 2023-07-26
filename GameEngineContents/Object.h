@@ -43,6 +43,7 @@ protected:
 	void Render(float _DeltaTime) {}
 	void ObjectDeath();
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
+	std::shared_ptr<class GameEngineSpriteRenderer> MissileRender;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
@@ -68,7 +69,7 @@ protected:
 	int IndexY = -1;
 	int CopyIndexX = -1;
 	int CopyIndexY = -1;
-	float AttackSpeed = 1.f; //√ 
+	float AttackSpeed = 0.7f; //√ 
 	float AttackRange = 0;
 	static int AddHp;
 	static int AddATK;
