@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
+#include "DefenseMapEditor.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 int Karcher::AddHp = 0;
@@ -54,7 +55,7 @@ void Karcher::Start()
 	Render0->CreateAnimation({ "UpAttack", "archerk.png",144,151,AttackSpeed / 8.f ,true,true });
 	Render0->CreateAnimation({ "DownAttack", "archerk.png",152,159,AttackSpeed / 8.f ,true,true });
 	Render0->CreateAnimation({ "Die", "archerk.png",160,167,0.1f,false,true });
-
+	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(12, 10));
 	MissileRender = CreateComponent<GameEngineSpriteRenderer>();
 	MissileRender->SetTexture("arrow.tga");
 	MissileRender->SetScaleToTexture("arrow.tga");

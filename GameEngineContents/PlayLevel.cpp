@@ -574,10 +574,10 @@ void PlayLevel::Start()
 
 	NewDefenseMap = CreateActor<DefenseMap>();
 
-	//NewMapEditor = CreateActor<MapEditor>();
-	//NewMapEditor->CreateTileEditor(180, 180, TileScale);
-	//GlobalValue::Collision = std::make_shared<JPSCollision>();
-	//GlobalValue::Collision->Create(180, 180);	
+	NewMapEditor = CreateActor<MapEditor>();
+	NewMapEditor->CreateTileEditor(180, 180, TileScale);
+	GlobalValue::Collision = std::make_shared<JPSCollision>();
+	GlobalValue::Collision->Create(180, 180);	
 
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
@@ -647,11 +647,7 @@ void PlayLevel::Start()
 
 	 NewKsword->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 + i, 90));
 	}
-	NewKsword2 = CreateActor<Ksword>();
-	NewKsword2->GetTransform()->SetLocalPosition({ -100.f,-100.f });
-
-	NewKarcher = CreateActor<Karcher>();
-	NewKarcher->GetTransform()->SetLocalPosition({ -100.f,-50.f });
+	
 
 
 	NewRuinObject = CreateActor<RuinObject>();
@@ -709,7 +705,7 @@ void PlayLevel::Start()
 			NewDefenseMapEditor->Load(Ser);
 		}
 	}
-	/*if (nullptr != NewMapEditor) {
+	if (nullptr != NewMapEditor) {
 			GameEngineDirectory NewDir2;
 			NewDir2.MoveParentToDirectory("ContentsBin");
 			NewDir2.Move("ContentsBin");
@@ -717,9 +713,15 @@ void PlayLevel::Start()
 			GameEngineSerializer Ser;
 			NewFile.LoadBin(Ser);
 			NewMapEditor->Load(Ser);
-		}*/
+		}
+
+	NewKsword2 = CreateActor<Ksword>();
+	
+	
+	//NewKarcher = CreateActor<Karcher>();
+	
 	//{
-	//NewMonster = CreateActor<Monster_01>();
+	NewMonster = CreateActor<Monster_01>();
 	//NewForg = CreateActor<Frog>();
 
 	//NewGangsi = CreateActor<Gangsi>();

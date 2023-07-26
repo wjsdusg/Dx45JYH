@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineFSM.h>
+#include "ContentsEnum.h"
 // Ό³Έν :
 
 class Mouse : public GameEngineActor
@@ -25,7 +26,14 @@ public:
 	void GetMoveMark(float4 _Pos);
 	
 	std::shared_ptr<class GameEngineCollision> Collision;
-	
+	void SetMyField(Field _Field)
+	{
+		MyField = _Field;
+	}
+	Field GetMyFeild()
+	{
+		return MyField;
+	}
 protected:
 	void Start();
 	void Update(float _DeltaTime);
@@ -35,7 +43,9 @@ private:
 	std::shared_ptr<class GameEngineUIRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseMarkRender;
 	GameEngineFSM FSM;
-	void FSMInit();
+	GameEngineFSM DefenseFSM;
+	void FSMInit(); 
+	void DefenseFSMInit();
 	float4 MousePos = float4::Zero;
 	CollisionData MouseData;
 	float DoubleClickTimer= 0;
@@ -44,5 +54,6 @@ private:
 	bool IsUICollision = false;
 	std::shared_ptr<class DragBox> NewDragBox;
 	int ID = -1;
+	Field MyField = Field::Max;
 };
 

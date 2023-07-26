@@ -413,7 +413,16 @@ float4 DefenseMapEditor::ConvertPosToTileXY(float4 _Pos)
 
 float4 DefenseMapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
 {
-	return DefenseTileInfos[_Y][_X].Pos;
+	if (0 > _X || 0 > _Y|| 30 <=_X|| 30 <= _Y)
+	{
+		return float4::Zero;
+	}
+	else
+	{
+		
+		return DefenseTileInfos[_Y][_X].Pos;
+
+	}
 }
 
 float4  DefenseMapEditor::ConvertPosToTilePos(float4 _Pos)

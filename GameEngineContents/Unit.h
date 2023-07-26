@@ -58,6 +58,7 @@ protected:
 	
 	int UnitID = -1;
 	void StateInit() override;
+	void DefenseMapStateInit();
 	static std::vector<std::shared_ptr<Unit>> Units;
 	
 	
@@ -68,8 +69,9 @@ private:
 	std::list<float4> PathPos;
 	
 	void PathCal();
+	void DefenseMapPathCal();
 	float CalAngle(float4 _Pos1, float4 _Pos2);
-	
+	bool IsNextDefenseMapTileCollision();
 	bool IsNextTileCollision();
 	float4 ReturnIndexPlusPos();
 	

@@ -407,7 +407,15 @@ float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
 
 float4 MapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
 {
-	return TileInfos[_Y][_X].Pos;
+	if (_Y < 0 || _X < 0 || _Y >= 180 || _X >= 180)
+	{
+		return float4::Zero;
+	}
+	else
+	{
+		return TileInfos[_Y][_X].Pos;
+	}
+	
 }
 
 float4  MapEditor::ConvertPosToTilePos(float4 _Pos)

@@ -50,7 +50,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> TargetCol = nullptr;
 	
 	GameEngineFSM FSM;
-	
+	GameEngineFSM DefenseMapFSM;
 	float Angle = 0;
 	Team MyTeam = Team::Max;
 	Field MyField = Field::Max;

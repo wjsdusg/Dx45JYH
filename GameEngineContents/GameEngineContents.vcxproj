@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Asako.h" />
+    <ClInclude Include="Barrack.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="ContentsEnum.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Snowdemon.h" />
     <ClInclude Include="Snowwoman.h" />
     <ClInclude Include="SongEungchang.h" />
+    <ClInclude Include="StageManager.h" />
     <ClInclude Include="SwordPirate.h" />
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="Tiger.h" />
@@ -236,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asako.cpp" />
+    <ClCompile Include="Barrack.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="ContentsEnum.cpp" />
@@ -271,6 +274,7 @@
     <ClCompile Include="Mitsunari.cpp" />
     <ClCompile Include="Monster_01.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="MouseState.cpp" />
     <ClCompile Include="NormalObject1.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Onghwa.cpp" />
@@ -292,6 +296,7 @@
     <ClCompile Include="Snowdemon.cpp" />
     <ClCompile Include="Snowwoman.cpp" />
     <ClCompile Include="SongEungchang.cpp" />
+    <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="SwordPirate.cpp" />
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="Tiger.cpp" />
@@ -302,6 +307,7 @@
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIPannel.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="UnitSate.cpp" />
     <ClCompile Include="Wakizaka.cpp" />
     <ClCompile Include="WeirdPlant.cpp" />
     <ClCompile Include="Yeoyeomun.cpp" />
