@@ -6,7 +6,8 @@ class GameEngineUIRenderer;
 class MiniMap : public GameEngineActor
 {
 	friend class PlayLevel;
-	friend class Object;
+	friend class Object; 
+	friend class DefenseMap;
 public:
 	// constrcuter destructer
 	MiniMap();

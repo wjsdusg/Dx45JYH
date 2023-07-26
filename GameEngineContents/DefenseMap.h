@@ -25,7 +25,8 @@ protected:
 private:
 	static DefenseMap* MainDefenseMap;
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
-	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
+	std::shared_ptr<class GameEngineUIRenderer> Render1;
+	
 
 
 };
