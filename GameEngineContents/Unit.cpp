@@ -1604,8 +1604,17 @@ void Unit::StateInit()
 								PathCal();
 								CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
 								CopyIndexY = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
-								FSM.ChangeState("Chase");
-								return;
+								if (AttackType::Far == MyAttackType)
+								{
+									CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+									FSM.ChangeState("Attack");
+									return;
+								}
+								else
+								{
+									FSM.ChangeState("Chase");
+									return;
+								}
 							}
 						}
 					}
