@@ -76,6 +76,7 @@ protected:
 	static float AddAttackSpeed;
 	static float AddAttackRange;
 	static int AddShield;
+	static int Money;
 private:
 	void ObjectsSetTile();
 

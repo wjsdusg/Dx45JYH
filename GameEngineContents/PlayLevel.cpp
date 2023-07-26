@@ -71,7 +71,7 @@ std::shared_ptr<Onghwa> NewOnghwa = nullptr;
 std::shared_ptr<Raccoondog> NewRaccoondog = nullptr;
 std::shared_ptr<Snowdemon> NewSnowdemon = nullptr;
 std::shared_ptr<Snowwoman> NewSnowwoman = nullptr;
-//std::shared_ptr<Starfish> NewStarfish = nullptr;
+
 std::shared_ptr<Tiger> NewTiger = nullptr;
 std::shared_ptr<WeirdPlant> NewWeirdPlant = nullptr;
 std::shared_ptr<SwordPirate> NewSwordPirate = nullptr;
@@ -434,8 +434,6 @@ void PlayLevel::OutlineCheck(float4& _Pos)
 
 void PlayLevel::Start()
 {
-	
-	
 
 	{
 		GameEngineDirectory NewDir;
@@ -593,47 +591,6 @@ void PlayLevel::Start()
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);
-	
-	//{
-	//	NewMonster = CreateActor<Monster_01>();
-	//	NewForg = CreateActor<Frog>();
-	//	NewForg->GetTransform()->SetLocalPosition({ -100.f,-100 });
-	//	NewGangsi = CreateActor<Gangsi>();
-	//	NewGangsi->GetTransform()->SetLocalPosition({ -50.f,-100 });
-	//	NewGatpha = CreateActor<Gatpha>();
-	//	NewGatpha->GetTransform()->SetLocalPosition({ 0,-100 });
-	//	NewHungryDemon = CreateActor<HungryDemon>();
-	//	NewHungryDemon->GetTransform()->SetLocalPosition({ 50,-100 });
-	//	NewOnghwa = CreateActor<Onghwa>();
-	//	NewOnghwa->GetTransform()->SetLocalPosition({ 100,-100 });
-	//	NewRaccoondog = CreateActor<Raccoondog>();
-	//	NewRaccoondog->GetTransform()->SetLocalPosition({ 150,-100 });
-	//	NewSnowdemon = CreateActor<Snowdemon>();
-	//	NewSnowdemon->GetTransform()->SetLocalPosition({ 200,-100 });
-	//	NewSnowwoman = CreateActor<Snowwoman>();
-	//	NewSnowwoman->GetTransform()->SetLocalPosition({ 250,-100 });
-	//	NewSwordPirate = CreateActor<SwordPirate>();
-	//	NewSwordPirate->GetTransform()->SetLocalPosition({ 300,-100 });
-	//	NewTiger = CreateActor<Tiger>();
-	//	NewTiger->GetTransform()->SetLocalPosition({ 350,-100 });
-	//	NewWeirdPlant = CreateActor<WeirdPlant>();
-	//	NewWeirdPlant->GetTransform()->SetLocalPosition({ 400,-100 });
-
-	//	NewGonisi = CreateActor<Gonisi>();
-	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
-	//	NewAsako = CreateActor<Asako>();
-	//	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
-	//}
-
-	/*if (nullptr != NewMapEditor) {
-		GameEngineDirectory NewDir2;
-		NewDir2.MoveParentToDirectory("ContentsBin");
-		NewDir2.Move("ContentsBin");
-		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
-		GameEngineSerializer Ser;
-		NewFile.LoadBin(Ser);
-		NewMapEditor->Load(Ser);
-	}*/
 	if (nullptr != NewMapEditor) {
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
@@ -643,7 +600,7 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewMapEditor->RespawnPosLoad(Ser);
 	}
-	
+
 	{
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
@@ -662,6 +619,47 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		Minion::InSideTargetPosLoad(Ser);
 	}
+	//{
+		NewMonster = CreateActor<Monster_01>();
+		NewForg = CreateActor<Frog>();
+		
+		NewGangsi = CreateActor<Gangsi>();
+		
+		NewGatpha = CreateActor<Gatpha>();
+		
+		NewHungryDemon = CreateActor<HungryDemon>();
+		
+		NewOnghwa = CreateActor<Onghwa>();
+		
+		NewRaccoondog = CreateActor<Raccoondog>();
+		
+		NewSnowdemon = CreateActor<Snowdemon>();
+		
+		NewSnowwoman = CreateActor<Snowwoman>();
+		
+		NewSwordPirate = CreateActor<SwordPirate>();
+		
+		NewTiger = CreateActor<Tiger>();
+		
+		NewWeirdPlant = CreateActor<WeirdPlant>();
+		
+
+	//	NewGonisi = CreateActor<Gonisi>();
+	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
+	//	NewAsako = CreateActor<Asako>();
+	//	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
+	//}
+
+	/*if (nullptr != NewMapEditor) {
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewMapEditor->Load(Ser);
+	}*/
+	
 }			
 
 void PlayLevel::LevelChangeStart()

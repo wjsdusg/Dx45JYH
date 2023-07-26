@@ -14,6 +14,7 @@ int Object::AddATK=0;
 float Object::AddAttackSpeed=0;
 float Object::AddAttackRange=0;
 int Object::AddShield=0;
+int Object::Money = 0;
 Object::Object()
 {
 	int a = 0;

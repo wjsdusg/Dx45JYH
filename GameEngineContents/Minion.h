@@ -27,7 +27,10 @@ protected:
 	static std::vector<float4> InSideTargetPos;
 private:
 	std::vector<float4> MPathPos;
-
-
+	void InsideStateInit();
+	void OutsideStateInit();
+	static bool IsOutside;
+	static int MinionNum;
+	static int GetMoney;
 };
 
