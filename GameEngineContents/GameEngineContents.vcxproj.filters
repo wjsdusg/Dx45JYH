@@ -136,9 +136,6 @@
     <ClInclude Include="Snowwoman.h">
       <Filter>Object\Unit\Minion\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Starfish.h">
-      <Filter>Object\Unit\Minion\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="SwordPirate.h">
       <Filter>Object\Unit\Minion\Monster</Filter>
     </ClInclude>
@@ -331,9 +328,6 @@
       <Filter>Object\Unit\Minion\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Snowwoman.cpp">
-      <Filter>Object\Unit\Minion\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Starfish.cpp">
       <Filter>Object\Unit\Minion\Monster</Filter>
     </ClCompile>
     <ClCompile Include="SwordPirate.cpp">

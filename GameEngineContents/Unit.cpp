@@ -59,7 +59,7 @@ void Unit::Update(float _DeltaTime)
 		}
 	}
 	//누르는순간 마우스에서 타겟포스를 정해준다.
-	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick/*&&MyField==Field::DungeonMap*/)
+	if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick && Team::Mine == MyTeam/*&&MyField==Field::DungeonMap*/)
 	{
 		if (true == IsA)
 		{

@@ -4,6 +4,7 @@
 
 class Minion : public Unit
 {
+	friend class PlayLevel;
 
 public:
 	// constrcuter destructer
@@ -15,14 +16,16 @@ public:
 	Minion(Minion&& _Other) noexcept = delete;
 	Minion& operator=(const Minion& _Other) = delete;
 	Minion& operator=(Minion&& _Other) noexcept = delete;
-
+	static void OutSideTargetPosLoad(GameEngineSerializer& _Ser);
+	static void InSideTargetPosLoad(GameEngineSerializer& _Ser);
 protected:
 	void Start();
 	void Update(float _DeltaTime);
 	virtual void Render(float _DeltaTime) {}
-
+	static std::vector<float4> OutSideTargetPos;
+	static std::vector<float4> InSideTargetPos;
 private:
-
+	
 
 
 };

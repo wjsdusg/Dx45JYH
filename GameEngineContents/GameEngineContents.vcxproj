@@ -218,7 +218,6 @@
     <ClInclude Include="Snowdemon.h" />
     <ClInclude Include="Snowwoman.h" />
     <ClInclude Include="SongEungchang.h" />
-    <ClInclude Include="Starfish.h" />
     <ClInclude Include="SwordPirate.h" />
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="Tiger.h" />
@@ -293,7 +292,6 @@
     <ClCompile Include="Snowdemon.cpp" />
     <ClCompile Include="Snowwoman.cpp" />
     <ClCompile Include="SongEungchang.cpp" />
-    <ClCompile Include="Starfish.cpp" />
     <ClCompile Include="SwordPirate.cpp" />
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="Tiger.cpp" />

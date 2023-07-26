@@ -16,7 +16,7 @@ Monster_01::~Monster_01()
 
 void Monster_01::Update(float _DeltaTime)
 {
-	Unit::Update(_DeltaTime);
+	Minion::Update(_DeltaTime);
 
 }
 
@@ -24,8 +24,6 @@ void Monster_01::Start()
 {
 
 
-	GetTransform()->AddLocalPosition({ 0.f,50.f });
-	//MousePickPos = GetTransform()->GetLocalPosition();
 	if (nullptr == GameEngineSprite::Find("Monster_01.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -60,15 +58,7 @@ void Monster_01::Start()
 	Render0->CreateAnimation({ "Die", "Monster_01.png",40,56,0.1f,false });
 
 	Render0->ChangeAnimation("LStay");
-	//MainRenderer->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
-	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 80.f,80.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Enemy));
-	Collision->SetColType(ColType::AABBBOX2D);
-			
-	Speed = 250.f;
-	GetTransform()->SetLocalPosition({ -300.f,-300.f });
-	Unit::Start();
+	
 	Minion::Start();
 }
 

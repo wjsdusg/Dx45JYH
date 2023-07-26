@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Minion.h"
+#include "DefenseMapEditor.h"
 #include "ContentsEnum.h"
 
 Minion::Minion()
@@ -10,6 +11,9 @@ Minion::Minion()
 Minion::~Minion()
 {
 }
+std::vector<float4> Minion::OutSideTargetPos;
+std::vector<float4> Minion::InSideTargetPos;
+
 void Minion::Update(float _DeltaTime)
 {
 
@@ -18,12 +22,47 @@ void Minion::Update(float _DeltaTime)
 void Minion::Start()
 {
 	MyTeam = Team::Enemy;
-	/*EnemyFOVCollision = CreateComponent<GameEngineCollision>();
-	EnemyFOVCollision->GetTransform()->SetLocalScale({ FightFOV,FightFOV,1.f });
-	EnemyFOVCollision->SetOrder(static_cast<int>(ColEnum::EnemyFOV));*/
+	
+}
+
+void Minion::OutSideTargetPosLoad(GameEngineSerializer& _Ser)
+{
+	int SaveNum;
+	_Ser.Read(SaveNum);
+	int x;
+	int y;
+	OutSideTargetPos.resize(SaveNum);
+	for (int i = 0; i < SaveNum; i++)
+	{
+
+		_Ser.Read(x);
+		_Ser.Read(y);
+
+		float4 CheckPos = { static_cast<float>(x), static_cast<float>(y) };
+
+		OutSideTargetPos[i] = CheckPos;
+	}
 }
 
 
+void Minion::InSideTargetPosLoad(GameEngineSerializer& _Ser)
+{
+	int SaveNum;
+	_Ser.Read(SaveNum);
+	int x;
+	int y;
+	InSideTargetPos.resize(SaveNum);
+	for (int i = 0; i < SaveNum; i++)
+	{
+
+		_Ser.Read(x);
+		_Ser.Read(y);
+
+		float4 CheckPos = { static_cast<float>(x), static_cast<float>(y) };
+
+		InSideTargetPos[i] = CheckPos;
+	}
+}
 //
 //void Unit::StateInit()
 //{

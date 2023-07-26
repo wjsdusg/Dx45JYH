@@ -13,7 +13,7 @@ Frog::~Frog()
 
 void Frog::Update(float _DeltaTime)
 {
-	Unit::Update(_DeltaTime);
+	Minion::Update(_DeltaTime);
 
 }
 
@@ -33,7 +33,7 @@ void Frog::Start()
 	}
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 
-	Render0->GetTransform()->SetLocalScale({ 100.f,100.f,1.f });
+	Render0->GetTransform()->SetLocalScale({ 90.f,90.f,1.f });
 	
 	Render0->CreateAnimation({ "LDown45Stay", "Frog.png",40,47 });
 	Render0->CreateAnimation({ "LStay", "Frog.png",48,55 });
@@ -57,12 +57,6 @@ void Frog::Start()
 
 	Render0->ChangeAnimation("LStay");
 	
-	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Enemy));
-	Collision->SetColType(ColType::AABBBOX2D);
-			
-	Unit::Start();
 	Minion::Start();
 }
 

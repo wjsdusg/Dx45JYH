@@ -13,7 +13,7 @@ Snowdemon::~Snowdemon()
 
 void Snowdemon::Update(float _DeltaTime)
 {
-	Unit::Update(_DeltaTime);
+	Minion::Update(_DeltaTime);
 
 }
 
@@ -58,12 +58,7 @@ void Snowdemon::Start()
 
 	Render0->ChangeAnimation("LStay");
 
-	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 80.f,80.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Enemy));
-	Collision->SetColType(ColType::AABBBOX2D);
 
-	Unit::Start();
 	Minion::Start();
 
 }

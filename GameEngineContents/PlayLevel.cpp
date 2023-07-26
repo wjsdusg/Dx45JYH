@@ -644,6 +644,24 @@ void PlayLevel::Start()
 		NewMapEditor->RespawnPosLoad(Ser);
 	}
 	
+	{
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("OutsideMonsterTargetPos.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		Minion::OutSideTargetPosLoad(Ser);
+	}
+	{
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("InsideMonsterTargetPos.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		Minion::InSideTargetPosLoad(Ser);
+	}
 }			
 
 void PlayLevel::LevelChangeStart()
