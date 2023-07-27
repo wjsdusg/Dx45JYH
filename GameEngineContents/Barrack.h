@@ -16,7 +16,9 @@ public:
 	Barrack(Barrack&& _Other) noexcept = delete;
 	Barrack& operator=(const Barrack& _Other) = delete;
 	Barrack& operator=(Barrack&& _Other) noexcept = delete;
+	static Barrack* MainBarrack;
 	void SummonPosLoad(GameEngineSerializer& _Ser);
+	void TransunitToMap();
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -28,9 +30,11 @@ private:
 	int SaveNum = 0;
 	std::vector<float4> SummonPos;
 	std::vector<std::shared_ptr<Unit>> BarrackUnits;
+
 	std::vector<int> LevelInfos;
 	int leve = 0;
 	void CreateUnit(int _Level);
 	void Synthesis();
+	
 };
 

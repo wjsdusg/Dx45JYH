@@ -9,7 +9,7 @@
 #include "ContentsEnum.h"
 #include "Unit.h"
 #include "Mouse.h"
-
+#include "Barrack.h"
 UIButton* UIButton::MainUIButton=nullptr;
 
 UIButton::UIButton()
@@ -39,6 +39,7 @@ void UIButton::Start()
 		NewDir.Move("Button");
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("button.png").GetFullPath(), 17, 17);
 	}	
+	//44
 	FSMInit();
 	MainUIButton = this;
 	Render0 = CreateComponent<GameEngineUIRenderer>();
@@ -51,6 +52,8 @@ void UIButton::Start()
 	Render3->SetSprite("button.png", 10);
 	Render4 = CreateComponent<GameEngineUIRenderer>();
 	Render4->SetSprite("button.png", 35);
+	Render5 = CreateComponent<GameEngineUIRenderer>();
+	Render5->SetSprite("button.png", 44);
 	ColRender = CreateComponent<GameEngineUIRenderer>();
 	Collision = CreateComponent<GameEngineCollision>();
 }
@@ -82,7 +85,7 @@ void UIButton::FSMInit()
 			 Render4->On();
 			 Render4->GetTransform()->SetLocalScale({ 50.f,42.f,1.f });
 			 Render4->GetTransform()->SetLocalPosition({ 408.f,34.f - y });
-			 
+			 Render4->Off();
 			 
 			 ColRender->SetSprite("Button.png", 2);
 			 ColRender->Off();
@@ -207,6 +210,64 @@ void UIButton::FSMInit()
 			ColRender->Off();
 			Collision->Off();
 			
+		}
+		}
+	);
+
+	FSM.CreateState(
+		{ .Name = "BuildingControl",
+		.Start = [this]()
+		{
+			 Render5->On();
+			 Render5->GetTransform()->SetLocalScale({ 50.f,42.f,1.f });
+			 Render5->GetTransform()->SetLocalPosition({ 408.f,34.f });		 
+
+			 ColRender->SetSprite("Button.png", 2);
+			 ColRender->Off();
+		},
+		.Update = [this](float _DeltaTime)
+		{
+
+			GameEngineCamera* Camera = GetLevel()->GetCamera(100).get();
+			float4 Mouse = GameEngineInput::GetMousePosition();
+			// 랜더러 
+			float4x4 ViewPort = Camera->GetViewPort();
+			float4x4 Proj = Camera->GetProjection();
+			float4x4 View = Camera->GetView();
+			Mouse *= ViewPort.InverseReturn();
+			Mouse *= Proj.InverseReturn();
+			Mouse *= View.InverseReturn();
+			CollisionData MouseData;
+			MouseData.SPHERE.Center = Mouse.DirectFloat3;
+			MouseData.SPHERE.Radius = 0.0f;
+			CollisionData asd = Render0->GetTransform()->GetCollisionData();
+			//스탑
+			if (true == GameEngineTransform::AABB2DToSpehre2D(Render5->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				Collision->On();
+				ColRender->GetTransform()->SetLocalScale(Render5->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render5->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render5->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render5->GetTransform()->GetLocalPosition());
+				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					Barrack::MainBarrack->TransunitToMap();
+				}
+			}			
+			else
+			{
+				ColRender->Off();
+				Collision->Off();
+			}
+
+		},
+		.End = [this]()
+		{			
+			Render5->Off();
+			ColRender->Off();
+			Collision->Off();
+
 		}
 		}
 	);

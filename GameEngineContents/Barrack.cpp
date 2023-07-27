@@ -15,22 +15,26 @@ extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 
 Barrack::Barrack()
 {
+	MainBarrack = this;
 }
 
 Barrack::~Barrack()
 {
 }
 
-bool check = false;
+int sdsd = 0;
+Barrack* Barrack::MainBarrack=nullptr;
 void Barrack::Update(float _DeltaTime)
 {
 	Building::Update(_DeltaTime);
 	
+		
 	if (GetLiveTime() > 2.f )
 	{
 		Synthesis();
 		CreateUnit(1);		
 		ResetLiveTime();
+		sdsd++;
 	}
 	float4 Pos = GetTransform()->GetLocalPosition();
 	float4 Pos2 = Render0->GetTransform()->GetLocalPosition();
@@ -98,12 +102,9 @@ void Barrack::SummonPosLoad(GameEngineSerializer& _Ser)
 	SummonPos.resize(SaveNum);
 	for (int i = 0; i < SaveNum; i++)
 	{
-
 		_Ser.Read(x);
 		_Ser.Read(y);
-
 		float4 CheckPos =DefenseMapEditor::ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
-
 		SummonPos[i] = CheckPos;
 	}
 }
@@ -191,4 +192,49 @@ void Barrack::Synthesis()
 	}
 
 	return;
+}
+
+
+void Barrack::TransunitToMap()
+{
+	
+	int x = 7;
+	int y = 7;
+	int num = 0;
+	if (0 >= EnemyNum || 1 > EnemyUnits.size())
+	{
+		return;
+	}
+	for (int n = 1; n <= 10; n++) {
+		for (int dy = -n; dy <= n; dy++) {
+			for (int dx = -n; dx <= n; dx++) {
+
+				int nx = x + dx;
+				int ny = y + dy;
+				if (true == DefenseGlobalValue::Collision->IsOutBound(nx, ny))
+				{
+					return;
+				}
+				if (false == DefenseGlobalValue::Collision->IsCollision(nx, ny))
+				{
+					float4 Pos = DefenseMapEditor::ConvertTileXYToPos(nx, ny);
+					if (nullptr != BarrackUnits[num])
+					{						
+						BarrackUnits[num]->GetTransform()->SetLocalPosition(Pos);
+						BarrackUnits[num]->SetTeam(Team::Mine);
+						BarrackUnits[num]->MyField = Field::DefenseMap;
+						BarrackUnits[num]->DefenseMapFSM.ChangeState("Stay");
+						num++;
+					}
+				}
+				if (BarrackUnits.size() == num)
+				{
+					BarrackUnits.clear();
+					LevelInfos.clear();
+					return;
+				}
+
+			}
+		}
+	}
 }

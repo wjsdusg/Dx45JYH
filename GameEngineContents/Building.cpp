@@ -42,6 +42,30 @@ void Building::Update(float _DeltaTime)
 			NewBuilding->FSM.ChangeState("Stay");
 		}
 	}*/
+
+	if (true == IsClick)
+	{
+		if (false == SelectionCircle->IsUpdate())
+		{
+			SelectionCircle->On();
+			SelectionCircle->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale() * 0.9f);
+			if (MyTeam == Team::Mine)
+			{
+				SelectionCircle->SetTexture("SelectCircleMine.png");
+			}
+			else
+			{
+				SelectionCircle->SetTexture("SelectCircleEnemy.png");
+			}
+		}
+	}
+	else
+	{
+		if (true == SelectionCircle->IsUpdate())
+		{
+			SelectionCircle->Off();
+		}
+	}
 	if (MyTeam == Team::Enemy)
 	{
 		std::string str3 = "Àû";
@@ -53,25 +77,7 @@ void Building::Update(float _DeltaTime)
 		str3 += str4;
 
 		FontRender0->SetText(str3);
-	}
-	if (true == IsClick)
-	{
-		if (false == SelectionCircle->IsUpdate())
-		{
-			SelectionCircle->On();
-
-			SelectionCircle->GetTransform()->SetLocalScale({ 10.f,10.f });
-		}
-	}
-	else
-	{
-		if (true == SelectionCircle->IsUpdate())
-		{
-			SelectionCircle->Off();
-		}
-	}
-
-	
+	}	
 	
 	if (true == OpenDoor&&nullptr != Collision->Collision(ColEnum::Unit, ColType::AABBBOX2D, ColType::SPHERE2D))
 	{

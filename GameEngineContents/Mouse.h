@@ -50,6 +50,7 @@ private:
 	CollisionData MouseData;
 	float DoubleClickTimer= 0;
 	std::shared_ptr<class Unit> CopyUnit = nullptr;
+	std::shared_ptr<class Building> CopyBuilding = nullptr;
 	bool AnimationEnd = false;
 	bool IsUICollision = false;
 	std::shared_ptr<class DragBox> NewDragBox;

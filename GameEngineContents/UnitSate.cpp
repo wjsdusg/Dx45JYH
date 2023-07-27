@@ -25,7 +25,7 @@ void Unit::DefenseMapStateInit()
 		{ .Name = "Stay",
 		.Start = [this]()
 		{
-
+			IsHold = true;
 			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LStay");
@@ -148,7 +148,7 @@ void Unit::DefenseMapStateInit()
 						}
 						else
 						{
-							DefenseMapFSM.ChangeState("Chase");
+							
 							return;
 						}
 

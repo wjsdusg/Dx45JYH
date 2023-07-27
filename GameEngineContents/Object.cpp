@@ -54,7 +54,7 @@ void Object::Start()
 		std::shared_ptr<GameEngineUIRenderer> NewPoint = CreateComponent<GameEngineUIRenderer>();
 		NewPoint->GetTransform()->SetParent(MiniMap::MainMiniMap->GetTransform());
 		NewPoint->GetTransform()->SetLocalScale({ 3.f,3.f,1.f });
-		if (MyTeam == Team::Mine)
+		if (MyTeam == Team::Mine|| MyTeam == Team::Ally)
 		{
 			NewPoint->SetTexture("GreenBox.png");
 			
@@ -71,7 +71,7 @@ void Object::Start()
 		std::shared_ptr<GameEngineUIRenderer> NewPoint = CreateComponent<GameEngineUIRenderer>();
 		NewPoint->GetTransform()->SetParent(MiniMap::MainMiniMap->GetTransform());
 		NewPoint->GetTransform()->SetLocalScale({ 3.f,3.f,1.f });
-		if (MyTeam == Team::Mine)
+		if (MyTeam == Team::Mine || MyTeam == Team::Ally)
 		{
 			NewPoint->SetTexture("GreenBox.png");
 		}

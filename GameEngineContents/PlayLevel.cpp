@@ -771,7 +771,7 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewMapEditor->Load(Ser);
 	}*/
-
+	GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
 }
 
 void PlayLevel::LevelChangeStart()

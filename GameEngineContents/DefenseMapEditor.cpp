@@ -408,7 +408,7 @@ float4 DefenseMapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
 {
 	if (0 > _X || 0 > _Y|| 30 <=_X|| 30 <= _Y)
 	{
-		return float4::Zero;
+		return { 15.f,15.f };
 	}
 	else
 	{

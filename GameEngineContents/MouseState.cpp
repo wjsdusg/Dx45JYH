@@ -6,6 +6,7 @@
 #include "ContentsEnum.h"
 #include "UIButton.h"
 #include "Unit.h"
+#include "Building.h"
 #include "Object.h"
 #include "DragBox.h"
 #include "UIButton.h"
@@ -47,21 +48,33 @@ void Mouse::DefenseFSMInit()
 					for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 					{
 						std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-						if (nullptr == NewUnit)
+						std::shared_ptr<Building> NewBuilding = Col->GetActor()->DynamicThis<Building>();
+						if (nullptr != NewUnit)
 						{
-							continue;
+							CopyUnit = NewUnit;
+							ID = CopyUnit->UnitID;
+							std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+							for (auto Start = Units.begin(); Start != Units.end(); Start++)
+							{
+								(*Start)->SetIsClick(false);
+							}
+							CopyUnit->SetIsClick(true);
+							DefenseFSM.ChangeState("UnitClick");
+							if (nullptr != CopyBuilding)
+							{
+								CopyBuilding->IsClick = false;
+								CopyBuilding = nullptr;
+							}
+							return;
 						}
-						CopyUnit = NewUnit;
-						ID = CopyUnit->UnitID;
-						std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-						for (auto Start = Units.begin(); Start != Units.end(); Start++)
+						else if (nullptr != NewBuilding)
 						{
-							(*Start)->SetIsClick(false);
+							CopyBuilding = NewBuilding;							
+							CopyBuilding->SetIsClick(true);
+							DefenseFSM.ChangeState("BuildingClick");
 						}
-						CopyUnit->SetIsClick(true);
-
 					}
-					DefenseFSM.ChangeState("UnitClick");
+					
 				}
 			}
 			else
@@ -127,7 +140,7 @@ void Mouse::DefenseFSMInit()
 						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 						{
 							std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-							if (ID == NewUnit->UnitID)
+							if (nullptr!= NewUnit&&ID == NewUnit->UnitID)
 							{
 								check = true;
 							}
@@ -151,23 +164,37 @@ void Mouse::DefenseFSMInit()
 						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 						{
 							std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-							if (nullptr == NewUnit)
+							std::shared_ptr<Building> NewBuilding = Col->GetActor()->DynamicThis<Building>();
+							if (nullptr != NewUnit)
 							{
-								continue;
+								CopyUnit = NewUnit;
+								ID = CopyUnit->UnitID;
+								std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
+								for (auto Start = Units.begin(); Start != Units.end(); Start++)
+								{
+									(*Start)->SetIsClick(false);
+								}
+								CopyUnit->SetIsClick(true);
+								DefenseFSM.ChangeState("UnitClick");
+								if (nullptr != CopyBuilding)
+								{
+									CopyBuilding->IsClick = false;
+									//CopyBuilding = nullptr;
+								}
+								return;
 							}
-							/*if (MinDIstance > GetTransform()->GetLocalPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition()))
+							else if (nullptr != NewBuilding)
 							{
-								MinDIstance = GetTransform()->GetLoaclPosition().XYDistance(NewUnit->GetTransform()->GetLocalPosition());
-							}*/
-							CopyUnit = NewUnit;
-							ID = CopyUnit->UnitID;
-							std::vector<std::shared_ptr<Unit>> Units = Unit::GetUnits();
-							for (auto Start = Units.begin(); Start != Units.end(); Start++)
-							{
-								(*Start)->SetIsClick(false);
+								CopyBuilding = NewBuilding;
+								CopyBuilding->SetIsClick(true);
+								DefenseFSM.ChangeState("BuildingClick");
+								if (nullptr != CopyUnit)
+								{
+									CopyUnit->IsClick = false;
+									CopyUnit = nullptr;
+								}
+
 							}
-							CopyUnit->SetIsClick(true);
-							DefenseFSM.ChangeState("UnitClick");
 						}
 
 					}
@@ -414,6 +441,10 @@ void Mouse::DefenseFSMInit()
 		,
 		.End = [this]()
 		{
+			if (nullptr != CopyBuilding)
+			{
+				CopyBuilding->IsClick = false;
+			}
 			NewDragBox->Area = 0;
 			NewDragBox->Off();
 		}
@@ -617,6 +648,78 @@ void Mouse::DefenseFSMInit()
 
 
 		}
+		}
+	);
+
+	DefenseFSM.CreateState
+	(
+		{
+			.Name = "BuildingClick",
+		.Start = [this]()
+		{
+			NewDragBox->Area = 0;
+			
+			UIButton::MainUIButton->FSM.ChangeState("BuildingControl");
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			if (nullptr != Collision->Collision(static_cast<int>(ColEnum::UIPannel), ColType::SPHERE2D, ColType::AABBBOX2D))
+			{
+				return;
+			}
+			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+			
+			if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
+			{
+				if (AnimationEnd == false)
+				{
+					Render0->ChangeAnimation("MyTeamCusor");
+					AnimationEnd = true;
+				}
+				
+				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{			
+
+					CopyBuilding->IsClick = true;
+				}
+			}
+			//유닛이 없는데 클릭하면 디폴트상태로 변경
+			else if (false == Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D) && GameEngineInput::IsUp("EngineMouseLeft"))
+			{
+				CopyBuilding->IsClick = false;
+				DefenseFSM.ChangeState("Default");
+			}
+			else
+			{
+				Render0->ChangeAnimation("Default");
+			}
+			//드래그박스
+			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
+			{
+				if (false == NewDragBox->IsUpdate())
+				{
+					NewDragBox->On();
+					NewDragBox->SetMousePos(Collision->GetTransform()->GetLocalPosition());
+				}
+				NewDragBox->SetMouseMovePos(Collision->GetTransform()->GetLocalPosition());
+				if (120.f < NewDragBox->Area)
+				{
+					
+					DefenseFSM.ChangeState("DragBoxOn");
+				}
+			}
+			else
+			{
+				NewDragBox->Off();
+			}
+			
+			
+		}
+		,
+		.End = []()
+			{
+
+			}
 		}
 	);
 	DefenseFSM.ChangeState("Default");
