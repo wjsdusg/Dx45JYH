@@ -22,25 +22,43 @@ Barrack::~Barrack()
 {
 }
 
-int sdsd = 0;
+
 Barrack* Barrack::MainBarrack=nullptr;
 void Barrack::Update(float _DeltaTime)
 {
 	Building::Update(_DeltaTime);
-	
-		
-	if (GetLiveTime() > 2.f )
+
+
+	if (GetLiveTime() > 2.f)
 	{
 		Synthesis();
-		CreateUnit(1);		
+		CreateUnit(1);
 		ResetLiveTime();
-		sdsd++;
+
 	}
 	float4 Pos = GetTransform()->GetLocalPosition();
 	float4 Pos2 = Render0->GetTransform()->GetLocalPosition();
-	
 
+	//if (true == DoorRender->IsUpdate())
+	{
+		std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
+		if (DoorCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 != ColTest.size())
+		{
+			for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+			{
+				std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
+				if (nullptr == NewUnit)
+				{
+					continue;
+				}
+				else
+				{	
+					MoveDoorPos(NewUnit);
+				}
+			}
+		}
+	}
 }
 //
 void Barrack::Start()
@@ -63,6 +81,15 @@ void Barrack::Start()
 		NewDir.Move("Boom");
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("exp11.png").GetFullPath(), 5, 4);
 	}
+	if (nullptr == GameEngineSprite::Find("Door"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Door").GetFullPath());
+		
+	}
 	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(2, 24));
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();	
 	Render0->CreateAnimation({ "Stay", "Barrack.png",0,0,0.1f,true,false });
@@ -74,18 +101,20 @@ void Barrack::Start()
 	Collision->SetColType(ColType::AABBBOX2D);
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 	Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-	MyTeam = Team::Mine;
-	//MyBuildingType = BuildingType::IncludeUnit;
+	MyTeam = Team::Mine;	
 
 	Building::Start();
-	float4 Pos2 = Render0->GetTransform()->GetLocalPosition();
+	
+	DoorRender = CreateComponent<GameEngineSpriteRenderer>();
+	DoorRender->CreateAnimation({ .AnimationName = "Open", .SpriteName = "Door",.Loop = true,.ScaleToTexture = false });
+	DoorRender->ChangeAnimation("Open");
+	DoorRender->GetTransform()->SetLocalScale({ 100.f,200.f });
+	DoorRender->GetTransform()->SetWorldPosition(DefenseMapEditor::ConvertTileXYToPos(16, 4));
+	DoorCollision = CreateComponent<GameEngineCollision>();	
+	DoorCollision->SetOrder(static_cast<int>(ColEnum::Player));
+	DoorCollision->GetTransform()->SetWorldPosition(DefenseMapEditor::ConvertTileXYToPos(16, 4));
+	DoorCollision->GetTransform()->SetLocalScale({ 100.f,100.f });
 
-	EnemyNum = GameEngineRandom::MainRandom.RandomInt(4, 6);
-	EnemyUnits.resize(EnemyNum);
-	for (int i = 0; i < EnemyNum; i++)
-	{
-		
-	}
 }
 
 // 이건 디버깅용도나 
@@ -106,6 +135,21 @@ void Barrack::SummonPosLoad(GameEngineSerializer& _Ser)
 		_Ser.Read(y);
 		float4 CheckPos =DefenseMapEditor::ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
 		SummonPos[i] = CheckPos;
+	}
+}
+
+void Barrack::DoorPosLoad(GameEngineSerializer& _Ser)
+{
+	_Ser.Read(SaveNum);
+	int x;
+	int y;
+	DoorPos.resize(SaveNum);
+	for (int i = 0; i < SaveNum; i++)
+	{
+		_Ser.Read(x);
+		_Ser.Read(y);
+		float4 CheckPos = DefenseMapEditor::ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
+		DoorPos[i] = CheckPos;
 	}
 }
 
@@ -155,6 +199,27 @@ void Barrack::CreateUnit(int _Level)
 	}
 }
 
+void Barrack::MoveDoorPos(std::shared_ptr<Unit> _CopyUnit)
+{
+	//DoorUnits.clear();
+	std::shared_ptr<Unit> NewUnit = _CopyUnit;
+	for (int i = 0; i < DoorPos.size(); i++)
+	{
+		if (false == DefenseGlobalValue::Collision->IsCollision(DoorPos[i].ix(), DoorPos[i].iy()))
+		{
+			
+			NewUnit->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(DoorPos[i].ix(), DoorPos[i].iy()));
+			NewUnit->MyTeam = Team::Ally;
+			DoorUnits.push_back(NewUnit);
+			
+			NewUnit->DefenseMapFSM.ChangeState("Summoning");
+			break;
+		}
+
+	}
+	
+}
+
 void Barrack::Synthesis()
 {
 	/*if (true == IsShamonAniEnd)
@@ -201,10 +266,7 @@ void Barrack::TransunitToMap()
 	int x = 7;
 	int y = 7;
 	int num = 0;
-	if (0 >= EnemyNum || 1 > EnemyUnits.size())
-	{
-		return;
-	}
+	
 	for (int n = 1; n <= 10; n++) {
 		for (int dy = -n; dy <= n; dy++) {
 			for (int dx = -n; dx <= n; dx++) {

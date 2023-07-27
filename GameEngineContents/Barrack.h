@@ -18,6 +18,7 @@ public:
 	Barrack& operator=(Barrack&& _Other) noexcept = delete;
 	static Barrack* MainBarrack;
 	void SummonPosLoad(GameEngineSerializer& _Ser);
+	void DoorPosLoad(GameEngineSerializer& _Ser);
 	void TransunitToMap();
 protected:
 	void Start();
@@ -30,11 +31,14 @@ private:
 	int SaveNum = 0;
 	std::vector<float4> SummonPos;
 	std::vector<std::shared_ptr<Unit>> BarrackUnits;
-
+	std::vector<std::shared_ptr<Unit>> DoorUnits;
 	std::vector<int> LevelInfos;
 	int leve = 0;
 	void CreateUnit(int _Level);
 	void Synthesis();
-	
+	std::vector<float4> DoorPos;
+	std::shared_ptr<class GameEngineSpriteRenderer> DoorRender;
+	std::shared_ptr<class GameEngineCollision> DoorCollision;
+	void MoveDoorPos(std::shared_ptr<Unit> _CopyUnit);
 };
 

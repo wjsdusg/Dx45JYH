@@ -92,7 +92,7 @@ std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
 std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
 std::shared_ptr<RuinObject> NewRuinObject = nullptr;
 std::shared_ptr<NormalObject1> NewNormalObject1 = nullptr;
-std::shared_ptr<TreasureBox> NewTreasureBox = nullptr; 
+std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
 std::shared_ptr<Barrack> NewBarrack = nullptr;
 PlayLevel::PlayLevel()
 {
@@ -197,7 +197,7 @@ void PlayLevel::Update(float _DeltaTime)
 					&& UIMouse.y >= -GameEngineWindow::GetScreenSize().y / 2
 					)
 
-				 && GetMainCamera()->GetTransform()->GetLocalPosition().x <= (MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2)-40.f
+				&& GetMainCamera()->GetTransform()->GetLocalPosition().x <= (MapSize.x / 2 - (GameEngineWindow::GetScreenSize().x / 2) - 40.f
 					)
 				)
 			{
@@ -578,7 +578,7 @@ void PlayLevel::Start()
 	NewMapEditor = CreateActor<MapEditor>();
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);
 	GlobalValue::Collision = std::make_shared<JPSCollision>();
-	GlobalValue::Collision->Create(180, 180);	
+	GlobalValue::Collision->Create(180, 180);
 
 	NewDefenseMapEditor = CreateActor<DefenseMapEditor>();
 	NewDefenseMapEditor->CreateTileEditor(30, 30, TileScale);
@@ -649,7 +649,7 @@ void PlayLevel::Start()
 
 	 NewKsword->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 + i, 90));
 	}
-	
+
 
 
 	NewRuinObject = CreateActor<RuinObject>();
@@ -717,20 +717,29 @@ void PlayLevel::Start()
 		}
 	}
 	if (nullptr != NewMapEditor) {
-			GameEngineDirectory NewDir2;
-			NewDir2.MoveParentToDirectory("ContentsBin");
-			NewDir2.Move("ContentsBin");
-			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
-			GameEngineSerializer Ser;
-			NewFile.LoadBin(Ser);
-			NewMapEditor->Load(Ser);
-		}
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewMapEditor->Load(Ser);
+	}
 
-	NewKsword2 = CreateActor<Ksword>();
+	{
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("DefenseMapRespawnPos.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewBarrack->DoorPosLoad(Ser);
+	}
 	
-	
+
+
 	//NewKarcher = CreateActor<Karcher>();
-	
+
 	//{
 	NewMonster = CreateActor<Monster_01>();
 	//NewForg = CreateActor<Frog>();
@@ -755,7 +764,7 @@ void PlayLevel::Start()
 
 	//NewWeirdPlant = CreateActor<WeirdPlant>();
 
-	MyField = Field::DungeonMap;
+	MyField = Field::DefenseMap;
 	//	NewGonisi = CreateActor<Gonisi>();
 	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
 	//	NewAsako = CreateActor<Asako>();
