@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Gonisi.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-
+#include "DefenseMapEditor.h"
 Gonisi::Gonisi()
 {
 }
@@ -71,16 +71,10 @@ void Gonisi::Start()
 	Render0->CreateAnimation({ .AnimationName = "UpStay", .SpriteName = "GonisiUpStay",.FrameInter = 0.2f, .ScaleToTexture = true });;
 
 	Render0->ChangeAnimation("LStay");
-		
-	Collision = CreateComponent<GameEngineCollision>();
-	Collision->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
-
-	FOVCollision = CreateComponent<GameEngineCollision>();
-	FOVCollision->GetTransform()->SetLocalScale({ 400,400,1.f });
-	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));
-
 	
+	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(1, 1));
+	MyTeam = Team::Mine;
+	MyAttackType = AttackType::Near;
 	
 	Unit::Start();
 	Hero::Start();

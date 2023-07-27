@@ -20,6 +20,7 @@ void Hero::Update(float _DeltaTime)
 }
 void Hero::Start()
 {
-	
+	Mp = 50;
+	CurMp = 0;
 }
 
