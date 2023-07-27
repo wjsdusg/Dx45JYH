@@ -96,6 +96,7 @@ std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
 std::shared_ptr<Barrack> NewBarrack = nullptr;
 PlayLevel::PlayLevel()
 {
+	MainPlayLevel = this;
 }
 
 PlayLevel::~PlayLevel()
@@ -119,13 +120,15 @@ extern int gcd(int a, int b);
 extern float4 UIMouse;
 extern float4 MainMouse;
 extern float4 TileScale;
+PlayLevel* PlayLevel::MainPlayLevel = nullptr;
 void PlayLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsUp("G"))
 	{
+		NewBarrack->GotoDengeon();
 
 		//NewMonster->FSM.ChangeState("Die");
-		IsDebugSwitch();
+		//IsDebugSwitch();
 	}
 	{
 		std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
@@ -668,15 +671,7 @@ void PlayLevel::Start()
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);
-	if (nullptr != NewMapEditor) {
-		GameEngineDirectory NewDir2;
-		NewDir2.MoveParentToDirectory("ContentsBin");
-		NewDir2.Move("ContentsBin");
-		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("RespawnPosSave.data").GetFullPath());
-		GameEngineSerializer Ser;
-		NewFile.LoadBin(Ser);
-		NewMapEditor->RespawnPosLoad(Ser);
-	}
+
 	{
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
@@ -695,27 +690,26 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		Minion::OutSideTargetPosLoad(Ser);
 	}
-	if (nullptr != NewDefenseMapEditor)
+
 	{
-		{
-			GameEngineDirectory NewDir2;
-			NewDir2.MoveParentToDirectory("ContentsBin");
-			NewDir2.Move("ContentsBin");
-			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("DefenseMapIsMove.data").GetFullPath());
-			GameEngineSerializer Ser;
-			NewFile.LoadBin(Ser);
-			NewDefenseMapEditor->Load(Ser);
-		}
-		{
-			GameEngineDirectory NewDir2;
-			NewDir2.MoveParentToDirectory("ContentsBin");
-			NewDir2.Move("ContentsBin");
-			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("UnitsCreatePos.data").GetFullPath());
-			GameEngineSerializer Ser;
-			NewFile.LoadBin(Ser);
-			NewBarrack->SummonPosLoad(Ser);
-		}
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("DefenseMapIsMove.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewDefenseMapEditor->Load(Ser);
 	}
+	{
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("UnitsCreatePos.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewBarrack->SummonPosLoad(Ser);
+	}
+
 	if (nullptr != NewMapEditor) {
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
@@ -735,7 +729,15 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewBarrack->DoorPosLoad(Ser);
 	}
-	
+	{
+		GameEngineDirectory NewDir2;
+		NewDir2.MoveParentToDirectory("ContentsBin");
+		NewDir2.Move("ContentsBin");
+		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("RespawnPosSave.data").GetFullPath());
+		GameEngineSerializer Ser;
+		NewFile.LoadBin(Ser);
+		NewBarrack->RespawnPosLoad(Ser);
+	}
 
 
 	//NewKarcher = CreateActor<Karcher>();
@@ -786,11 +788,11 @@ void PlayLevel::Start()
 void PlayLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
-	int a = 0;
+	
 }
 
 void PlayLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
-	int a = 0;
+	
 }

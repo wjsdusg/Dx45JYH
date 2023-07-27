@@ -9,7 +9,7 @@ extern float4 TileScale;
 extern float4 MapUpP;
 float4 MapEditor::TileSizeH=float4::Zero;
 std::vector<std::vector<TileInfo>> MapEditor::TileInfos;
-std::vector<float4> MapEditor::RespawnPos;
+
 MapEditor::MapEditor()
 {
 }
@@ -20,74 +20,74 @@ MapEditor::~MapEditor()
 
 void MapEditor::Update(float _DeltaTime)
 {
-	float4 Pos= Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
+	/*float4 Pos= Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
 	float4 _Pos = ConvertPosToTileXY(Pos);
 	Pos -= MapUpP;
 	if (true==Render0->IsUpdate())
 	{
 		float4 sd = PosToTilePos(Pos);
 		Render0->GetTransform()->SetWorldPosition(sd);
-	}
+	}*/
 
 	FSM.Update(_DeltaTime);
-	NewObject->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
+	//NewObject->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
 
-	if (0 < MoveMarks.size())
-	{
-		for (int i = 0; i < MoveMarks.size(); i++)
-		{
-			GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), MoveMarks[i]->GetTransform());
-		}
-	}	
-	{
-		//Pos -= MapUpP;
-		std::string str3 = "MousePos-MapUpP " + Pos.ToString();;
-		std::string_view MouseConvertTile = str3;
-		FontRender0->SetText(MouseConvertTile);
-	}
-	{
-		std::string str2 = "TileIndex: ";
-		std::string str3 = std::to_string(GetTIleIndex(Pos));
-		str2 += str3;
-		std::string_view Index =str2;
-		FontRender1->SetText(Index);
-	}
-	{		
-		std::string str2 = "PostoTilePos: ";
-		std::string str3 = {};
-		if (nullptr != GetTIleInfo(Pos))
-		{
-			str3 = GetTIleInfo(Pos)->Pos.ToString();
-		}
-		str2 += str3;
-		std::string_view PostoTilePos = str2;
-		FontRender2->SetText(PostoTilePos);		
-	}
-	{
-		
-		
-		std::string str2 = "XÁÂÇ¥: ";
-		std::string str3 = std::to_string(x);
-		str2 += str3;
-		str3 = "  YÁÂÇ¥: ";
-		str2 += str3;
-		str3 = std::to_string(y);
-		str2 += str3;
-		str3 = "\n Collison: ";
-		str2 += str3;
-		bool sdaaa = GlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy());
-		if (sdaaa)
-		{
-			str3 = "T";
-		}
-		else
-		{
-			str3 = "F";
-		}
-		str2 += str3;
-		std::string_view Index = str2;
-		FontRender3->SetText(Index);
-	}
+	//if (0 < MoveMarks.size())
+	//{
+	//	for (int i = 0; i < MoveMarks.size(); i++)
+	//	{
+	//		GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), MoveMarks[i]->GetTransform());
+	//	}
+	//}	
+	//{
+	//	//Pos -= MapUpP;
+	//	std::string str3 = "MousePos-MapUpP " + Pos.ToString();;
+	//	std::string_view MouseConvertTile = str3;
+	//	FontRender0->SetText(MouseConvertTile);
+	//}
+	//{
+	//	std::string str2 = "TileIndex: ";
+	//	std::string str3 = std::to_string(GetTIleIndex(Pos));
+	//	str2 += str3;
+	//	std::string_view Index =str2;
+	//	FontRender1->SetText(Index);
+	//}
+	//{		
+	//	std::string str2 = "PostoTilePos: ";
+	//	std::string str3 = {};
+	//	if (nullptr != GetTIleInfo(Pos))
+	//	{
+	//		str3 = GetTIleInfo(Pos)->Pos.ToString();
+	//	}
+	//	str2 += str3;
+	//	std::string_view PostoTilePos = str2;
+	//	FontRender2->SetText(PostoTilePos);		
+	//}
+	//{
+	//	
+	//	
+	//	std::string str2 = "XÁÂÇ¥: ";
+	//	std::string str3 = std::to_string(x);
+	//	str2 += str3;
+	//	str3 = "  YÁÂÇ¥: ";
+	//	str2 += str3;
+	//	str3 = std::to_string(y);
+	//	str2 += str3;
+	//	str3 = "\n Collison: ";
+	//	str2 += str3;
+	//	bool sdaaa = GlobalValue::Collision->IsCollision(_Pos.ix(), _Pos.iy());
+	//	if (sdaaa)
+	//	{
+	//		str3 = "T";
+	//	}
+	//	else
+	//	{
+	//		str3 = "F";
+	//	}
+	//	str2 += str3;
+	//	std::string_view Index = str2;
+	//	FontRender3->SetText(Index);
+	//}
 }
 
 void MapEditor::Start()
@@ -362,23 +362,7 @@ void MapEditor::Load(GameEngineSerializer& _Ser)
 	GlobalValue::JpsP.Init(GlobalValue::Collision);
 }
 
-void MapEditor::RespawnPosLoad(GameEngineSerializer& _Ser)
-{
-	_Ser.Read(SaveNum);
-	int x;
-	int y;
-	RespawnPos.resize(SaveNum);
-	for (int i = 0; i < SaveNum; i++)
-	{
-		
-		_Ser.Read(x);
-		_Ser.Read(y);
-		
-		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
-		
-		RespawnPos[i] = CheckPos;
-	}
-}
+
 
 float4 MapEditor::ConvertPosToTileXY(float4 _Pos)
 {

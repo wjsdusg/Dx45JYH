@@ -78,10 +78,10 @@ void Mouse::Update(float _DeltaTime)
 	{
 		AnimationEnd = false;
 	}
-	/*if (true == MouseMarkRender->IsAnimationEnd())
+	if (true == MouseMarkRender->IsAnimationEnd())
 	{
 		MouseMarkRender->Off();
-	}*/
+	}
 }
 
 void Mouse::Start()
@@ -101,7 +101,7 @@ void Mouse::Start()
 	}
 	Render0 = CreateComponent<GameEngineUIRenderer>(1);
 	Render0->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	MouseMarkRender = CreateComponent<GameEngineSpriteRenderer>();
+	MouseMarkRender = CreateComponent<GameEngineUIRenderer>();
 
 	MouseMarkRender->CreateAnimation({ "Mark", "movemark.png",1,13,0.05f,false });
 	MouseMarkRender->ChangeAnimation("Mark");
@@ -171,10 +171,10 @@ void Mouse::Start()
 
 void Mouse::GetMoveMark(float4 _Pos)
 {
-	//MouseMarkRender->On();
+	MouseMarkRender->On();
 	MouseMarkRender->ChangeAnimation("Mark");
 	MouseMarkRender->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
-	MouseMarkRender->GetTransform()->SetWorldPosition(_Pos);
+	MouseMarkRender->GetTransform()->SetWorldPosition(Render0->GetTransform()->GetLocalPosition());
 
 }
 

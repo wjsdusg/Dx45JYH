@@ -9,7 +9,7 @@ public:
 	// constrcuter destructer
 	PlayLevel();
 	~PlayLevel();
-
+	static PlayLevel* MainPlayLevel;
 	// delete Function
 	PlayLevel(const PlayLevel& _Other) = delete;
 	PlayLevel(PlayLevel&& _Other) noexcept = delete;
@@ -19,7 +19,10 @@ public:
 	{
 		return MyField;
 	}
-	
+	void SetField(Field _Field)
+	{
+		MyField= _Field;
+	}
 protected:
 	void Update(float _DeltaTime) override;
 	void Start() override;

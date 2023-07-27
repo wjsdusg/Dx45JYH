@@ -20,6 +20,8 @@ public:
 	void SummonPosLoad(GameEngineSerializer& _Ser);
 	void DoorPosLoad(GameEngineSerializer& _Ser);
 	void TransunitToMap();
+	void RespawnPosLoad(GameEngineSerializer& _Ser);
+	void GotoDengeon();
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -33,10 +35,11 @@ private:
 	std::vector<std::shared_ptr<Unit>> BarrackUnits;
 	std::vector<std::shared_ptr<Unit>> DoorUnits;
 	std::vector<int> LevelInfos;
+	std::vector<float4> DoorPos;
+	std::vector<float4> RespawnPos;
 	int leve = 0;
 	void CreateUnit(int _Level);
 	void Synthesis();
-	std::vector<float4> DoorPos;
 	std::shared_ptr<class GameEngineSpriteRenderer> DoorRender;
 	std::shared_ptr<class GameEngineCollision> DoorCollision;
 	void MoveDoorPos(std::shared_ptr<Unit> _CopyUnit);

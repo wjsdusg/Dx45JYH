@@ -10,6 +10,8 @@
 #include "Ksword.h"
 #include "Karcher.h"
 #include "GlobalValue.h"
+#include "PlayLevel.h"
+#include "Mouse.h"
 extern float4 MainMouse;
 extern  float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 
@@ -210,8 +212,7 @@ void Barrack::MoveDoorPos(std::shared_ptr<Unit> _CopyUnit)
 			
 			NewUnit->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(DoorPos[i].ix(), DoorPos[i].iy()));
 			NewUnit->MyTeam = Team::Ally;
-			DoorUnits.push_back(NewUnit);
-			
+			DoorUnits.push_back(NewUnit);			
 			NewUnit->DefenseMapFSM.ChangeState("Summoning");
 			break;
 		}
@@ -298,5 +299,43 @@ void Barrack::TransunitToMap()
 
 			}
 		}
+	}
+}
+
+void Barrack::RespawnPosLoad(GameEngineSerializer& _Ser)
+{
+	_Ser.Read(SaveNum);
+	int x;
+	int y;
+	RespawnPos.resize(SaveNum);
+	for (int i = 0; i < SaveNum; i++)
+	{
+
+		_Ser.Read(x);
+		_Ser.Read(y);
+
+		float4 CheckPos = MapEditor::ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
+
+		RespawnPos[i] = CheckPos;
+	}
+}
+
+void Barrack::GotoDengeon()
+{
+	PlayLevel::MainPlayLevel->SetField(Field::DungeonMap);
+	Mouse::NewMainMouse->SetMyField(Field::DungeonMap);
+	RespawnPos;
+	DoorUnits;
+	if (0 != DoorUnits.size() && 0 != RespawnPos.size())
+	{
+		for (int i = 0; i < DoorUnits.size(); i++)
+		{
+			DoorUnits[i]->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(RespawnPos[i].ix(), RespawnPos[i].iy()));
+			DoorUnits[i]->MyField = Field::DungeonMap;
+			DoorUnits[i]->MyTeam = Team::Mine;
+			DoorUnits[i]->FSM.ChangeState("Stay");
+		}
+		GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(DoorUnits[0]->GetTransform()->GetWorldPosition());
+		DoorUnits.clear();
 	}
 }

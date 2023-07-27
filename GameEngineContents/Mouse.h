@@ -41,7 +41,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineUIRenderer> Render0;
-	std::shared_ptr<class GameEngineSpriteRenderer> MouseMarkRender;
+	std::shared_ptr<class GameEngineUIRenderer> MouseMarkRender;
 	GameEngineFSM FSM;
 	GameEngineFSM DefenseFSM;
 	void FSMInit(); 
