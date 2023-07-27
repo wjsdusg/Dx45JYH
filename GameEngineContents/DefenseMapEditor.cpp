@@ -362,18 +362,11 @@ void DefenseMapEditor::Load(GameEngineSerializer& _Ser)
 	int y;
 	for (int i = 0; i < SaveNum; i++)
 	{
-		std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();
-
-
 		_Ser.Read(x);
 		_Ser.Read(y);
-		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });
-		NewComponent->GetTransform()->SetLocalScale({ 5.f,5.f,1.f });
-		MoveMarks[i] = NewComponent;
-		// 
-		//MoveMarks.push_back(NewComponent);
+		
 		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
-		//GetTIleInfo(CheckPos)->IsMove = false;		 
+		
 		DefenseGlobalValue::Collision->SetAt(CheckPos.ix(), CheckPos.iy());
 
 	}

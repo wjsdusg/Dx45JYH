@@ -165,7 +165,7 @@ void Mouse::Start()
 	NewDragBox->Off();
 	FSMInit();
 	DefenseFSMInit();
-	MyField = Field::DungeonMap;
+	MyField = Field::DefenseMap;
 
 }
 

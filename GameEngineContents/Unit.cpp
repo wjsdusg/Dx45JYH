@@ -18,7 +18,7 @@ extern float4 IsoTileScale;
 extern float4 MapUpP;
 extern float4 TileScale;
 std::vector<std::shared_ptr<Unit>> Unit::Units;
-float Unit::AddSpeed=0;
+float Unit::AddSpeed = 0;
 std::vector<std::shared_ptr<Unit>> Unit::GetUnits()
 {
 	return Units;
@@ -28,7 +28,7 @@ Unit::Unit()
 {
 	UnitID = num;
 	num++;
-	
+
 }
 
 Unit::~Unit()
@@ -41,7 +41,7 @@ void Unit::Update(float _DeltaTime)
 		if (false == SelectionCircle->IsUpdate())
 		{
 			SelectionCircle->On();
-			SelectionCircle->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale()*0.6f);
+			SelectionCircle->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale() * 0.6f);
 			if (MyTeam == Team::Mine)
 			{
 				SelectionCircle->SetTexture("SelectCircleMine.png");
@@ -49,12 +49,12 @@ void Unit::Update(float _DeltaTime)
 			else
 			{
 				SelectionCircle->SetTexture("SelectCircleEnemy.png");
-			}			
+			}
 		}
-	}	
+	}
 	else
 	{
-		if (true== SelectionCircle->IsUpdate())
+		if (true == SelectionCircle->IsUpdate())
 		{
 			SelectionCircle->Off();
 		}
@@ -129,12 +129,12 @@ void Unit::Update(float _DeltaTime)
 				return;
 			}
 		}
-	
-		
-		if (true == GameEngineInput::IsUp("H") && true == IsClick&&Team::Mine==MyTeam)
+
+
+		if (true == GameEngineInput::IsUp("H") && true == IsClick && Team::Mine == MyTeam)
 		{
-			IsHold = true;			
-		}		
+			IsHold = true;
+		}
 		FSM.Update(_DeltaTime);
 		{
 			/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
@@ -152,24 +152,46 @@ void Unit::Update(float _DeltaTime)
 			}*/
 		}
 	}
-	
-	
 
-	
+
+
+
 }
 
 void Unit::Start()
 {
+	if (nullptr == GameEngineSprite::Find("level.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		NewDir.Move("UIBMp");
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("level.png").GetFullPath(), 4, 2);
+	}
+	if (nullptr == GameEngineSprite::Find("Shomen"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Shomen").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ShomenDie").GetFullPath());
+	}
 	
-	Units.push_back(DynamicThis<Unit>());
-	StateInit();
-	DefenseMapStateInit();
-	MyField = Field::DungeonMap;
 	float HalfY = Render0->GetTransform()->GetLocalScale().hy();
 	HalfY -= 10.f;
-	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });	
-	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();	
-	
+	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });
+	Render0->CreateAnimation({ .AnimationName = "Shomen", .SpriteName = "Shomen",.Loop = false,.ScaleToTexture = false });
+	Render0->CreateAnimation({ .AnimationName = "ShomenDie", .SpriteName = "ShomenDie",.Loop = false,.ScaleToTexture = false });
+	Render0->GetTransform()->SetLocalScale({ 80.f,80.f });
+	Render0->SetAnimationUpdateEvent("Shomen", 14, [this]()
+		{
+			IsShamonAniEnd = true;
+			DefenseMapFSM.ChangeState("Summoning");
+		});
+
+	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
 	SelectionCircle->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
 	SelectionCircle->Off();
 	//CreateTileFOV(GetTransform()->GetLocalPosition());
@@ -184,10 +206,16 @@ void Unit::Start()
 	FOVCollision->SetColType(ColType::AABBBOX2D);
 	FOVCollision->SetOrder(static_cast<int>(ColEnum::UnitFOV));
 
+	LevelRender = CreateComponent<GameEngineSpriteRenderer>();
+	
 	HP = 50;
 	CurHp = 50;
 	ATK = 10;
-	
+	MyTeam = Team::Ally;
+	Units.push_back(DynamicThis<Unit>());
+	StateInit();
+	DefenseMapStateInit();
+	MyField = Field::DefenseMap;
 	Object::Start();
 
 }
@@ -195,7 +223,7 @@ void Unit::Start()
 float4 Unit::MovePointTowardsTarget(float4 _Pos1, float4 _Pos2, float _Speed, float _Delta)
 {
 	float degree = CalAngle1To2(_Pos1, _Pos2);
-	Angle = degree;	
+	Angle = degree;
 	float radian = degree * GameEngineMath::DegToRad;
 	float4 AddPos;
 	AddPos.x = _Speed * _Delta * cosf(radian);
@@ -208,9 +236,9 @@ void Unit::StateInit()
 {
 	FSM.CreateState(
 		{ .Name = "Stay",
-		.Start = [this]() 
+		.Start = [this]()
 		{
-			
+
 			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LStay");
@@ -303,10 +331,10 @@ void Unit::StateInit()
 			//유닛우선 쫒기
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			if (nullptr != FOVCollision
-				&&FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)
-				&& 1<ColTest.size()
-				&&false==IsHold)
-			{				
+				&& FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D)
+				&& 1 < ColTest.size()
+				&& false == IsHold)
+			{
 				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 				{
 					std::shared_ptr<Object> NewObject = Col->GetActor()->DynamicThis<Object>();
@@ -337,9 +365,9 @@ void Unit::StateInit()
 							FSM.ChangeState("Chase");
 							return;
 						}
-						
+
 					}
-				}				
+				}
 			}
 			if (AttackType::Near == MyAttackType)
 			{
@@ -397,9 +425,9 @@ void Unit::StateInit()
 
 				}
 			}
-			
 
-			
+
+
 		},
 		.End = []() {}
 		}
@@ -408,21 +436,21 @@ void Unit::StateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			//경로계산
-			
+
 			if (0 != PathPos.size())
 			{
-				
+
 				if (GetTransform()->GetLocalPosition() == PathPos.front())
 				{
 					float4 Pos2 = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-					
-					PathPos.pop_front();					
-					
+
+					PathPos.pop_front();
+
 				}
 				InterTargetPos = PathPos.front();
-								
-				PathPos.pop_front();	
-				
+
+				PathPos.pop_front();
+
 				//각도계산
 				PreAngle = Angle;
 				CalAngle(GetTransform()->GetLocalPosition(), InterTargetPos);
@@ -435,14 +463,14 @@ void Unit::StateInit()
 					if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(InterTargetPos)/*&&180>abs(PreAngle-Angle)*/)
 					{
 						float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-						
+
 						IndexX = _Pos.ix();
 						IndexY = _Pos.iy();
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
-						
+
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
-					else 
+					else
 					{
 						//각도를 알기떄문에 그냥 쓰면된다
 						float4 Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
@@ -452,12 +480,12 @@ void Unit::StateInit()
 						Pos = ReturnIndexPlusPos();
 						IndexX = Pos.ix();
 						IndexY = Pos.iy();
-						
+
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
-						
+
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
-					
+
 				}
 				else if (true == IsNextTileCollision())
 				{
@@ -506,8 +534,8 @@ void Unit::StateInit()
 					}
 				}
 			}
-			
-			   			
+
+
 			{
 				if (Angle < 10 || Angle >= 350)
 				{
@@ -581,14 +609,14 @@ void Unit::StateInit()
 			}
 		},
 		.Update = [this](float _DeltaTime)
-		{			
+		{
 			if (0 >= CurHp)
 			{
 				FSM.ChangeState("Die");
 				return;
 			}
-			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));			
-			if (ShortTargetPos==InterTargetPos&&InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
+			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
+			if (ShortTargetPos == InterTargetPos && InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
 				GetTransform()->SetLocalPosition(InterTargetPos);
 				if (0 == PathPos.size())
@@ -614,27 +642,27 @@ void Unit::StateInit()
 					}
 					else if (false == IsNextTileCollision())
 					{
-						
+
 						GlobalValue::Collision->ClrAt(IndexX, IndexY);
 						//각도를 알기떄문에 그냥 쓰면된다						
 						float4 Pos = ReturnIndexPlusPos();
 						IndexX = Pos.ix();
-						IndexY = Pos.iy();						
+						IndexY = Pos.iy();
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
-					else if(true == IsNextTileCollision())
+					else if (true == IsNextTileCollision())
 					{
 						PathCal();
 						FSM.ChangeState("Move");
 					}
 				}
 			}
-			
+
 		},
 		.End = [this]()
 		{
-			
+
 		}
 		}
 	);
@@ -662,7 +690,7 @@ void Unit::StateInit()
 					GlobalValue::Collision->ClrAt(IndexX, IndexY);
 					if (MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition()) == MapEditor::ConvertPosToTileXY(InterTargetPos)/*&&180>abs(PreAngle-Angle)*/)
 					{
-						float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());						
+						float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
 						IndexX = _Pos.ix();
 						IndexY = _Pos.iy();
 						GlobalValue::Collision->SetAt(IndexX, IndexY);
@@ -670,7 +698,7 @@ void Unit::StateInit()
 						ShortTargetPos = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
 					}
 					else
-					{						
+					{
 						float4 Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
 						IndexX = Pos.ix();
 						IndexY = Pos.iy();
@@ -798,7 +826,7 @@ void Unit::StateInit()
 						IsFlip = true;
 					}
 				}
-			}			
+			}
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -811,20 +839,20 @@ void Unit::StateInit()
 				FSM.ChangeState("Die");
 				return;
 			}
-			
-			float Min =10000.f;
+
+			float Min = 10000.f;
 			if (nullptr == FOVCollision)
 			{
 				return;
 			}
 			// 가장가까운대상에게 타겟팅된다.
-			
+
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 			//안에서 각도계산도해줌
 			GetTransform()->AddLocalPosition(MovePointTowardsTarget(GetTransform()->GetLocalPosition(), InterTargetPos, Speed, _DeltaTime));
 			if (ShortTargetPos == InterTargetPos && InterTargetPos.XYDistance(GetTransform()->GetLocalPosition()) <= 2.f)
 			{
-				GetTransform()->SetLocalPosition(InterTargetPos);			
+				GetTransform()->SetLocalPosition(InterTargetPos);
 					if (true == IsHold)
 					{
 						FSM.ChangeState("Stay");
@@ -877,7 +905,7 @@ void Unit::StateInit()
 								}
 								else if (MyTeam != NewObject->GetTeam())
 								{
-									CopyObject = NewObject;									
+									CopyObject = NewObject;
 									CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
 
 									FSM.ChangeState("Attack");
@@ -887,7 +915,7 @@ void Unit::StateInit()
 							}
 						}
 					}
-					
+
 
 					if (0 != PathPos.size())
 					{
@@ -899,7 +927,7 @@ void Unit::StateInit()
 						FSM.ChangeState("Stay");
 						return;
 					}
-						
+
 			}
 			else
 			{
@@ -911,7 +939,7 @@ void Unit::StateInit()
 						FSM.ChangeState("Stay");
 						return;
 					}
-					if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1< ColTest.size())
+					if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 < ColTest.size())
 					{
 						for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 						{
@@ -935,10 +963,10 @@ void Unit::StateInit()
 								FSM.ChangeState("Attack");
 								return;
 							}
-						}						
+						}
 					}
 
-					if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 1< ColTest.size())
+					if (FOVCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 1 < ColTest.size())
 					{
 						Min = CopyObject->GetTransform()->GetLocalPosition().XYDistance(GetTransform()->GetLocalPosition());
 						if (AttackType::Far == MyAttackType)
@@ -986,8 +1014,8 @@ void Unit::StateInit()
 								}
 							}
 						}
-						
-						
+
+
 					}
 					int _IndexX = CopyObject->IndexX;
 					int _IndexY = CopyObject->IndexY;
@@ -1008,7 +1036,7 @@ void Unit::StateInit()
 						PathCal();
 						FSM.ChangeState("Move");
 						return;
-					}					
+					}
 					else if (_IndexX != CopyIndexX || _IndexY != CopyIndexY)
 					{
 						if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
@@ -1020,8 +1048,8 @@ void Unit::StateInit()
 							FSM.ChangeState("Chase");
 							return;
 						}
-					}			
-					
+					}
+
 					//이동관련
 					if (false == IsNextTileCollision())
 					{
@@ -1047,19 +1075,19 @@ void Unit::StateInit()
 		.End = []() {}
 		}
 	);
-	
+
 	FSM.CreateState(
 		{ .Name = "Attack",
-		.Start = [this]() 
+		.Start = [this]()
 		{
-			if (AttackType::Far == MyAttackType&&nullptr!= MissileRender)
+			if (AttackType::Far == MyAttackType && nullptr != MissileRender)
 			{
 				//float4 _Index = ReturnIndexPlusPos();
 				//float4 _Pos = MapEditor::ConvertTileXYToPos(_Index.ix(), _Index.iy());
 
 				MissileRender->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				float _Angle = CalAngle(MissileRender->GetTransform()->GetWorldPosition(), CopyObject->GetTransform()->GetWorldPosition());
-				MissileRender->GetTransform()->SetLocalRotation({ 0,0,_Angle });				
+				MissileRender->GetTransform()->SetLocalRotation({ 0,0,_Angle });
 				MissileRender->On();
 			}
 			PreAngle = Angle;
@@ -1127,7 +1155,7 @@ void Unit::StateInit()
 					IsFlip = true;
 				}
 			}
-			
+
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -1135,9 +1163,9 @@ void Unit::StateInit()
 			{
 				int a = 0;
 			}
-			
+
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-			float InterDistance= CopyObject->GetTransform()->GetWorldPosition().XYDistance(GetTransform()->GetLocalPosition());
+			float InterDistance = CopyObject->GetTransform()->GetWorldPosition().XYDistance(GetTransform()->GetLocalPosition());
 			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
 			if (nullptr == CopyObject || true == CopyObject->IsDeath())
 			{
@@ -1146,7 +1174,7 @@ void Unit::StateInit()
 				return;
 			}
 			else if (AttackType::Far == MyAttackType)
-			{						
+			{
 				MissileRender->GetTransform()->AddWorldPosition(MovePointTowardsTarget
 				(
 					MissileRender->GetTransform()->GetWorldPosition(),
@@ -1154,7 +1182,7 @@ void Unit::StateInit()
 					MissileRender->GetTransform()->GetWorldPosition().XYDistance(MapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())) / AttackSpeed,
 					_DeltaTime) * 3.f
 				);
-				if (3.f>MissileRender->GetTransform()->GetWorldPosition().XYDistance(MapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())))
+				if (3.f > MissileRender->GetTransform()->GetWorldPosition().XYDistance(MapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())))
 				{
 					MissileRender->Off();
 				}
@@ -1163,17 +1191,17 @@ void Unit::StateInit()
 			{
 				FSM.ChangeState("Die");
 				return;
-			}			
+			}
 			else if (Render0->IsAnimationEnd())
 			{
 				if (nullptr == CopyObject || true == CopyObject->IsDeath())
 				{
-					CopyObject = nullptr;					
+					CopyObject = nullptr;
 					FSM.ChangeState("Stay");
 					return;
 				}
 				if (true == IsHold)
-				{					
+				{
 					FSM.ChangeState("Stay");
 					return;
 				}
@@ -1214,11 +1242,11 @@ void Unit::StateInit()
 							CopyObject->CurHp -= (AddATK + ATK);
 
 						}
-						
+
 					}
 				}
 				else if (AttackType::Far == MyAttackType)
-				{						
+				{
 					if (0 < CopyObject->CurHp)
 					{
 						CopyObject->CurHp -= (AddATK + ATK);
@@ -1226,19 +1254,19 @@ void Unit::StateInit()
 					}
 					FSM.ChangeState("Attack");
 					return;
-					
+
 				}
 
-			
+
 			}
-			
-			
+
+
 		},
 		.End = [this]()
 		 {
 			 if (AttackType::Far == MyAttackType && nullptr != MissileRender)
 			 {
-				
+
 				 MissileRender->Off();
 			 }
 		 }
@@ -1246,11 +1274,11 @@ void Unit::StateInit()
 	);
 	FSM.CreateState(
 		{ .Name = "HoldAttack",
-		.Start = [this]() 
+		.Start = [this]()
 		{
 			//각도계산용
-			
-			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetLocalPosition());			
+
+			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetLocalPosition());
 			if (Angle < 10 || Angle >= 350)
 			{
 				Render0->ChangeAnimation("LAttack");
@@ -1317,34 +1345,35 @@ void Unit::StateInit()
 			}
 			PreAngle = Angle;
 		},
-		.Update = [this](float _DeltaTime) 
+		.Update = [this](float _DeltaTime)
 		{
 			if (Render0->IsAnimationEnd())
 			{
-				
+
 				if (nullptr == CopyObject || true == CopyObject->IsDeath())
 				{
 					CopyObject = nullptr;
 					FSM.ChangeState("Stay");
 					return;
-				}else
-				{
-					if (0 < CopyObject->CurHp)
-					{
-						CopyObject->CurHp -= (AddATK + ATK);
-
-					}
-					FSM.ChangeState("Stay");
 				}
-				
-			}
-		},
-		.End = []() {}
+else
+{
+	if (0 < CopyObject->CurHp)
+	{
+		CopyObject->CurHp -= (AddATK + ATK);
+
+	}
+	FSM.ChangeState("Stay");
+}
+
+}
+},
+.End = []() {}
 		}
 	);
 	FSM.CreateState(
 		{ .Name = "Die",
-		.Start = [this]() 
+		.Start = [this]()
 		{
 			GlobalValue::Collision->ClrAt(IndexX, IndexY);
 			Render0->ChangeAnimation("Die");
@@ -1366,7 +1395,7 @@ void Unit::StateInit()
 		.End = []() {}
 		}
 	);
-	
+
 	FSM.CreateState(
 		{ .Name = "MoveChase",
 		.Start = [this]() {
@@ -1653,7 +1682,7 @@ void Unit::StateInit()
 					{
 						FSM.ChangeState("Stay");
 						return;
-					}					
+					}
 					else if (false == IsNextTileCollision())
 					{
 
@@ -1671,7 +1700,7 @@ void Unit::StateInit()
 						FSM.ChangeState("MoveChase");
 					}
 
-					
+
 				}
 			}
 
@@ -1682,21 +1711,21 @@ void Unit::StateInit()
 		}
 		}
 	);
-	FSM.ChangeState("Stay");
+	//FSM.ChangeState("Stay");
 }
 
 void Unit::PathCal()
 {
-	
+
 	float4 MPos = MapEditor::ConvertPosToTileXY(TargetPos);
 	float4 UPos = MapEditor::ConvertPosToTileXY(GetTransform()->GetWorldPosition());
 
 	PathPos.clear();
-	
+
 	//Angle계산	
 	CalAngle(GetTransform()->GetLocalPosition(), TargetPos);
 	GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), MPos.iy(), JPSPathResult);
-		
+
 	if (JPSPathResult.size() == 0)
 	{
 		if (Angle < 45 || Angle >= 315)
@@ -1711,7 +1740,7 @@ void Unit::PathCal()
 				{
 					CloseXRight--;
 					_Y++;
-					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXRight, _Y, JPSPathResult);					
+					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXRight, _Y, JPSPathResult);
 					if (GlobalValue::Collision->IsOutBound(CloseXRight, _Y))
 					{
 						break;
@@ -1728,7 +1757,7 @@ void Unit::PathCal()
 				{
 					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXLeft, MPos.iy(), JPSPathResult);
 				}
-				
+
 			}
 		}
 		else if (Angle >= 45 && Angle < 135)
@@ -1744,7 +1773,7 @@ void Unit::PathCal()
 					CloseYUp++;
 					_X++;
 					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), _X, CloseYUp, JPSPathResult);
-					
+
 					if (GlobalValue::Collision->IsOutBound(_X, CloseYUp))
 					{
 						break;
@@ -1752,7 +1781,7 @@ void Unit::PathCal()
 				}
 			}
 			else
-			{				
+			{
 				if (abs(MPos.iy() - CloseYUp) <= abs(MPos.iy() - CloseYDown))
 				{
 					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), MPos.ix(), CloseYUp, JPSPathResult);
@@ -1776,7 +1805,7 @@ void Unit::PathCal()
 					CloseXLeft++;
 					_Y--;
 					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXLeft, _Y, JPSPathResult);
-					
+
 					if (GlobalValue::Collision->IsOutBound(CloseXLeft, _Y))
 					{
 						break;
@@ -1790,7 +1819,7 @@ void Unit::PathCal()
 					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXLeft, MPos.iy(), JPSPathResult);
 				}
 				else
-				{					
+				{
 					GlobalValue::JpsP.Search(UPos.ix(), UPos.iy(), CloseXRight, MPos.iy(), JPSPathResult);
 				}
 
@@ -1833,7 +1862,7 @@ void Unit::PathCal()
 	for (const JPSCoord& Point : JPSPathResult)
 	{
 		float4 ConvertPos = MapEditor::ConvertTileXYToPos(Point.m_x, Point.m_y);
-		
+
 		PathPos.push_back(ConvertPos);
 
 	}
@@ -1843,8 +1872,8 @@ bool Unit::IsNextTileCollision()
 {
 	int _IndexX = -1;
 	int _IndexY = -1;
-		
-	
+
+
 	if (Angle < 10 || Angle >= 350)
 	{
 		_IndexX = IndexX + 1;
@@ -1875,7 +1904,7 @@ bool Unit::IsNextTileCollision()
 		_IndexX = IndexX - 1;
 		_IndexY = IndexY + 1;
 		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
-	
+
 	}
 	if (Angle < 260 && Angle >= 190)
 	{
@@ -1884,7 +1913,7 @@ bool Unit::IsNextTileCollision()
 		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
 	}
 	if (Angle < 280 && Angle >= 260)
-	{	
+	{
 		_IndexX = IndexX + 1;
 		_IndexY = IndexY + 1;
 		return GlobalValue::Collision->IsCollision(_IndexX, _IndexY);
@@ -1906,7 +1935,7 @@ float4 Unit::ReturnIndexPlusPos()
 	int _IndexX = -1;
 	int _IndexY = -1;
 	float4 _Pos = float4::Zero;
-	
+
 	if (Angle < 10 || Angle >= 350)
 	{
 		_IndexX = IndexX + 1;
@@ -1920,7 +1949,7 @@ float4 Unit::ReturnIndexPlusPos()
 		_IndexY = IndexY - 1;
 		_Pos = { static_cast<float>(_IndexX),static_cast<float>(_IndexY) };
 		return _Pos;
-	}	
+	}
 	else if (Angle < 100 && Angle >= 80)
 	{
 		_IndexX = IndexX - 1;
@@ -1974,4 +2003,36 @@ float Unit::CalAngle(float4 _Pos1, float4 _Pos2)
 	float degree = CalAngle1To2(_Pos1, _Pos2);
 	Angle = degree;
 	return Angle;
+}
+
+void Unit::LevelSetting()
+{
+	if (nullptr != LevelRender)
+	{
+		LevelRender->GetTransform()->SetLocalScale({ 20.f,10.f });
+		LevelRender->GetTransform()->SetLocalPosition({ 0,40.f });
+		switch (Level)
+		{
+		case 1:
+			LevelRender->SetSprite("level.png", 0);
+			break;
+		case 2:
+			LevelRender->SetSprite("level.png", 1);
+			break;
+		case 3:
+			LevelRender->SetSprite("level.png", 2);
+			break;
+		case 4:
+			LevelRender->SetSprite("level.png", 3);
+			break;
+		case 5:
+			LevelRender->SetSprite("level.png", 4);
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	return;
 }

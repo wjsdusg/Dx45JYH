@@ -344,31 +344,18 @@ void MapEditor::Save(GameEngineSerializer& _Ser)
 }
 void MapEditor::Load(GameEngineSerializer& _Ser)
 {
-	for (int i = 0; i < MoveMarks.size(); i++)
-	{
-		MoveMarks[i]->Death();		
-	}
-	MoveMarks.clear();
+	
 
 	_Ser.Read(SaveNum);
 	
-	MoveMarks.resize(SaveNum);
+	
 	int x;
 	int y;
 	for (int i = 0; i < SaveNum; i++)
-	{
-		std::shared_ptr<class GameEngineComponent> NewComponent = CreateComponent<GameEngineComponent>();		
-		
-		
+	{		
 		_Ser.Read(x);
-		_Ser.Read(y);
-		NewComponent->GetTransform()->SetWorldPosition({ static_cast<float>(x),static_cast<float>(y) });		
-		NewComponent->GetTransform()->SetLocalScale({5.f,5.f,1.f });
-		MoveMarks[i]=NewComponent;
-		// 
-		//MoveMarks.push_back(NewComponent);
-		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
-		//GetTIleInfo(CheckPos)->IsMove = false;		 
+		_Ser.Read(y);		
+		float4 CheckPos = ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });			 
 		GlobalValue::Collision->SetAt(CheckPos.ix(), CheckPos.iy());
 			
 	}
@@ -421,7 +408,6 @@ float4 MapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
 float4  MapEditor::ConvertPosToTilePos(float4 _Pos)
 {
 	float4 CheckPos = _Pos - MapUpP;
-
 	size_t X = -1;
 	size_t Y = -1;
 	X = static_cast<size_t>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2.f);

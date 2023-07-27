@@ -121,9 +121,13 @@ void Building::Start()
 	}
 	
 	Object::Start();
-	float HalfY = Render0->GetTransform()->GetLocalScale().hy();
-	HalfY -= 10.f;
-	Render0->GetTransform()->SetLocalPosition({ 0,HalfY });
+	if (Team::Enemy == MyTeam)
+	{
+		float HalfY = Render0->GetTransform()->GetLocalScale().hy();
+		HalfY -= 10.f;
+		Render0->GetTransform()->SetLocalPosition({ 0,HalfY });
+	}
+	
 	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
 	SelectionCircle->Off();	
 	MyField = Field::DungeonMap;	
@@ -139,12 +143,7 @@ void Building::StateInit()
 		.Start = [this]()
 		{			
 			Render0->ChangeAnimation("Stay");
-			/*float4 _Pos = MapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-			IndexX = _Pos.ix();
-			IndexY = _Pos.iy();
-			float4 _Pos2 = MapEditor::ConvertTileXYToPos(IndexX, IndexY);
-			GetTransform()->SetLocalPosition(_Pos2);
-			GlobalValue::Collision->SetAt(IndexX, IndexY);*/
+			
 		},
 		.Update = [this](float _DeltaTime)
 		{

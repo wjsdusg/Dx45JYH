@@ -14,6 +14,7 @@ class Object : public GameEngineActor
 	friend class Optionsheet;
 	friend class Unit;
 	friend class RuinObject;
+	friend class Barrack;
 public:
 	// constrcuter destructer
 	Object();
@@ -45,6 +46,7 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
 	std::shared_ptr<class GameEngineSpriteRenderer> MissileRender;
 	std::shared_ptr<class GameEngineSpriteRenderer> SelectionCircle;
+	std::shared_ptr<class GameEngineSpriteRenderer> LevelRender;
 	std::shared_ptr<class GameEngineCollision> Collision;
 	std::shared_ptr<class GameEngineCollision> FOVCollision;
 	std::shared_ptr<class GameEngineCollision> TargetCol = nullptr;

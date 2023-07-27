@@ -49,6 +49,7 @@
 #include "RuinObject.h"
 #include "NormalObject1.h"
 #include "TreasureBox.h"
+#include "Barrack.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
@@ -91,8 +92,8 @@ std::shared_ptr<DefenseMapEditor> NewDefenseMapEditor = nullptr;
 std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
 std::shared_ptr<RuinObject> NewRuinObject = nullptr;
 std::shared_ptr<NormalObject1> NewNormalObject1 = nullptr;
-std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
-
+std::shared_ptr<TreasureBox> NewTreasureBox = nullptr; 
+std::shared_ptr<Barrack> NewBarrack = nullptr;
 PlayLevel::PlayLevel()
 {
 }
@@ -641,6 +642,7 @@ void PlayLevel::Start()
 	}
 
 	NewMouse = CreateActor<Mouse>();
+	NewBarrack = CreateActor<Barrack>();
 	/*for (int i = 0; i < 5; i++)
 	{
 	 NewKsword = CreateActor<Ksword>();
@@ -703,6 +705,15 @@ void PlayLevel::Start()
 			GameEngineSerializer Ser;
 			NewFile.LoadBin(Ser);
 			NewDefenseMapEditor->Load(Ser);
+		}
+		{
+			GameEngineDirectory NewDir2;
+			NewDir2.MoveParentToDirectory("ContentsBin");
+			NewDir2.Move("ContentsBin");
+			GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("UnitsCreatePos.data").GetFullPath());
+			GameEngineSerializer Ser;
+			NewFile.LoadBin(Ser);
+			NewBarrack->SummonPosLoad(Ser);
 		}
 	}
 	if (nullptr != NewMapEditor) {

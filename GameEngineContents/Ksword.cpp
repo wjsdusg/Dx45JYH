@@ -69,8 +69,8 @@ void Ksword::Start()
 	Render0->CreateAnimation({ "UpAttack", "swordk.png",72,79,AttackSpeed / 8.f,true,true });
 	Render0->CreateAnimation({ "DownAttack", "swordk.png",80,87,AttackSpeed / 8.f,true,true });
 	Render0->CreateAnimation({ "Die", "swordk.png",40,47,0.1f,false,true});
-	//GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(11, 10));
-	GetTransform()->SetLocalPosition({100.f,100.f});
+	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(1, 1));
+	//GetTransform()->SetLocalPosition({100.f,100.f});
 	MyTeam = Team::Mine;
 	MyAttackType = AttackType::Near;
 	Unit::Start();

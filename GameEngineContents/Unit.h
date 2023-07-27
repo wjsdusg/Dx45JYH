@@ -12,6 +12,7 @@ class Unit : public Object
 	friend class PlayLevel;
 	friend class Optionsheet;
 	friend class Building;
+	friend class Barrack;
 	
 public:
 	// constrcuter destructer
@@ -54,7 +55,7 @@ protected:
 	static float AddSpeed;
 	float AngleBetween = 0;
 	float PreAngle = 0;
-	
+	int Level = 1;
 	
 	int UnitID = -1;
 	void StateInit() override;
@@ -76,6 +77,7 @@ private:
 	float4 ReturnIndexPlusPos();
 	
 	std::shared_ptr<Object> CopyObject;
-	
+	void LevelSetting();
+	bool IsShamonAniEnd = false;
 };
 

@@ -1166,8 +1166,16 @@ else
 		{ .Name = "Die",
 		.Start = [this]()
 		{
-			DefenseGlobalValue::Collision->ClrAt(IndexX, IndexY);
-			Render0->ChangeAnimation("Die");
+			
+			if (CurHp > 10)
+			{
+				Render0->ChangeAnimation("ShomenDie");
+			}
+			else
+			{
+				Render0->ChangeAnimation("Die");
+			}
+			
 			auto it = std::find(Units.begin(), Units.end(), DynamicThis<Unit>());
 			if (it != Units.end())
 			{
@@ -1180,10 +1188,14 @@ else
 		{
 			if (true == Render0->IsAnimationEnd())
 			{
+				DefenseGlobalValue::Collision->ClrAt(IndexX, IndexY);
 				Death();
 			}
 		},
-		.End = []() {}
+		.End = [this]()
+		{
+			
+		}
 		}
 	);
 
@@ -1502,7 +1514,109 @@ else
 		}
 		}
 	);
-	DefenseMapFSM.ChangeState("Stay");
+
+	DefenseMapFSM.CreateState(
+		{ .Name = "Summoning",
+		.Start = [this]()
+		{
+			/*if (false == IsShamonAniEnd)
+			{
+				Render0->ChangeAnimation("Shomen");
+			}
+			else
+			{*/
+				if (Angle < 10 || Angle >= 350)
+			{
+				Render0->ChangeAnimation("LStay");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+			else if (Angle < 80 && Angle >= 10)
+			{
+				Render0->ChangeAnimation("LUp45Stay");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+
+			else if (Angle < 100 && Angle >= 80)
+			{
+				Render0->ChangeAnimation("UpStay");
+			}
+			else if (Angle < 170 && Angle >= 100)
+			{
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+				Render0->ChangeAnimation("LUp45Stay");
+			}
+			else if (Angle < 190 && Angle >= 170)
+			{
+				Render0->ChangeAnimation("LStay");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			else if (Angle < 260 && Angle >= 190)
+			{
+				Render0->ChangeAnimation("LDown45Stay");
+				if (true == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = false;
+				}
+			}
+			else if (Angle < 280 && Angle >= 260)
+			{
+				Render0->ChangeAnimation("DownStay");
+
+			}
+			else if (Angle < 350 && Angle >= 280)
+			{
+				Render0->ChangeAnimation("LDown45Stay");
+				if (false == IsFlip)
+				{
+					Render0->SetFlipX();
+					IsFlip = true;
+				}
+			}
+		//	}
+			
+			float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+			IndexX = _Pos.ix();
+			IndexY = _Pos.iy();
+			float4 _Pos2 = DefenseMapEditor::ConvertTileXYToPos(IndexX, IndexY);
+			GetTransform()->SetLocalPosition(_Pos2);
+			DefenseGlobalValue::Collision->SetAt(IndexX, IndexY);
+		},
+		.Update = [this](float _DeltaTime)
+		{			
+			float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+			if (IndexX != _Pos.x || IndexY != _Pos.y)
+			{
+				DefenseGlobalValue::Collision->ClrAt(IndexX, IndexY);
+				IndexX = _Pos.ix();
+				IndexY = _Pos.iy();
+				float4 _Pos2 = DefenseMapEditor::ConvertTileXYToPos(IndexX, IndexY);
+				GetTransform()->SetLocalPosition(_Pos2);
+				DefenseGlobalValue::Collision->SetAt(IndexX, IndexY);
+			}
+
+		},
+		.End = []() {}
+		}
+	);
+
+	DefenseMapFSM.ChangeState("Summoning");
 }
 
 void Unit::DefenseMapPathCal()
