@@ -61,6 +61,9 @@
     <Filter Include="StageManager">
       <UniqueIdentifier>{837a7f65-a0b9-49ad-a2bf-5253ec27337f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manger">
+      <UniqueIdentifier>{12bcd171-ddb2-41ef-9b8f-7175f9ff9526}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TitleLevel.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="StageManager.h">
       <Filter>StageManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Manger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="MouseState.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Manger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

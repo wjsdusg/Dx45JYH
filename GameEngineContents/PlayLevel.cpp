@@ -20,22 +20,9 @@
 #include "MapOverlay.h"
 #include "Ksword.h"
 #include "Karcher.h"
-#include "Monster_01.h"
-#include "Frog.h"
-#include "Gangsi.h"
-#include "Gatpha.h"
-#include "HungryDemon.h"
-#include "Onghwa.h"
-#include "Raccoondog.h"
-#include "Snowdemon.h"
-#include "Snowwoman.h"
-
-#include "Tiger.h"
-#include "WeirdPlant.h"
-#include "SwordPirate.h"
 #include "TestObject.h"
 #include "UIButton.h"
-
+#include "Minion.h"
 #include "Gonisi.h"
 #include "Asako.h"
 #include "Gato.h"
@@ -43,6 +30,7 @@
 #include "Tokugawa.h"
 #include "Ugida.h"
 #include "Wakizaka.h"
+
 #include "MapEditor.h"
 #include "DefenseMapEditor.h"
 #include "Optionsheet.h"
@@ -50,6 +38,7 @@
 #include "NormalObject1.h"
 #include "TreasureBox.h"
 #include "Barrack.h"
+#include "GameManager.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
@@ -62,20 +51,7 @@ std::shared_ptr<Ksword> NewKsword2 = nullptr;
 std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
 std::shared_ptr<Karcher>NewKarcher = nullptr;
 std::shared_ptr<Object>NewObject = nullptr;
-std::shared_ptr<Monster_01>NewMonster = nullptr;
-std::shared_ptr<Frog>NewForg = nullptr;
 
-std::shared_ptr<Gangsi> NewGangsi = nullptr;
-std::shared_ptr<Gatpha> NewGatpha = nullptr;
-std::shared_ptr<HungryDemon> NewHungryDemon = nullptr;
-std::shared_ptr<Onghwa> NewOnghwa = nullptr;
-std::shared_ptr<Raccoondog> NewRaccoondog = nullptr;
-std::shared_ptr<Snowdemon> NewSnowdemon = nullptr;
-std::shared_ptr<Snowwoman> NewSnowwoman = nullptr;
-
-std::shared_ptr<Tiger> NewTiger = nullptr;
-std::shared_ptr<WeirdPlant> NewWeirdPlant = nullptr;
-std::shared_ptr<SwordPirate> NewSwordPirate = nullptr;
 
 std::shared_ptr<Gonisi> NewGonisi = nullptr;
 std::shared_ptr<Asako> NewAsako = nullptr;
@@ -93,7 +69,8 @@ std::shared_ptr<Optionsheet> NewOptionsheet = nullptr;
 std::shared_ptr<RuinObject> NewRuinObject = nullptr;
 std::shared_ptr<NormalObject1> NewNormalObject1 = nullptr;
 std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
-std::shared_ptr<Barrack> NewBarrack = nullptr;
+std::shared_ptr<Barrack> NewBarrack = nullptr; 
+std::shared_ptr<GameManager> NewGameManager = nullptr;
 PlayLevel::PlayLevel()
 {
 	MainPlayLevel = this;
@@ -123,6 +100,10 @@ extern float4 TileScale;
 PlayLevel* PlayLevel::MainPlayLevel = nullptr;
 void PlayLevel::Update(float _DeltaTime)
 {
+	if (nullptr == NewGameManager && true == GameEngineInput::IsUp("F2")) 
+	{
+		NewGameManager = CreateActor<GameManager>();
+	}
 	if (true == GameEngineInput::IsUp("G"))
 	{
 		NewBarrack->GotoDengeon();	
@@ -723,7 +704,6 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewMapEditor->Load(Ser);
 	}
-
 	{
 		GameEngineDirectory NewDir2;
 		NewDir2.MoveParentToDirectory("ContentsBin");
@@ -742,50 +722,9 @@ void PlayLevel::Start()
 		NewFile.LoadBin(Ser);
 		NewBarrack->RespawnPosLoad(Ser);
 	}
+	MyField = Field::DefenseMap;	
 
-
-	//NewKarcher = CreateActor<Karcher>();
-
-	//{
-	NewMonster = CreateActor<Monster_01>();
-	//NewForg = CreateActor<Frog>();
-
-	//NewGangsi = CreateActor<Gangsi>();
-
-	//NewGatpha = CreateActor<Gatpha>();
-
-	//NewHungryDemon = CreateActor<HungryDemon>();
-
-	//NewOnghwa = CreateActor<Onghwa>();
-
-	//NewRaccoondog = CreateActor<Raccoondog>();
-
-	//NewSnowdemon = CreateActor<Snowdemon>();
-
-	//NewSnowwoman = CreateActor<Snowwoman>();
-
-	//NewSwordPirate = CreateActor<SwordPirate>();
-
-	//NewTiger = CreateActor<Tiger>();
-
-	//NewWeirdPlant = CreateActor<WeirdPlant>();
-
-	MyField = Field::DefenseMap;
-	//	NewGonisi = CreateActor<Gonisi>();
-	//	NewGonisi->GetTransform()->SetLocalPosition({ 450,-400 });
-	//	NewAsako = CreateActor<Asako>();
-	//	NewAsako->GetTransform()->SetLocalPosition({ 450,-350 });
-	//}
-
-	/*if (nullptr != NewMapEditor) {
-		GameEngineDirectory NewDir2;
-		NewDir2.MoveParentToDirectory("ContentsBin");
-		NewDir2.Move("ContentsBin");
-		GameEngineFile NewFile = GameEngineFile(NewDir2.GetPlusFileName("IsMoveSave444.data").GetFullPath());
-		GameEngineSerializer Ser;
-		NewFile.LoadBin(Ser);
-		NewMapEditor->Load(Ser);
-	}*/
+	
 	GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
 }
 

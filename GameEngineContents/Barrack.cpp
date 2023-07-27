@@ -372,6 +372,10 @@ void Barrack::GotoDenFensceMap()
 				if (false == DefenseGlobalValue::Collision->IsCollision(nx, ny))
 				{
 					float4 Pos = DefenseMapEditor::ConvertTileXYToPos(nx, ny);
+					if (0 == DoorUnits.size())
+					{
+						return;
+					}
 					if (nullptr != DoorUnits[num])
 					{
 						if (DoorUnits[num]->IsDeath())

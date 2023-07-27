@@ -38,6 +38,7 @@ public:
 	{
 		return Collision;
 	}
+	static int Money;
 protected:
 	void Start();
 	void Update(float _DeltaTime);
@@ -78,7 +79,7 @@ protected:
 	static float AddAttackSpeed;
 	static float AddAttackRange;
 	static int AddShield;
-	static int Money;
+	
 private:
 	void ObjectsSetTile();
 

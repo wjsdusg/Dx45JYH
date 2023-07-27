@@ -68,8 +68,7 @@ void Building::Update(float _DeltaTime)
 	}
 	if (MyTeam == Team::Enemy)
 	{
-		std::string str3 = "Àû";
-		str3 += "\n";
+		std::string str3 = "";
 		std::string str4 = std::to_string(CurHp);
 		str3 += str4;
 		str3 += "/";

@@ -2,7 +2,7 @@
 #include "Minion.h"
 #include "DefenseMapEditor.h"
 #include "ContentsEnum.h"
-
+#include <GameEngineCore/GameEngineFontRenderer.h>
 Minion::Minion()
 {
 
@@ -20,7 +20,14 @@ int Minion::GetMoney = 5;
 void Minion::Update(float _DeltaTime)
 {
 	FSM.Update(_DeltaTime);
+	std::string str3;
+	std::string str4 = std::to_string(CurHp);
+	str3 += str4;
+	str3 += "/";
+	str4 = std::to_string(HP);
+	str3 += str4;
 
+	FontRender0->SetText(str3);
 }
 void Minion::Start()
 {
@@ -51,6 +58,12 @@ void Minion::Start()
 		GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(2,2));
 		InsideStateInit();
 		IsOutside = !IsOutside;
+	}
+	{
+		FontRender0 = CreateComponent<GameEngineFontRenderer>();
+		FontRender0->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+		FontRender0->SetScale({ 15.f });
+		//FontRender0->GetTransform()->SetLocalPosition({ 0,-10.f });
 	}
 }
 

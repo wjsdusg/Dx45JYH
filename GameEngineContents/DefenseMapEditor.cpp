@@ -21,7 +21,7 @@ DefenseMapEditor::~DefenseMapEditor()
 
 void DefenseMapEditor::Update(float _DeltaTime)
 {
-	float4 Pos = Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
+	/*float4 Pos = Mouse::NewMainMouse->Collision->GetTransform()->GetLocalPosition();
 	float4 _Pos = ConvertPosToTileXY(Pos);
 	Pos -= DefenseMap::MainDefenseMap->GetTransform()->GetWorldPosition();
 	Pos.y-= DefenseMap::MainDefenseMap->Render0->GetTransform()->GetLocalScale().y / 2;
@@ -84,7 +84,7 @@ void DefenseMapEditor::Update(float _DeltaTime)
 		str2 += str3;
 		std::string_view Index = str2;
 		FontRender3->SetText(Index);
-	}
+	}*/
 }
 
 void DefenseMapEditor::Start()

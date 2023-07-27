@@ -18,7 +18,7 @@ public:
 	Minion& operator=(Minion&& _Other) noexcept = delete;
 	static void OutSideTargetPosLoad(GameEngineSerializer& _Ser);
 	static void InSideTargetPosLoad(GameEngineSerializer& _Ser);
-	
+	static int MinionNum;
 protected:
 	void Start();
 	void Update(float _DeltaTime);
@@ -29,8 +29,9 @@ private:
 	std::vector<float4> MPathPos;
 	void InsideStateInit();
 	void OutsideStateInit();
+	std::shared_ptr<class GameEngineFontRenderer> FontRender0;
 	static bool IsOutside;
-	static int MinionNum;
+	
 	static int GetMoney;
 };
 

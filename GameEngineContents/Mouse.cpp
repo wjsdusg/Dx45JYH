@@ -175,6 +175,7 @@ void Mouse::GetMoveMark(float4 _Pos)
 	MouseMarkRender->ChangeAnimation("Mark");
 	MouseMarkRender->GetTransform()->SetLocalScale({ 40.f,40.f,1.f });
 	MouseMarkRender->GetTransform()->SetWorldPosition(Render0->GetTransform()->GetLocalPosition());
+	MouseMarkRender->GetTransform()->AddLocalPosition({ -20.f,20.f });
 
 }
 
