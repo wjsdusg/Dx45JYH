@@ -46,6 +46,7 @@ void DefenseMap::Start()
 	Render1->SetTexture("defense.png");
 	Render1->GetTransform()->SetLocalScale({ 44,22 });
 	Render1->GetTransform()->SetWorldPosition(Pos);
+	Render1->SetOrder(-10);
 }
 
 // 이건 디버깅용도나 

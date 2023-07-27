@@ -506,6 +506,8 @@ void Barrack::RespawnPosLoad(GameEngineSerializer& _Ser)
 void Barrack::GotoDengeon()
 {
 	PlayLevel::MainPlayLevel->SetField(Field::DungeonMap);
+	PlayLevel::MainPlayLevel->BgmPlayer.Stop();
+	PlayLevel::MainPlayLevel->BgmPlayer= GameEngineSound::Play("Track05.mp3");
 	Mouse::NewMainMouse->SetMyField(Field::DungeonMap);
 
 	if (0 != DoorUnits.size() && 0 != RespawnPos.size())
@@ -520,11 +522,14 @@ void Barrack::GotoDengeon()
 		GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(DoorUnits[0]->GetTransform()->GetWorldPosition());
 		//DoorUnits.clear();
 	}
+
 }
 
 void Barrack::GotoDenFensceMap()
 {
 	PlayLevel::MainPlayLevel->SetField(Field::DefenseMap);
+	PlayLevel::MainPlayLevel->BgmPlayer.Stop();
+	PlayLevel::MainPlayLevel->BgmPlayer = GameEngineSound::Play("Track02.mp3");
 	Mouse::NewMainMouse->SetMyField(Field::DefenseMap);
 
 	GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition({ 4800.f,-2400.f });

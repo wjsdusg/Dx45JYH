@@ -99,8 +99,9 @@ void Unit::Update(float _DeltaTime)
 		}
 		DefenseMapFSM.Update(_DeltaTime);
 	}
-	else if (MyField == Field::DungeonMap && Team::Mine == MyTeam)
+	else if (MyField == Field::DungeonMap)
 	{
+		if(Team::Mine == MyTeam)
 		{
 			float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
 			for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)

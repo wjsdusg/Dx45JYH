@@ -5,11 +5,11 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
-#include <GameEngineCore/GameEngineVideo.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineButton.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include "GlobalValue.h"
 #include "Mouse.h"
 #include "Object.h"
@@ -207,19 +207,7 @@ void PlayLevel::Update(float _DeltaTime)
 			if (
 				true == GameEngineInput::IsPress("Down")
 				&& GetMainCamera()->GetTransform()->GetLocalPosition().y >= -(MapSize.y / 2 - GameEngineWindow::GetScreenSize().y / 2)
-				||
-				(
-					UIMouse.y <= -(GameEngineWindow::GetScreenSize().y / 2 - 20)
-					&& UIMouse.y >= -(GameEngineWindow::GetScreenSize().y / 2)
-					&& (
-						UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2 - NewMiniMap->Render0->GetTransform()->GetLocalScale().x)
-						||
-						(
-							UIMouse.x >= -(GameEngineWindow::GetScreenSize().x / 2)
-							&& UIMouse.x <= -(GameEngineWindow::GetScreenSize().x / 2 - 60)
-							)
-						)
-					)
+				
 				)
 			{
 
@@ -387,7 +375,7 @@ void PlayLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsUp("Space"))
 	{
 		GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
-		MyField = Field::DefenseMap;
+		//MyField = Field::DefenseMap;
 	}
 	{
 		/*if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
@@ -493,7 +481,17 @@ void PlayLevel::OutlineCheck(float4& _Pos)
 
 void PlayLevel::Start()
 {
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Bgm");
 
+		GameEngineSound::Load(NewDir.GetPlusFileName("Track02.mp3").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("Track05.mp3").GetFullPath());
+		BgmPlayer= GameEngineSound::Play("Track02.mp3");
+		BgmPlayer.SetLoop(5);
+	}
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -547,14 +545,14 @@ void PlayLevel::Start()
 
 	NewUIPannel = CreateActor<UIPannel>();
 	NewMiniMap = CreateActor<MiniMap>();
-
+	
 	MiniViewRatio = MiniMapSize / MapSize;
 	NewMiniMap->GetTransform()->SetLocalPosition(NewUIPannel->GetTransform()->GetLocalPosition());
 	NewMiniMap->GetTransform()->AddLocalPosition({ -458.f,-27.f });
 	NewMapOverlay = CreateActor<MapOverlay>();
 	NewMapOverlay->GetTransform()->SetLocalPosition(MapUpP);
-
 	NewDefenseMap = CreateActor<DefenseMap>();
+	
 
 	NewMapEditor = CreateActor<MapEditor>();
 	NewMapEditor->CreateTileEditor(180, 180, TileScale);

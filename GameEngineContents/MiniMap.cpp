@@ -59,6 +59,7 @@ void MiniMap::Start()
 	
 	Render1 = CreateComponent<GameEngineUIRenderer>();
 	Render1->SetTexture("MiniViewPortBox.png");
+	Render1->SetOrder(10);
 	MiniMapOverlay = CreateComponent<GameEngineUIRenderer>();
 	
 	

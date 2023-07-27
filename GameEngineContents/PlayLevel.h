@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore\GameEngineLevel.h>
 #include <GameEngineBase/GameEngineAstar.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include "ContentsEnum.h"
 // Ό³Έν :
 class PlayLevel : public GameEngineLevel
@@ -23,6 +24,8 @@ public:
 	{
 		MyField= _Field;
 	}
+	GameEngineSoundPlayer BgmPlayer;
+	
 protected:
 	void Update(float _DeltaTime) override;
 	void Start() override;
@@ -34,6 +37,6 @@ private:
 	void OutlineCheck(float4& _Pos);
 	void PlayerCreate();
 	Field MyField = Field::Max;
-
+	
 };
 
