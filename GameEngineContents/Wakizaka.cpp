@@ -73,8 +73,13 @@ void Wakizaka::Start()
 	Render0->ChangeAnimation("LStay");
 
 	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(1, 1));
+	MissileRender = CreateComponent<GameEngineSpriteRenderer>();
+	MissileRender->SetTexture("BULLET.tga");
+	MissileRender->GetTransform()->SetLocalScale({ 30.f,40.f });
+	MissileRender->Off();
+
 	MyTeam = Team::Mine;
-	MyAttackType = AttackType::Near;
+	MyAttackType = AttackType::Far;
 
 	Unit::Start();
 	Hero::Start();

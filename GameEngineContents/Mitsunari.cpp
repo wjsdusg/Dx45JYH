@@ -73,8 +73,13 @@ void Mitsunari::Start()
 	Render0->ChangeAnimation("LStay");
 
 	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(1, 1));
+	MissileRender = CreateComponent<GameEngineSpriteRenderer>();
+	MissileRender->SetTexture("arrow.tga");
+	MissileRender->SetScaleToTexture("arrow.tga");
+	MissileRender->Off();
+
 	MyTeam = Team::Mine;
-	MyAttackType = AttackType::Near;
+	MyAttackType = AttackType::Far;
 
 	Unit::Start();
 	Hero::Start();

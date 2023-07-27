@@ -23,9 +23,9 @@ bool check = false;
 void RuinObject::Update(float _DeltaTime)
 {
 	Building::Update(_DeltaTime);
-	if (GetLiveTime() > 2.f&&check==false)
+	if (CurHp!=HP&&check==false)
 	{
-		//FSM.ChangeState("Die");
+		
 		ArrEnemyunit();
 		check = true;
 	}
@@ -67,7 +67,7 @@ void RuinObject::Start()
 	//float4 sdsd = Render0->GetTransform()->GetLocalScale();
 	
 	Collision->SetColType(ColType::AABBBOX2D);
-	Collision->SetOrder(static_cast<int>(ColEnum::Building));
+	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 	MyTeam = Team::Enemy;
 	MyBuildingType = BuildingType::IncludeUnit;
 
@@ -80,6 +80,7 @@ void RuinObject::Start()
 	for (int i = 0; i < EnemyNum; i++)
 	{
 		EnemyUnits[i] = GetLevel()->CreateActor<Ksword>();
+		EnemyUnits[i]->MyField = Field::DungeonMap;
 		EnemyUnits[i]->Render0->ColorOptionValue.Switch.x = 1;
 		EnemyUnits[i]->Off();
 	}

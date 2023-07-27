@@ -183,6 +183,7 @@
     <ClInclude Include="Gatpha.h" />
     <ClInclude Include="GlobalValue.h" />
     <ClInclude Include="Gonisi.h" />
+    <ClInclude Include="GotoDefenseMapZone.h" />
     <ClInclude Include="HeoJun.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HungryDemon.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="Gatpha.cpp" />
     <ClCompile Include="GlobalValue.cpp" />
     <ClCompile Include="Gonisi.cpp" />
+    <ClCompile Include="GotoDefenseMapZone.cpp" />
     <ClCompile Include="HeoJun.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="HungryDemon.cpp" />

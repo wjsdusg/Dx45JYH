@@ -62,7 +62,7 @@ void NormalObject1::Start()
 	//Render0->SetScaleRatio(1.5f);
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->SetColType(ColType::AABBBOX2D);
-	Collision->SetOrder(static_cast<int>(ColEnum::Building));
+	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 
 	MyTeam = Team::Enemy;
 	MyBuildingType = BuildingType::NotUnit;

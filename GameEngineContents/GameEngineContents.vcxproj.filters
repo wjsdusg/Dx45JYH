@@ -263,6 +263,9 @@
     <ClInclude Include="GameManager.h">
       <Filter>Manger</Filter>
     </ClInclude>
+    <ClInclude Include="GotoDefenseMapZone.h">
+      <Filter>Object\Building\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayLevel.cpp">
@@ -470,6 +473,9 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Manger</Filter>
+    </ClCompile>
+    <ClCompile Include="GotoDefenseMapZone.cpp">
+      <Filter>Object\Building\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

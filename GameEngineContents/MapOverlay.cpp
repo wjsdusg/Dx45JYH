@@ -42,29 +42,29 @@ void MapOverlay::Update(float _DeltaTime)
 void MapOverlay::Start()
 {
 
-	//if (nullptr == GameEngineSprite::Find("FOGWAR.png"))
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("ContentResources");
-	//	NewDir.Move("ContentResources");
-	//	NewDir.Move("Texture");
-	//	GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("FOGWAR.png").GetFullPath(), 3, 1);
-	//}	
+	if (nullptr == GameEngineSprite::Find("FOGWAR.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("FOGWAR.png").GetFullPath(), 3, 1);
+	}	
 
-	////int s = gcd(MapUpP.y, MapRightP.x);
-	////IsoTileScale.y = MapUpP.y / s/2;
-	////IsoTileScale.x = MapRightP.x / s/2;
-	//
-	//TileMap = CreateComponent<GameEngineTileMapRenderer>();
-	//TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(),0 ,IsoTileScale, IsoTileScale*1.2f,TileMapMode::Iso);
-	//TileMap->TilemapCullingOn();
-	//for (size_t y = 0; y < TileMap->GetCount().y; y++)
-	//{
-	//	for (size_t x = 0; x < TileMap->GetCount().x; x++)
-	//	{
-	//		TileMap->SetTile(x, y, "FOGWAR.png", 0);
-	//	}
-	//}
+	//int s = gcd(MapUpP.y, MapRightP.x);
+	//IsoTileScale.y = MapUpP.y / s/2;
+	//IsoTileScale.x = MapRightP.x / s/2;
+	
+	TileMap = CreateComponent<GameEngineTileMapRenderer>();
+	TileMap->CreateTileMap(CalculateSideRhombusCount(), CalculateSideRhombusCount(),0 ,IsoTileScale, IsoTileScale,TileMapMode::Iso);
+	TileMap->TilemapCullingOn();
+	for (size_t y = 0; y < TileMap->GetCount().y; y++)
+	{
+		for (size_t x = 0; x < TileMap->GetCount().x; x++)
+		{
+			TileMap->SetTile(x, y, "FOGWAR.png", 0);
+		}
+	}
 	
 }
 

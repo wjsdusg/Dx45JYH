@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
 #include "GlobalValue.h"
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
@@ -17,7 +18,8 @@ extern float CalAngle1To2(float4 _Pos1, float4 _Pos2);
 extern float4 MainMouse;
 extern float4 IsoTileScale;
 extern float4 MapUpP;
-
+std::shared_ptr<class GameEngineUIRenderer> Building::ItemBoxRender=nullptr;
+std::shared_ptr<class GameEngineUIRenderer> Building::ItemrRender = nullptr;
 
 Building::Building()
 {	
@@ -118,6 +120,16 @@ void Building::Update(float _DeltaTime)
 }
 void Building::Start()
 {
+
+	if (nullptr == GameEngineSprite::Find("Item.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		NewDir.Move("Test");
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Item.png").GetFullPath(), 10, 3);
+	}
 	{
 		FontRender0 = CreateComponent<GameEngineFontRenderer>();		
 		FontRender0->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
@@ -135,10 +147,24 @@ void Building::Start()
 	
 	SelectionCircle = CreateComponent<GameEngineSpriteRenderer>();
 	SelectionCircle->Off();	
-	MyField = Field::DungeonMap;	
+	//MyField = Field::DungeonMap;	
 	StateInit();
 	HP = 50;
 	CurHp = 50;
+	if (nullptr == ItemBoxRender)
+	{
+		ItemBoxRender = CreateComponent<GameEngineUIRenderer>();
+		ItemBoxRender->GetTransform()->SetLocalScale({ 120,120,1.f });
+		ItemBoxRender->SetTexture("itemget.png");		
+		ItemBoxRender->GetTransform()->SetWorldPosition({0, GameEngineWindow::GetScreenSize().hy()-60.f });
+		ItemrRender = CreateComponent<GameEngineUIRenderer>();
+		ItemrRender->SetSprite("Item.png",1);
+		ItemrRender->GetTransform()->SetLocalScale({ 100,100,1.f });
+		ItemrRender->GetTransform()->SetWorldPosition({ 0, GameEngineWindow::GetScreenSize().hy() - 60.f });
+		ItemBoxRender->Off();
+		ItemrRender->Off();
+	}
+	
 }
 
 void Building::StateInit()
@@ -152,7 +178,10 @@ void Building::StateInit()
 		},
 		.Update = [this](float _DeltaTime)
 		{
-
+			if (0 >= CurHp)
+			{
+				FSM.ChangeState("Die");
+			}
 			/*if (nullptr != FOVCollision && nullptr != FOVCollision->Collision(ColEnum::Unit,ColType::SPHERE2D,ColType::AABBBOX2D))
 			{
 				TargetCol = FOVCollision->Collision(ColEnum::Unit, ColType::SPHERE2D, ColType::AABBBOX2D);
@@ -213,11 +242,17 @@ void Building::StateInit()
 				GlobalValue::Collision->ClrAt(TileCollsionSetPos[i].ix(), TileCollsionSetPos[i].iy());
 			}
 			this->ObjectDeath();
+			ItemBoxRender->On();
+			ItemrRender->On();
+			int index =GameEngineRandom::MainRandom.RandomInt(0, 29);
+			ItemrRender->SetSprite("Item.png", index);
 		},
 		.Update = [this](float _DeltaTime)
 		{
 			if (true == Render0->IsAnimationEnd())
 			{
+				ItemBoxRender->Off();
+				ItemrRender->Off();
 				Death();
 			}
 		},
@@ -297,7 +332,9 @@ void Building::ArrEnemyunit()
 					if (nullptr != EnemyUnits[num])
 					{
 						EnemyUnits[num]->On();
+						EnemyUnits[num]->MyField = Field::DungeonMap;
 						EnemyUnits[num]->GetTransform()->SetLocalPosition(Pos);
+						EnemyUnits[num]->FSM.ChangeState("Stay");
 						EnemyUnits[num]->SetTeam(Team::Enemy);
 						num++;
 					}					

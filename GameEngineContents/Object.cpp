@@ -5,6 +5,7 @@
 #include "MapOverlay.h"
 #include "Unit.h"
 #include "MiniMap.h"
+#include "PlayLevel.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 extern float4 IsoTileScale;
 extern float4 MiniViewRatio;
@@ -29,7 +30,12 @@ Object::~Object()
 
 void Object::Update(float _DeltaTime)
 {	
-	ObjectsSetTile();	
+	if (Field::DungeonMap == PlayLevel::MainPlayLevel->GetField())
+	{
+		ObjectsSetTile();
+	}
+	
+
 	std::vector<std::shared_ptr<Object>>::iterator StartObject = Objects.begin();
 	std::vector<std::shared_ptr<Object>>::iterator EndObject = Objects.end();
 	std::vector<std::shared_ptr<GameEngineUIRenderer>>::iterator StartRenders = MiniMap::MainMiniMap->MiniPoints.begin();
@@ -85,21 +91,25 @@ void Object::Start()
 void Object::ObjectsSetTile()
 {
 	
-	/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
+	float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
 	for (std::shared_ptr<Object> NewObject : Objects)
 	{
-		for (float i = NewObject->GetTransform()->GetWorldPosition().y - FOV; i <= NewObject->GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
+		if (NewObject->MyField == Field::DungeonMap&& NewObject->MyTeam == Team::Mine)
 		{
-			for (float j = NewObject->GetTransform()->GetWorldPosition().x - FOV; j <= NewObject->GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x / 2)
+			for (float i = NewObject->GetTransform()->GetWorldPosition().y - FOV; i <= NewObject->GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
 			{
-				float4 Pos2{ j,i };
-				if (FOV >= Pos2.XYDistance(NewObject->GetTransform()->GetWorldPosition()))
+				for (float j = NewObject->GetTransform()->GetWorldPosition().x - FOV; j <= NewObject->GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x / 2)
 				{
-					MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 2);
+					float4 Pos2{ j,i };
+					if (FOV >= Pos2.XYDistance(NewObject->GetTransform()->GetWorldPosition()))
+					{
+						MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 2);
+					}
 				}
 			}
 		}
-	}*/
+		
+	}
 		
 	
 }

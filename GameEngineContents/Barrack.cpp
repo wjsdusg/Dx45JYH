@@ -43,7 +43,7 @@ void Barrack::Update(float _DeltaTime)
 	if (GetLiveTime() > 2.f)
 	{
 		Synthesis();
-		CreateUnit(5);
+		CreateUnit(3);
 		ResetLiveTime();
 
 	}
@@ -52,27 +52,31 @@ void Barrack::Update(float _DeltaTime)
 
 	//if (true == DoorRender->IsUpdate())
 	{
-		std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-
-		if (DoorCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 != ColTest.size())
+		if (true == DoorCollision->IsUpdate())
 		{
-			for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-			{
-				std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
-				if (nullptr == NewUnit)
-				{
-					continue;
-				}
-				else
-				{
-					if (Team::Mine == NewUnit->MyTeam)
-					{
-						MoveDoorPos(NewUnit);
-					}
+			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
+			if (DoorCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 != ColTest.size())
+			{
+				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				{
+					std::shared_ptr<Unit> NewUnit = Col->GetActor()->DynamicThis<Unit>();
+					if (nullptr == NewUnit)
+					{
+						continue;
+					}
+					else
+					{
+						if (Team::Mine == NewUnit->MyTeam)
+						{
+							MoveDoorPos(NewUnit);
+						}
+
+					}
 				}
 			}
 		}
+		
 	}
 }
 //
@@ -117,7 +121,7 @@ void Barrack::Start()
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 	Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
 	MyTeam = Team::Mine;
-
+	MyField = Field::DefenseMap;
 	Building::Start();
 
 	DoorRender = CreateComponent<GameEngineSpriteRenderer>();
@@ -129,7 +133,8 @@ void Barrack::Start()
 	DoorCollision->SetOrder(static_cast<int>(ColEnum::Player));
 	DoorCollision->GetTransform()->SetWorldPosition(DefenseMapEditor::ConvertTileXYToPos(16, 4));
 	DoorCollision->GetTransform()->SetLocalScale({ 200.f,200.f });
-
+	DoorRender->Off();
+	DoorCollision->Off();
 }
 
 // 이건 디버깅용도나 
@@ -386,7 +391,7 @@ void Barrack::MoveDoorPos(std::shared_ptr<Unit> _CopyUnit)
 			DoorUnits.push_back(NewUnit);
 			float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(NewUnit->GetTransform()->GetWorldPosition());
 			NewUnit->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(DoorPos[i].ix(), DoorPos[i].iy()));
-			NewUnit->DefenseMapFSM.ChangeState("Shamon");
+			NewUnit->DefenseMapFSM.ChangeState("Summoning");
 			DefenseGlobalValue::Collision->ClrAt(17, 7);
 			DefenseGlobalValue::Collision->ClrAt(16, 6);
 			DefenseGlobalValue::Collision->ClrAt(15, 5);

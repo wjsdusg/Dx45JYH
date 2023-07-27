@@ -253,8 +253,8 @@ float4 DefenseMapEditor::PosToTilePos(float4 _Pos)
 	}
 	else
 	{
-		//MsgAssert("¸»µµ¾ÈµÊ");
-		return { static_cast<float>(Y),static_cast<float>(X) };
+		float4 sds = DefenseTileInfos[15][15].Pos;
+		return DefenseTileInfos[15][15].Pos;
 	}
 
 
@@ -402,7 +402,8 @@ float4 DefenseMapEditor::ConvertTileXYToPos(size_t _X, size_t _Y)
 {
 	if (0 > _X || 0 > _Y|| 30 <=_X|| 30 <= _Y)
 	{
-		return { 15.f,15.f };
+		float4 sds = DefenseTileInfos[15][15].Pos;
+		return DefenseTileInfos[10][10].Pos;
 	}
 	else
 	{
@@ -423,7 +424,8 @@ float4  DefenseMapEditor::ConvertPosToTilePos(float4 _Pos)
 	Y = static_cast<size_t>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2.f);
 	if (0 > X || 0 > Y || 30 <= X || 30 <= Y)
 	{
-		return { 15.f,15.f };
+		float4 sds = DefenseTileInfos[15][15].Pos;
+		return DefenseTileInfos[15][15].Pos;
 	}
 	else
 	{

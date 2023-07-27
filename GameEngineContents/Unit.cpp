@@ -63,6 +63,7 @@ void Unit::Update(float _DeltaTime)
 
 	if (MyField == Field::DefenseMap)
 	{
+		
 		if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick && Team::Mine == MyTeam/*&&MyField==Field::DungeonMap*/)
 		{
 			if (true == IsA)
@@ -98,8 +99,23 @@ void Unit::Update(float _DeltaTime)
 		}
 		DefenseMapFSM.Update(_DeltaTime);
 	}
-	else if (MyField == Field::DungeonMap)
+	else if (MyField == Field::DungeonMap && Team::Mine == MyTeam)
 	{
+		{
+			float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
+			for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
+			{
+				for (float j = GetTransform()->GetWorldPosition().x - FOV; j <= GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x / 2)
+				{
+					float4 Pos2{ j,i };
+
+					if (FOV >= Pos2.XYDistance(GetTransform()->GetWorldPosition()))
+					{
+						MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 1);
+					}
+				}
+			}
+		}
 		if (true == GameEngineInput::IsUp("EngineMouseRight") && true == IsClick && Team::Mine == MyTeam/*&&MyField==Field::DungeonMap*/)
 		{
 			if (true == IsA)
@@ -136,21 +152,7 @@ void Unit::Update(float _DeltaTime)
 			IsHold = true;
 		}
 		FSM.Update(_DeltaTime);
-		{
-			/*float4 Pos = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
-			for (float i = GetTransform()->GetWorldPosition().y - FOV; i <= GetTransform()->GetWorldPosition().y + FOV; i += IsoTileScale.y / 2)
-			{
-				for (float j = GetTransform()->GetWorldPosition().x - FOV; j <= GetTransform()->GetWorldPosition().x + FOV; j += IsoTileScale.x/2)
-				{
-					float4 Pos2{ j,i };
-
-					if (FOV >= Pos2.XYDistance(GetTransform()->GetWorldPosition()))
-					{
-						MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 1);
-					}
-				}
-			}*/
-		}
+		
 	}
 
 
@@ -2027,6 +2029,9 @@ void Unit::LevelSetting()
 			break;
 		case 5:
 			LevelRender->SetSprite("level.png", 4);
+			break;
+		case 6:
+			LevelRender->Off();
 			break;
 		default:
 			break;

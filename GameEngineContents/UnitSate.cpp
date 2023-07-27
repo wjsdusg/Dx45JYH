@@ -2,7 +2,7 @@
 #include "Unit.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
-#include <GameEngineCore/GameEngineTileMapRenderer.h>
+
 #include "ContentsEnum.h"
 #include "MapOverlay.h"
 #include "Minion.h"

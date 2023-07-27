@@ -47,6 +47,8 @@ protected:
 	bool OpenDoor = false;
 	BuildingType MyBuildingType =BuildingType::Max;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender0;
+	static std::shared_ptr<class GameEngineUIRenderer> ItemBoxRender;
+	static std::shared_ptr<class GameEngineUIRenderer> ItemrRender;
 private:		
 	float CalAngle(float4 _Pos1, float4 _Pos2);
 		

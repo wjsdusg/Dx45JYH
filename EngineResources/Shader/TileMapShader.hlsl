@@ -87,6 +87,7 @@ cbuffer ColorOption : register(b0)
 {
     float4 MulColor;
     float4 PlusColor;
+    float4 Switch;
 }
 
 Texture2D DiffuseTex : register(t0);

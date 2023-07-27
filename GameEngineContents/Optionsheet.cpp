@@ -12,7 +12,7 @@
 #include "Karcher.h"
 #include "Ksword.h"
 #include "Mouse.h"
-int Optionsheet::Count = 0;
+int Optionsheet::Count = 1;
 Optionsheet::Optionsheet()
 {
 }
@@ -28,8 +28,16 @@ void Optionsheet::Update(float _DeltaTime)
 	FSM.Update(_DeltaTime);
 	if ( true == GameEngineInput::IsUp("F1"))
 	{
-		FSM.ChangeState("OpenNormalSheet");
-
+		if (0 == Count % 3)
+		{			
+			FSM.ChangeState("OpenEpicSheet");
+		}
+		else
+		{
+			FSM.ChangeState("OpenNormalSheet");
+		}
+		
+		Count++;
 	}
 	
 }
@@ -280,6 +288,148 @@ void Optionsheet::FSMInit()
 		}
 	);
 	FSM.CreateState(
+		{ .Name = "OpenEpicSheet",
+		.Start = [this]()
+		{
+			Selectednumber.resize(3);
+			Selectednumber[0] = -1;
+			Selectednumber[1] = -1;
+			Selectednumber[2] = -1;
+			Selectednumber[0] = GameEngineRandom::MainRandom.RandomInt(0, static_cast<int>(EpicFunctions.size()) - 1);
+			while (1)
+			{
+				int num = GameEngineRandom::MainRandom.RandomInt(0, static_cast<int>(EpicFunctions.size()) - 1);
+				if (Selectednumber[0] != num)
+				{
+					Selectednumber[1] = num;
+					break;
+				}
+			}
+			while (1)
+			{
+				int num = GameEngineRandom::MainRandom.RandomInt(0, static_cast<int>(EpicFunctions.size()) - 1);
+				if (Selectednumber[0] != num)
+				{
+					if (Selectednumber[1] != num)
+					{
+						Selectednumber[2] = num;
+						break;
+					}
+
+				}
+			}
+			 Render0->On();
+			 Render1->On();
+			 Render2->On();
+
+			 Render0->ChangeAnimation("OpenEpicText");
+			 Render1->ChangeAnimation("OpenEpicText");
+			 Render2->ChangeAnimation("OpenEpicText");
+
+
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			if (Render0->IsAnimationEnd())
+			{
+
+				Render0Select->On();
+				Render1Select->On();
+				Render2Select->On();
+				FontRender0->On();
+				FontRender1->On();
+				FontRender2->On();
+				FontRender0->SetText(EpicOptionsString[Selectednumber[0]]);
+				FontRender1->SetText(EpicOptionsString[Selectednumber[1]]);
+				FontRender2->SetText(EpicOptionsString[Selectednumber[2]]);
+			}
+			GameEngineCamera* Camera = GetLevel()->GetCamera(100).get();
+			float4 Mouse = GameEngineInput::GetMousePosition();
+			// 랜더러 
+			float4x4 ViewPort = Camera->GetViewPort();
+			float4x4 Proj = Camera->GetProjection();
+			float4x4 View = Camera->GetView();
+			Mouse *= ViewPort.InverseReturn();
+			Mouse *= Proj.InverseReturn();
+			Mouse *= View.InverseReturn();
+			CollisionData MouseData;
+			MouseData.SPHERE.Center = Mouse.DirectFloat3;
+			MouseData.SPHERE.Radius = 0.0f;
+			CollisionData asd = Render0->GetTransform()->GetCollisionData();
+			//1번선택지
+			if (true == GameEngineTransform::AABB2DToSpehre2D(Render0->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				Collision->On();
+				ColRender->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render0->GetTransform()->GetLocalPosition());
+				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					int num = Selectednumber[0];
+					EpicFunctions[num]();
+					FSM.ChangeState("Default");
+				}
+			}
+			//2번선택지
+			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render1->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				Collision->On();
+				ColRender->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render1->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render1->GetTransform()->GetLocalPosition());
+				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					int num = Selectednumber[1];
+					EpicFunctions[num]();
+					FSM.ChangeState("Default");
+				}
+			}
+			//3번선택지
+			else if (true == GameEngineTransform::AABB2DToSpehre2D(Render2->GetTransform()->GetCollisionData(), MouseData))
+			{
+				ColRender->On();
+				Collision->On();
+				ColRender->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
+				ColRender->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
+				Collision->GetTransform()->SetLocalScale(Render2->GetTransform()->GetLocalScale());
+				Collision->GetTransform()->SetLocalPosition(Render2->GetTransform()->GetLocalPosition());
+				if (true == GameEngineInput::IsUp("EngineMouseLeft"))
+				{
+					int num = Selectednumber[2];
+					EpicFunctions[num]();
+					FSM.ChangeState("Default");
+				}
+			}
+
+			else
+			{
+				ColRender->Off();
+				Collision->Off();
+			}
+
+		},
+		.End = [this]()
+		{
+			Render0->Off();
+			Render1->Off();
+			Render2->Off();
+			Render0Select->Off();
+			Render1Select->Off();
+			Render2Select->Off();
+			FontRender0->Off();
+			FontRender1->Off();
+			FontRender2->Off();
+			ColRender->Off();
+			Collision->Off();
+
+		}
+		}
+	);
+	FSM.CreateState(
 		{ .Name = "Default",
 		.Start = [this]() {},
 		.Update = [this](float _DeltaTime) {}
@@ -287,6 +437,8 @@ void Optionsheet::FSMInit()
 		.End = []() {}
 		}
 	);
+
+
 	FSM.ChangeState("Default");
 }
 
@@ -380,4 +532,15 @@ void  Optionsheet::FucntionsInit()
 
 		});
 	EpicOptionsString.push_back("유닛 합성 대성공 확률10%증가");
+
+	EpicFunctions.push_back([]()
+		{
+
+		});
+	EpicOptionsString.push_back("유닛 생성 최소레벨 2로 변경");
+	EpicFunctions.push_back([]()
+		{
+
+		});
+	EpicOptionsString.push_back("사망시 70%로 부상으로 변경");
 }

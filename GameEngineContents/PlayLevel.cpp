@@ -39,27 +39,18 @@
 #include "TreasureBox.h"
 #include "Barrack.h"
 #include "GameManager.h"
+#include "GotoDefenseMapZone.h"
 std::shared_ptr<Mouse> NewMouse = nullptr;
 std::shared_ptr<Player> Object0 = nullptr;
 std::shared_ptr<TestObject> TestObject0 = nullptr;
-
 std::shared_ptr<Map> Map1 = nullptr;
 std::shared_ptr<UIPannel> NewUIPannel = nullptr;
 std::shared_ptr<MiniMap> NewMiniMap = nullptr;
-std::shared_ptr<Ksword> NewKsword = nullptr;
-std::shared_ptr<Ksword> NewKsword2 = nullptr;
+
 std::shared_ptr<MapOverlay> NewMapOverlay = nullptr;
-std::shared_ptr<Karcher>NewKarcher = nullptr;
+
 std::shared_ptr<Object>NewObject = nullptr;
 
-
-std::shared_ptr<Gonisi> NewGonisi = nullptr;
-std::shared_ptr<Asako> NewAsako = nullptr;
-std::shared_ptr<Gato> NewGato = nullptr;
-std::shared_ptr<Seisho> NeSeisho = nullptr;
-std::shared_ptr<Tokugawa> NewTokugawa = nullptr;
-std::shared_ptr<Ugida> NewUgida = nullptr;
-std::shared_ptr<Wakizaka> NewWakizaka = nullptr;
 std::shared_ptr<DefenseMap> NewDefenseMap = nullptr;
 std::shared_ptr<MapEditor> NewMapEditor = nullptr;
 std::shared_ptr<GameEngineFontRenderer> FontRender = nullptr;
@@ -70,7 +61,8 @@ std::shared_ptr<RuinObject> NewRuinObject = nullptr;
 std::shared_ptr<NormalObject1> NewNormalObject1 = nullptr;
 std::shared_ptr<TreasureBox> NewTreasureBox = nullptr;
 std::shared_ptr<Barrack> NewBarrack = nullptr; 
-std::shared_ptr<GameManager> NewGameManager = nullptr;
+std::shared_ptr<GameManager> NewGameManager = nullptr; 
+std::shared_ptr<GotoDefenseMapZone> NewGotoDefenseMapZone = nullptr;
 PlayLevel::PlayLevel()
 {
 	MainPlayLevel = this;
@@ -100,9 +92,10 @@ extern float4 TileScale;
 PlayLevel* PlayLevel::MainPlayLevel = nullptr;
 void PlayLevel::Update(float _DeltaTime)
 {
-	if (nullptr == NewGameManager && true == GameEngineInput::IsUp("F2")) 
+	if (false == NewBarrack->DoorCollision->IsUpdate() && true == GameEngineInput::IsUp("F2"))
 	{
-		NewGameManager = CreateActor<GameManager>();
+		NewBarrack->DoorCollision->On();
+		NewBarrack->DoorRender->On();
 	}
 	if (true == GameEngineInput::IsUp("G"))
 	{
@@ -112,7 +105,7 @@ void PlayLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsUp("M"))
 	{
 		
-		NewBarrack->GotoDenFensceMap();		
+		
 		//IsDebugSwitch();
 	}
 	{
@@ -631,12 +624,7 @@ void PlayLevel::Start()
 
 	NewMouse = CreateActor<Mouse>();
 	NewBarrack = CreateActor<Barrack>();
-	/*for (int i = 0; i < 5; i++)
-	{
-	 NewKsword = CreateActor<Ksword>();
-
-	 NewKsword->GetTransform()->SetLocalPosition(MapEditor::ConvertTileXYToPos(90 + i, 90));
-	}
+	
 
 
 
@@ -645,14 +633,15 @@ void PlayLevel::Start()
 	NewRuinObject->SetTileCollsion();
 
 	NewNormalObject1 = CreateActor<NormalObject1>();
-	NewNormalObject1->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(90, 95));
+	NewNormalObject1->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(110, 110));
 	NewNormalObject1->SetTileCollsion();
 
 	NewTreasureBox = CreateActor<TreasureBox>();
-	NewTreasureBox->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(95, 95));
+	NewTreasureBox->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(120, 120));
 	NewTreasureBox->SetTileCollsion();
 
-	*/
+	NewGotoDefenseMapZone = CreateActor<GotoDefenseMapZone>();
+	NewGotoDefenseMapZone->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(72, 70));
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->SetSortType(0, SortType::ZSort);
 	NewObject = CreateActor<Object>(1);
@@ -723,7 +712,7 @@ void PlayLevel::Start()
 		NewBarrack->RespawnPosLoad(Ser);
 	}
 	MyField = Field::DefenseMap;	
-
+	NewGameManager = CreateActor<GameManager>();
 	
 	GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
 }

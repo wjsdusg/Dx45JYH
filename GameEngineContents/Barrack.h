@@ -23,6 +23,8 @@ public:
 	void RespawnPosLoad(GameEngineSerializer& _Ser);
 	void GotoDengeon();
 	void GotoDenFensceMap();
+	std::shared_ptr<class GameEngineSpriteRenderer> DoorRender;
+	std::shared_ptr<class GameEngineCollision> DoorCollision;
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -41,8 +43,7 @@ private:
 	int leve = 0;
 	void CreateUnit(int _Level);
 	void Synthesis();
-	std::shared_ptr<class GameEngineSpriteRenderer> DoorRender;
-	std::shared_ptr<class GameEngineCollision> DoorCollision;
+	
 	void MoveDoorPos(std::shared_ptr<Unit> _CopyUnit);
 };
 
