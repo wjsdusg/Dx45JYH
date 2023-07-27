@@ -25,7 +25,7 @@ Barrack::~Barrack()
 }
 
 
-Barrack* Barrack::MainBarrack=nullptr;
+Barrack* Barrack::MainBarrack = nullptr;
 void Barrack::Update(float _DeltaTime)
 {
 	Building::Update(_DeltaTime);
@@ -55,8 +55,12 @@ void Barrack::Update(float _DeltaTime)
 					continue;
 				}
 				else
-				{	
-					MoveDoorPos(NewUnit);
+				{
+					if (Team::Mine == NewUnit->MyTeam)
+					{
+						MoveDoorPos(NewUnit);
+					}
+
 				}
 			}
 		}
@@ -64,7 +68,7 @@ void Barrack::Update(float _DeltaTime)
 }
 //
 void Barrack::Start()
-{	
+{
 	if (nullptr == GameEngineSprite::Find("Barrack.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -90,32 +94,32 @@ void Barrack::Start()
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Door").GetFullPath());
-		
+
 	}
 	GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(2, 24));
-	Render0 = CreateComponent<GameEngineSpriteRenderer>();	
+	Render0 = CreateComponent<GameEngineSpriteRenderer>();
 	Render0->CreateAnimation({ "Stay", "Barrack.png",0,0,0.1f,true,false });
 	Render0->CreateAnimation({ "Die", "exp11.png",0,18,0.1f,false,true });
 	Render0->GetTransform()->SetLocalScale({ 250,250 });
-	
+
 	Collision = CreateComponent<GameEngineCollision>();
-	
+
 	Collision->SetColType(ColType::AABBBOX2D);
 	Collision->SetOrder(static_cast<int>(ColEnum::Unit));
 	Collision->GetTransform()->SetLocalScale(Render0->GetTransform()->GetLocalScale());
-	MyTeam = Team::Mine;	
+	MyTeam = Team::Mine;
 
 	Building::Start();
-	
+
 	DoorRender = CreateComponent<GameEngineSpriteRenderer>();
 	DoorRender->CreateAnimation({ .AnimationName = "Open", .SpriteName = "Door",.Loop = true,.ScaleToTexture = false });
 	DoorRender->ChangeAnimation("Open");
 	DoorRender->GetTransform()->SetLocalScale({ 100.f,200.f });
 	DoorRender->GetTransform()->SetWorldPosition(DefenseMapEditor::ConvertTileXYToPos(16, 4));
-	DoorCollision = CreateComponent<GameEngineCollision>();	
+	DoorCollision = CreateComponent<GameEngineCollision>();
 	DoorCollision->SetOrder(static_cast<int>(ColEnum::Player));
 	DoorCollision->GetTransform()->SetWorldPosition(DefenseMapEditor::ConvertTileXYToPos(16, 4));
-	DoorCollision->GetTransform()->SetLocalScale({ 100.f,100.f });
+	DoorCollision->GetTransform()->SetLocalScale({ 200.f,200.f });
 
 }
 
@@ -135,7 +139,7 @@ void Barrack::SummonPosLoad(GameEngineSerializer& _Ser)
 	{
 		_Ser.Read(x);
 		_Ser.Read(y);
-		float4 CheckPos =DefenseMapEditor::ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
+		float4 CheckPos = DefenseMapEditor::ConvertPosToTileXY({ static_cast<float>(x), static_cast<float>(y) });
 		SummonPos[i] = CheckPos;
 	}
 }
@@ -158,11 +162,11 @@ void Barrack::DoorPosLoad(GameEngineSerializer& _Ser)
 void Barrack::CreateUnit(int _Level)
 {
 	int RandomNum = GameEngineRandom::MainRandom.RandomInt(0, 1);
-	std::shared_ptr<Ksword> NewKsword = nullptr;	
+	std::shared_ptr<Ksword> NewKsword = nullptr;
 	std::shared_ptr<Karcher>NewKarcher = nullptr;
 	switch (RandomNum) {
 	case 0:
-		
+
 		for (int i = 0; i < SummonPos.size(); i++)
 		{
 			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
@@ -176,11 +180,11 @@ void Barrack::CreateUnit(int _Level)
 				NewKsword->DefenseMapFSM.ChangeState("Summoning");
 				break;
 			}
-			
+
 		}
 		break;
 	case 1:
-		
+
 		for (int i = 0; i < SummonPos.size(); i++)
 		{
 			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
@@ -195,12 +199,12 @@ void Barrack::CreateUnit(int _Level)
 				break;
 			}
 		}
-		break;	
+		break;
 	default:
 		break;
 	}
 }
-
+//던전입장전집합
 void Barrack::MoveDoorPos(std::shared_ptr<Unit> _CopyUnit)
 {
 	//DoorUnits.clear();
@@ -209,16 +213,22 @@ void Barrack::MoveDoorPos(std::shared_ptr<Unit> _CopyUnit)
 	{
 		if (false == DefenseGlobalValue::Collision->IsCollision(DoorPos[i].ix(), DoorPos[i].iy()))
 		{
-			
-			NewUnit->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(DoorPos[i].ix(), DoorPos[i].iy()));
+
 			NewUnit->MyTeam = Team::Ally;
-			DoorUnits.push_back(NewUnit);			
-			NewUnit->DefenseMapFSM.ChangeState("Summoning");
+			DoorUnits.push_back(NewUnit);
+			float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(NewUnit->GetTransform()->GetWorldPosition());
+			NewUnit->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(DoorPos[i].ix(), DoorPos[i].iy()));
+			NewUnit->DefenseMapFSM.ChangeState("Shamon");
+			DefenseGlobalValue::Collision->ClrAt(17, 7);
+			DefenseGlobalValue::Collision->ClrAt(16, 6);
+			DefenseGlobalValue::Collision->ClrAt(15, 5);
+			DefenseGlobalValue::Collision->ClrAt(15, 6);
+			int a = 0;
 			break;
 		}
 
 	}
-	
+
 }
 
 void Barrack::Synthesis()
@@ -233,24 +243,24 @@ void Barrack::Synthesis()
 	}
 	for (int i = 1; i < LevelInfos.size() - 1; i++)
 	{
-		if (5 < LevelInfos[i-1])
+		if (5 < LevelInfos[i - 1])
 		{
 			continue;
 		}
-		auto It = std::find(LevelInfos.begin()+i, LevelInfos.end(), LevelInfos[i-1]);
+		auto It = std::find(LevelInfos.begin() + i, LevelInfos.end(), LevelInfos[i - 1]);
 		if (LevelInfos.end() != It)
 		{
-			int Level = LevelInfos[i-1];
-			int index = std::distance(LevelInfos.begin(), It);
+			int Level = LevelInfos[i - 1];
+			int index = static_cast<int>(std::distance(LevelInfos.begin(), It));
 			//(BarrackUnits.begin()+i-1)->get()->DefenseMapFSM.ChangeState("Die");
 
-			BarrackUnits[i-1]->DefenseMapFSM.ChangeState("Die");
+			BarrackUnits[i - 1]->DefenseMapFSM.ChangeState("Die");
 			BarrackUnits[index]->DefenseMapFSM.ChangeState("Die");
 
-			BarrackUnits.erase(BarrackUnits.begin()+i - 1);
-			BarrackUnits.erase(BarrackUnits.begin() + index-1);
+			BarrackUnits.erase(BarrackUnits.begin() + i - 1);
+			BarrackUnits.erase(BarrackUnits.begin() + index - 1);
 			LevelInfos.erase(LevelInfos.begin() + i - 1);
-			LevelInfos.erase(LevelInfos.begin() + index-1);
+			LevelInfos.erase(LevelInfos.begin() + index - 1);
 			Level += 1;
 			CreateUnit(Level);
 			return;
@@ -263,11 +273,11 @@ void Barrack::Synthesis()
 
 void Barrack::TransunitToMap()
 {
-	
+
 	int x = 7;
 	int y = 7;
 	int num = 0;
-	
+
 	for (int n = 1; n <= 10; n++) {
 		for (int dy = -n; dy <= n; dy++) {
 			for (int dx = -n; dx <= n; dx++) {
@@ -282,7 +292,7 @@ void Barrack::TransunitToMap()
 				{
 					float4 Pos = DefenseMapEditor::ConvertTileXYToPos(nx, ny);
 					if (nullptr != BarrackUnits[num])
-					{						
+					{
 						BarrackUnits[num]->GetTransform()->SetLocalPosition(Pos);
 						BarrackUnits[num]->SetTeam(Team::Mine);
 						BarrackUnits[num]->MyField = Field::DefenseMap;
@@ -324,8 +334,7 @@ void Barrack::GotoDengeon()
 {
 	PlayLevel::MainPlayLevel->SetField(Field::DungeonMap);
 	Mouse::NewMainMouse->SetMyField(Field::DungeonMap);
-	RespawnPos;
-	DoorUnits;
+
 	if (0 != DoorUnits.size() && 0 != RespawnPos.size())
 	{
 		for (int i = 0; i < DoorUnits.size(); i++)
@@ -336,6 +345,59 @@ void Barrack::GotoDengeon()
 			DoorUnits[i]->FSM.ChangeState("Stay");
 		}
 		GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(DoorUnits[0]->GetTransform()->GetWorldPosition());
-		DoorUnits.clear();
+		//DoorUnits.clear();
+	}
+}
+
+void Barrack::GotoDenFensceMap()
+{
+	PlayLevel::MainPlayLevel->SetField(Field::DefenseMap);
+	Mouse::NewMainMouse->SetMyField(Field::DefenseMap);
+
+	GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition({ 4800.f,-2400.f });
+
+	int x = 7;
+	int y = 7;
+	int num = 0;
+	for (int n = 1; n <= 10; n++) {
+		for (int dy = -n; dy <= n; dy++) {
+			for (int dx = -n; dx <= n; dx++) {
+
+				int nx = x + dx;
+				int ny = y + dy;
+				if (true == DefenseGlobalValue::Collision->IsOutBound(nx, ny))
+				{
+					return;
+				}
+				if (false == DefenseGlobalValue::Collision->IsCollision(nx, ny))
+				{
+					float4 Pos = DefenseMapEditor::ConvertTileXYToPos(nx, ny);
+					if (nullptr != DoorUnits[num])
+					{
+						if (DoorUnits[num]->IsDeath())
+						{
+							num++;
+						}
+						else 
+						{
+							float4 sdsd= DefenseMapEditor::ConvertTileXYToPos(Pos.ix(), Pos.iy());
+							DoorUnits[num]->GetTransform()->SetWorldPosition(Pos);
+							DoorUnits[num]->MyField = Field::DefenseMap;
+							DoorUnits[num]->MyTeam = Team::Mine;
+							DoorUnits[num]->DefenseMapFSM.ChangeState("Stay");
+							num++;
+						}
+						
+
+					}
+				}
+				if (DoorUnits.size() == num)
+				{
+					DoorUnits.clear();
+					return;
+				}
+
+			}
+		}
 	}
 }

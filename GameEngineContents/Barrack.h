@@ -22,6 +22,7 @@ public:
 	void TransunitToMap();
 	void RespawnPosLoad(GameEngineSerializer& _Ser);
 	void GotoDengeon();
+	void GotoDenFensceMap();
 protected:
 	void Start();
 	void Update(float _Delta) override;

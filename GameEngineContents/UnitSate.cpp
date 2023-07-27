@@ -148,7 +148,7 @@ void Unit::DefenseMapStateInit()
 						}
 						else
 						{
-							
+
 							return;
 						}
 
@@ -1045,13 +1045,8 @@ void Unit::DefenseMapStateInit()
 					}
 					DefenseMapFSM.ChangeState("Attack");
 					return;
-
 				}
-
-
 			}
-
-
 		},
 		.End = [this]()
 		 {
@@ -1068,105 +1063,190 @@ void Unit::DefenseMapStateInit()
 		.Start = [this]()
 		{
 			//각도계산용
+			if (AttackType::Far == MyAttackType && nullptr != MissileRender)
+			{
+				//float4 _Index = ReturnIndexPlusPos();
+				//float4 _Pos = DefenseMapEditor::ConvertTileXYToPos(_Index.ix(), _Index.iy());
 
+				MissileRender->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				float _Angle = CalAngle(MissileRender->GetTransform()->GetWorldPosition(), CopyObject->GetTransform()->GetWorldPosition());
+				MissileRender->GetTransform()->SetLocalRotation({ 0,0,_Angle });
+				MissileRender->On();
+			}
 			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetLocalPosition());
-			if (Angle < 10 || Angle >= 350)
 			{
-				Render0->ChangeAnimation("LAttack");
-				if (false == IsFlip)
+				if (Angle < 10 || Angle >= 350)
 				{
-					Render0->SetFlipX();
-					IsFlip = true;
+					Render0->ChangeAnimation("LAttack");
+					if (false == IsFlip)
+					{
+						Render0->SetFlipX();
+						IsFlip = true;
+					}
 				}
-			}
-			if (Angle < 80 && Angle >= 10)
-			{
-				Render0->ChangeAnimation("LUp45Attack");
-				if (false == IsFlip)
+				if (Angle < 80 && Angle >= 10)
 				{
-					Render0->SetFlipX();
-					IsFlip = true;
+					Render0->ChangeAnimation("LUp45Attack");
+					if (false == IsFlip)
+					{
+						Render0->SetFlipX();
+						IsFlip = true;
+					}
+				}
+
+				if (Angle < 100 && Angle >= 80)
+				{
+					Render0->ChangeAnimation("UpAttack");
+				}
+				if (Angle < 170 && Angle >= 100)
+				{
+					if (true == IsFlip)
+					{
+						Render0->SetFlipX();
+						IsFlip = false;
+					}
+					Render0->ChangeAnimation("LUp45Attack");
+				}
+				if (Angle < 190 && Angle >= 170)
+				{
+					Render0->ChangeAnimation("LAttack");
+					if (true == IsFlip)
+					{
+						Render0->SetFlipX();
+						IsFlip = false;
+					}
+				}
+				if (Angle < 260 && Angle >= 190)
+				{
+					Render0->ChangeAnimation("LDown45Attack");
+					if (true == IsFlip)
+					{
+						Render0->SetFlipX();
+						IsFlip = false;
+					}
+				}
+				if (Angle < 280 && Angle >= 260)
+				{
+					Render0->ChangeAnimation("DownAttack");
+
+				}
+				if (Angle < 350 && Angle >= 280)
+				{
+					Render0->ChangeAnimation("LDown45Attack");
+					if (false == IsFlip)
+					{
+						Render0->SetFlipX();
+						IsFlip = true;
+					}
 				}
 			}
 
-			if (Angle < 100 && Angle >= 80)
-			{
-				Render0->ChangeAnimation("UpAttack");
-			}
-			if (Angle < 170 && Angle >= 100)
-			{
-				if (true == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = false;
-				}
-				Render0->ChangeAnimation("LUp45Attack");
-			}
-			if (Angle < 190 && Angle >= 170)
-			{
-				Render0->ChangeAnimation("LAttack");
-				if (true == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = false;
-				}
-			}
-			if (Angle < 260 && Angle >= 190)
-			{
-				Render0->ChangeAnimation("LDown45Attack");
-				if (true == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = false;
-				}
-			}
-			if (Angle < 280 && Angle >= 260)
-			{
-				Render0->ChangeAnimation("DownAttack");
-
-			}
-			if (Angle < 350 && Angle >= 280)
-			{
-				Render0->ChangeAnimation("LDown45Attack");
-				if (false == IsFlip)
-				{
-					Render0->SetFlipX();
-					IsFlip = true;
-				}
-			}
 			PreAngle = Angle;
 		},
 		.Update = [this](float _DeltaTime)
 		{
-			if (Render0->IsAnimationEnd())
+			if (true == IsClick)
 			{
+				int a = 0;
+			}
 
+			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+			float InterDistance = CopyObject->GetTransform()->GetWorldPosition().XYDistance(GetTransform()->GetLocalPosition());
+			CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+			if (nullptr == CopyObject || true == CopyObject->IsDeath())
+			{
+				CopyObject = nullptr;
+				DefenseMapFSM.ChangeState("Stay");
+				return;
+			}
+			else if (AttackType::Far == MyAttackType)
+			{
+				MissileRender->GetTransform()->AddWorldPosition(MovePointTowardsTarget
+				(
+					MissileRender->GetTransform()->GetWorldPosition(),
+					CopyObject->GetTransform()->GetWorldPosition(),
+					MissileRender->GetTransform()->GetWorldPosition().XYDistance(DefenseMapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())) / AttackSpeed,
+					_DeltaTime) * 3.f
+				);
+				if (3.f > MissileRender->GetTransform()->GetWorldPosition().XYDistance(DefenseMapEditor::ConvertPosToTilePos(CopyObject->GetTransform()->GetWorldPosition())))
+				{
+					MissileRender->Off();
+				}
+			}
+			if (0 >= CurHp)
+			{
+				DefenseMapFSM.ChangeState("Die");
+				return;
+			}
+			else if (Render0->IsAnimationEnd())
+			{
 				if (nullptr == CopyObject || true == CopyObject->IsDeath())
 				{
 					CopyObject = nullptr;
 					DefenseMapFSM.ChangeState("Stay");
 					return;
 				}
-else
-{
-	if (0 < CopyObject->CurHp)
-	{
-		CopyObject->CurHp -= (AddATK + ATK);
+				
+				if (AttackType::Near == MyAttackType)
+				{
+					if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+					{
 
-	}
-	DefenseMapFSM.ChangeState("Stay");
-}
+						if (0 < CopyObject->CurHp)
+						{
+							CopyObject->CurHp -= (AddATK + ATK);
+						}
+						TargetPos = CopyObject->GetTransform()->GetLocalPosition();
+						DefenseMapPathCal();
+						CopyIndexX = DefenseMapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
+						CopyIndexY = DefenseMapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
+						DefenseMapFSM.ChangeState("Stay");
+						return;
+					}
+					else if (abs(PreAngle - Angle) > 25.f)
+					{
+						if (0 < CopyObject->CurHp)
+						{
+							CopyObject->CurHp -= (AddATK + ATK);
+						}
+						CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
+						DefenseMapFSM.ChangeState("Attack");
+						if (true == IsClick)
+						{
+							int a = 0;
+						}
+						return;
+					}
+					else
+					{
+						if (0 < CopyObject->CurHp)
+						{
+							CopyObject->CurHp -= (AddATK + ATK);
 
-}
-},
-.End = []() {}
+						}
+
+					}
+				}
+				else if (AttackType::Far == MyAttackType)
+				{
+					if (0 < CopyObject->CurHp)
+					{
+						CopyObject->CurHp -= (AddATK + ATK);
+
+					}
+					DefenseMapFSM.ChangeState("Attack");
+					return;
+				}
+			}
+		},
+		.End = []() {}
 		}
 	);
 	DefenseMapFSM.CreateState(
 		{ .Name = "Die",
 		.Start = [this]()
 		{
-			
+
 			if (CurHp > 10)
 			{
 				Render0->ChangeAnimation("ShomenDie");
@@ -1175,7 +1255,7 @@ else
 			{
 				Render0->ChangeAnimation("Die");
 			}
-			
+
 			auto it = std::find(Units.begin(), Units.end(), DynamicThis<Unit>());
 			if (it != Units.end())
 			{
@@ -1194,7 +1274,7 @@ else
 		},
 		.End = [this]()
 		{
-			
+
 		}
 		}
 	);
@@ -1589,30 +1669,30 @@ else
 					IsFlip = true;
 				}
 			}
-		//	}
-			
-			float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-			IndexX = _Pos.ix();
-			IndexY = _Pos.iy();
-			float4 _Pos2 = DefenseMapEditor::ConvertTileXYToPos(IndexX, IndexY);
-			GetTransform()->SetLocalPosition(_Pos2);
-			DefenseGlobalValue::Collision->SetAt(IndexX, IndexY);
-		},
-		.Update = [this](float _DeltaTime)
-		{			
-			float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
-			if (IndexX != _Pos.x || IndexY != _Pos.y)
-			{
-				DefenseGlobalValue::Collision->ClrAt(IndexX, IndexY);
-				IndexX = _Pos.ix();
-				IndexY = _Pos.iy();
-				float4 _Pos2 = DefenseMapEditor::ConvertTileXYToPos(IndexX, IndexY);
-				GetTransform()->SetLocalPosition(_Pos2);
-				DefenseGlobalValue::Collision->SetAt(IndexX, IndexY);
-			}
+				//	}
 
-		},
-		.End = []() {}
+					float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+					IndexX = _Pos.ix();
+					IndexY = _Pos.iy();
+					float4 _Pos2 = DefenseMapEditor::ConvertTileXYToPos(IndexX, IndexY);
+					GetTransform()->SetLocalPosition(_Pos2);
+					DefenseGlobalValue::Collision->SetAt(IndexX, IndexY);
+				},
+				.Update = [this](float _DeltaTime)
+				{
+					float4 _Pos = DefenseMapEditor::ConvertPosToTileXY(GetTransform()->GetLocalPosition());
+					if (IndexX != _Pos.x || IndexY != _Pos.y)
+					{
+						DefenseGlobalValue::Collision->ClrAt(IndexX, IndexY);
+						IndexX = _Pos.ix();
+						IndexY = _Pos.iy();
+						float4 _Pos2 = DefenseMapEditor::ConvertTileXYToPos(IndexX, IndexY);
+						GetTransform()->SetLocalPosition(_Pos2);
+						DefenseGlobalValue::Collision->SetAt(IndexX, IndexY);
+					}
+
+				},
+				.End = []() {}
 		}
 	);
 

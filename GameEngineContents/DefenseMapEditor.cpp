@@ -35,13 +35,7 @@ void DefenseMapEditor::Update(float _DeltaTime)
 	FSM.Update(_DeltaTime);
 	NewObject->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
 
-	if (0 < MoveMarks.size())
-	{
-		for (int i = 0; i < MoveMarks.size(); i++)
-		{
-			GameEngineDebug::DrawBox(GetLevel()->GetMainCamera().get(), MoveMarks[i]->GetTransform());
-		}
-	}
+	
 	{		
 		std::string str3 = "MousePos-MapUpP " + Pos.ToString();;
 		std::string_view MouseConvertTile = str3;
@@ -427,9 +421,14 @@ float4  DefenseMapEditor::ConvertPosToTilePos(float4 _Pos)
 	size_t Y = -1;
 	X = static_cast<size_t>((CheckPos.x / TileSizeH.x + -CheckPos.y / TileSizeH.y) / 2.f);
 	Y = static_cast<size_t>((-CheckPos.y / TileSizeH.y - (CheckPos.x / TileSizeH.x)) / 2.f);
-	if (X < 0 || Y < 0)
+	if (0 > X || 0 > Y || 30 <= X || 30 <= Y)
 	{
-		int a = 0;
+		return { 15.f,15.f };
 	}
-	return DefenseTileInfos[Y][X].Pos;
+	else
+	{
+
+		return DefenseTileInfos[Y][X].Pos;
+
+	}
 }

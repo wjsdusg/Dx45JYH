@@ -125,9 +125,13 @@ void PlayLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsUp("G"))
 	{
-		NewBarrack->GotoDengeon();
-
-		//NewMonster->FSM.ChangeState("Die");
+		NewBarrack->GotoDengeon();	
+		//IsDebugSwitch();
+	}
+	if (true == GameEngineInput::IsUp("M"))
+	{
+		
+		NewBarrack->GotoDenFensceMap();		
 		//IsDebugSwitch();
 	}
 	{
@@ -412,14 +416,14 @@ void PlayLevel::Update(float _DeltaTime)
 		MyField = Field::DefenseMap;
 	}
 	{
-		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
+		/*if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
 		{
 			NewMapEditor->FSM.ChangeState("IsMove");
 		}
 		if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F8"))
 		{
 			NewMapEditor->FSM.ChangeState("Default");
-		}
+		}*/
 		/*if (nullptr != NewMapEditor && true == NewMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
 			{
 				GameEngineSerializer Ser;
@@ -441,7 +445,7 @@ void PlayLevel::Update(float _DeltaTime)
 			NewMapEditor->Load(Ser);
 		}*/
 	}
-	if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
+	/*if (nullptr != NewMapEditor && true == GameEngineInput::IsUp("F5"))
 	{
 		if (true == NewMapEditor->IsUpdate())
 		{
@@ -453,9 +457,9 @@ void PlayLevel::Update(float _DeltaTime)
 			NewMapEditor->On();
 			NewDefenseMapEditor->Off();
 		}
-	}
+	}*/
 	{
-		if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
+		/*if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F1"))
 		{
 			NewDefenseMapEditor->FSM.ChangeState("IsMove");
 
@@ -464,7 +468,7 @@ void PlayLevel::Update(float _DeltaTime)
 		{
 
 			NewDefenseMapEditor->FSM.ChangeState("Default");
-		}
+		}*/
 		/*if (nullptr != NewDefenseMapEditor && true == NewDefenseMapEditor->IsUpdate() && true == GameEngineInput::IsUp("F2")) {
 			{
 				GameEngineSerializer Ser;

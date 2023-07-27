@@ -29,7 +29,7 @@ void MapEditor::Update(float _DeltaTime)
 		Render0->GetTransform()->SetWorldPosition(sd);
 	}*/
 
-	FSM.Update(_DeltaTime);
+	//FSM.Update(_DeltaTime);
 	//NewObject->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
 
 	//if (0 < MoveMarks.size())
