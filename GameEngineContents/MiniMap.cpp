@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineButton.h>
 #include <GameEngineCore/GameEngineTileMapRenderer.h>
+#include "PlayLevel.h"
 MiniMap::MiniMap()
 {
 }
@@ -38,10 +39,18 @@ void MiniMap::Update(float _DeltaTime)
 	
 	Render1->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize() * MiniViewRatio);
 	Render1->GetTransform()->SetLocalPosition(GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition() * MiniViewRatio);
+	Render1->GetTransform()->AddLocalPosition({ 0,0,-1 });
 	
-	
-	float4 s = Render1->GetTransform()->GetLocalScale();
+	float4 s = Render1->GetTransform()->GetWorldPosition();
 
+	if (PlayLevel::MainPlayLevel->GetField() == Field::DungeonMap)
+	{
+		MiniMapOverlay->Off();
+	}
+	else
+	{
+		MiniMapOverlay->On();
+	}
 }
 
 void MiniMap::Start()
@@ -63,10 +72,10 @@ void MiniMap::Start()
 	MiniMapOverlay = CreateComponent<GameEngineUIRenderer>();
 	
 	
-	//MiniMapOverlay->GetTransform()->SetParent(Render0->GetTransform());	
-	//MiniMapOverlay->GetTransform()->SetLocalScale({ 1.f, 1.f,1.f });	
-	//MiniMapOverlay->SetTexture("BlackMini.png");
-	
+	MiniMapOverlay->GetTransform()->SetParent(Render0->GetTransform());	
+	MiniMapOverlay->GetTransform()->SetLocalScale({ 1.f, 1.f,1.f });	
+	MiniMapOverlay->SetTexture("BlackMini.png");
+	MiniMapOverlay->GetTransform()->AddLocalPosition({ 0,0,-100 });
 }
 
 // 이건 디버깅용도나 

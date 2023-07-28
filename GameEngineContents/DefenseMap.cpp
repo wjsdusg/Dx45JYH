@@ -24,7 +24,7 @@ extern float4 MapDownP;
 void DefenseMap::Update(float _DeltaTime)
 {
 
-
+	float4 sss =Render1->GetTransform()->GetWorldPosition();
 
 }
 

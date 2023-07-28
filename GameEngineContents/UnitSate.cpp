@@ -1239,7 +1239,10 @@ void Unit::DefenseMapStateInit()
 				}
 			}
 		},
-		.End = []() {}
+		.End = []()  
+			{
+
+			}
 		}
 	);
 	DefenseMapFSM.CreateState(
@@ -1274,7 +1277,10 @@ void Unit::DefenseMapStateInit()
 		},
 		.End = [this]()
 		{
-
+			if (nullptr != MissileRender&&true== MissileRender->IsUpdate())
+			{
+				MissileRender->Off();
+			}
 		}
 		}
 	);
