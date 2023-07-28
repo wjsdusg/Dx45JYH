@@ -104,7 +104,7 @@ void PlayLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsUp("M"))
 	{
-		
+		NewBarrack->CreateHero();
 		
 		//IsDebugSwitch();
 	}

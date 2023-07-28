@@ -25,6 +25,7 @@ public:
 	void GotoDenFensceMap();
 	std::shared_ptr<class GameEngineSpriteRenderer> DoorRender;
 	std::shared_ptr<class GameEngineCollision> DoorCollision;
+	void CreateHero();
 protected:
 	void Start();
 	void Update(float _Delta) override;

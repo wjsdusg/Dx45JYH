@@ -583,3 +583,158 @@ void Barrack::GotoDenFensceMap()
 		}
 	}
 }
+
+int numm = 0;
+void Barrack::CreateHero()
+{
+	std::shared_ptr<Wakizaka>NewWakizaka = nullptr;
+	std::shared_ptr<Asako>NewAsako = nullptr;
+	std::shared_ptr<Gato>NewGato = nullptr;
+	std::shared_ptr<Gonisi>NewGonisi = nullptr;
+	std::shared_ptr<Mitsunari>NewMitsunari = nullptr;
+	std::shared_ptr<Seisho>NewSeisho = nullptr;
+	std::shared_ptr<Tokugawa>NewTokugawa = nullptr;
+	std::shared_ptr<Ugida>NewUgida = nullptr;	
+	switch (numm) {
+	case 0:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewWakizaka = GetLevel()->CreateActor<Wakizaka >();
+				NewWakizaka->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewWakizaka->Level = 6;
+				NewWakizaka->LevelSetting();
+				BarrackUnits.push_back(NewWakizaka);
+				LevelInfos.push_back(NewWakizaka->Level);
+				NewWakizaka->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+
+		}
+		break;
+	case 1:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewAsako = GetLevel()->CreateActor<Asako >();
+				NewAsako->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewAsako->Level = 6;
+				NewAsako->LevelSetting();
+				BarrackUnits.push_back(NewAsako);
+				LevelInfos.push_back(NewAsako->Level);
+				NewAsako->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	case 2:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewGato = GetLevel()->CreateActor<Gato>();
+				NewGato->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewGato->Level = 6;
+				NewGato->LevelSetting();
+				BarrackUnits.push_back(NewGato);
+				LevelInfos.push_back(NewGato->Level);
+				NewGato->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	case 3:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewMitsunari = GetLevel()->CreateActor<Mitsunari>();
+				NewMitsunari->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewMitsunari->Level = 6;
+				NewMitsunari->LevelSetting();
+				BarrackUnits.push_back(NewMitsunari);
+				LevelInfos.push_back(NewMitsunari->Level);
+				NewMitsunari->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	case 4:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewSeisho = GetLevel()->CreateActor<Seisho >();
+				NewSeisho->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewSeisho->Level = 6;
+				NewSeisho->LevelSetting();
+				BarrackUnits.push_back(NewSeisho);
+				LevelInfos.push_back(NewSeisho->Level);
+				NewSeisho->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	case 5:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewTokugawa = GetLevel()->CreateActor<Tokugawa >();
+				NewTokugawa->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewTokugawa->Level = 6;
+				NewTokugawa->LevelSetting();
+				BarrackUnits.push_back(NewTokugawa);
+				LevelInfos.push_back(NewTokugawa->Level);
+				NewTokugawa->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	case 6:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewUgida = GetLevel()->CreateActor<Ugida >();
+				NewUgida->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewUgida->Level = 6;
+				NewUgida->LevelSetting();
+				BarrackUnits.push_back(NewUgida);
+				LevelInfos.push_back(NewUgida->Level);
+				NewUgida->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	case 7:
+
+		for (int i = 0; i < SummonPos.size(); i++)
+		{
+			if (false == DefenseGlobalValue::Collision->IsCollision(SummonPos[i].ix(), SummonPos[i].iy()))
+			{
+				NewGonisi = GetLevel()->CreateActor<Gonisi >();
+				NewGonisi->GetTransform()->SetLocalPosition(DefenseMapEditor::ConvertTileXYToPos(SummonPos[i].ix(), SummonPos[i].iy()));
+				NewGonisi->Level = 6;
+				NewGonisi->LevelSetting();
+				BarrackUnits.push_back(NewGonisi);
+				LevelInfos.push_back(NewGonisi->Level);
+				NewGonisi->DefenseMapFSM.ChangeState("Summoning");
+				break;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+	numm++;
+}
