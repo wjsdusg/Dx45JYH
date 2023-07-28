@@ -107,7 +107,7 @@ void PlayLevel::Update(float _DeltaTime)
 	{
 		NewBarrack->CreateHero();
 		
-		IsDebugSwitch();
+		//IsDebugSwitch();
 	}
 	{
 		float4 Pos9 = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
