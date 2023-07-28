@@ -10,6 +10,7 @@
 #include <GameEngineCore/GameEngineButton.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEnginePlatform/GameEngineSound.h>
+#include <GameEngineCore/GameEngineTileMapRenderer.h>
 #include "GlobalValue.h"
 #include "Mouse.h"
 #include "Object.h"
@@ -106,7 +107,77 @@ void PlayLevel::Update(float _DeltaTime)
 	{
 		NewBarrack->CreateHero();
 		
-		//IsDebugSwitch();
+		IsDebugSwitch();
+	}
+	{
+		float4 Pos9 = MapOverlay::MainMapOverlay->GetTransform()->GetWorldPosition();
+
+		
+
+		{
+			float4 Pos = NewRuinObject->GetTransform()->GetWorldPosition();
+			if (MapOverlay::MainMapOverlay->TileMap->GetTIleIndex(Pos - Pos9) == 0)
+			{
+				NewRuinObject->Off();
+			}
+			else
+			{
+				if (false == NewRuinObject->IsUpdate())
+				{
+					NewRuinObject->On();
+
+				}
+			}
+		}
+		{
+			float4 Pos = NewTreasureBox->GetTransform()->GetWorldPosition();
+			if (MapOverlay::MainMapOverlay->TileMap->GetTIleIndex(Pos - Pos9) == 0)
+			{
+				NewTreasureBox->Off();
+			}
+			else
+			{
+				if (false == NewTreasureBox->IsUpdate())
+				{
+					NewTreasureBox->On();
+
+				}
+			}
+		}
+		{
+			float4 Pos = NewNormalObject1->GetTransform()->GetWorldPosition();
+			if (MapOverlay::MainMapOverlay->TileMap->GetTIleIndex(Pos - Pos9) == 0)
+			{
+				NewNormalObject1->Off();
+			}
+			else
+			{
+				if (false == NewNormalObject1->IsUpdate())
+				{
+					NewNormalObject1->On();
+
+				}
+			}
+		}
+		{
+		float4 Pos = NewGotoDefenseMapZone->GetTransform()->GetWorldPosition();
+		if (MapOverlay::MainMapOverlay->TileMap->GetTIleIndex(Pos - Pos9) == 0)
+		{
+			NewGotoDefenseMapZone->Off();
+		}
+		else
+		{
+			if (false == NewGotoDefenseMapZone->IsUpdate())
+			{
+				NewGotoDefenseMapZone->On();
+
+			}
+		}
+		}
+			/*
+			
+
+			 =*/
 	}
 	{
 		std::shared_ptr<GameEngineCamera> Camera = GetCamera(100);
@@ -374,7 +445,7 @@ void PlayLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsUp("Space"))
 	{
-		GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
+		//GetMainCamera()->GetTransform()->SetLocalPosition(NewDefenseMap->GetTransform()->GetLocalPosition());
 		//MyField = Field::DefenseMap;
 	}
 	{

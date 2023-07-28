@@ -56,7 +56,7 @@ void Barrack::Update(float _DeltaTime)
 		{
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
-			if (DoorCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 != ColTest.size())
+			if (DoorCollision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 0 != ColTest.size())
 			{
 				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 				{

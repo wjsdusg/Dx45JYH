@@ -104,6 +104,7 @@ void Object::ObjectsSetTile()
 					if (FOV >= Pos2.XYDistance(NewObject->GetTransform()->GetWorldPosition()))
 					{
 						MapOverlay::MainMapOverlay->TileMap->SetTile(Pos2 - Pos, "FOGWAR.png", 2);
+						//MapOverlay::MainMapOverlay->TileMap->GetTIleIndex()
 					}
 				}
 			}

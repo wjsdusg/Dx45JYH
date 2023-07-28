@@ -18,6 +18,7 @@ public:
 	MapOverlay& operator=(const MapOverlay& _Other) = delete;
 	MapOverlay& operator=(MapOverlay&& _Other) noexcept = delete;
 	static MapOverlay* MainMapOverlay;
+	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -26,7 +27,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
-	std::shared_ptr<class GameEngineTileMapRenderer> TileMap;
+	
 	 
 	
 
