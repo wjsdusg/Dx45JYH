@@ -451,6 +451,7 @@ void Unit::StateInit()
 
 				}
 				InterTargetPos = PathPos.front();
+				
 
 				PathPos.pop_front();
 

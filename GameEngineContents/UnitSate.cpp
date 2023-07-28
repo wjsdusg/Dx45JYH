@@ -234,7 +234,11 @@ void Unit::DefenseMapStateInit()
 
 				}
 				InterTargetPos = PathPos.front();
-
+				if (float4{ 0,0,0 } == InterTargetPos)
+				{
+					DefenseMapFSM.ChangeState("Stay");
+					return;
+				}
 				PathPos.pop_front();
 
 				//각도계산
@@ -320,7 +324,9 @@ void Unit::DefenseMapStateInit()
 					}
 				}
 			}
-
+			else {
+				DefenseMapFSM.ChangeState("Stay");
+			}
 
 			{
 				if (Angle < 10 || Angle >= 350)
