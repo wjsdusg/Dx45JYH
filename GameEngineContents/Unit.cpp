@@ -763,6 +763,11 @@ void Unit::StateInit()
 					}
 				}
 			}
+			else
+			{
+				FSM.ChangeState("Stay");
+				return;
+			}
 
 
 			{
@@ -880,10 +885,10 @@ void Unit::StateInit()
 								else if (MyTeam != NewObject->GetTeam())
 								{
 									CopyObject = NewObject;
-									if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+									/*if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
 									{
 										continue;
-									}
+									}*/
 									CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
 									FSM.ChangeState("Attack");
 									return;
@@ -959,10 +964,10 @@ void Unit::StateInit()
 							else if (MyTeam != NewObject->GetTeam())
 							{
 								CopyObject = NewObject;
-								if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+								/*if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
 								{
 									continue;
-								}
+								}*/
 								CalAngle(GetTransform()->GetLocalPosition(), CopyObject->GetTransform()->GetWorldPosition());
 								FSM.ChangeState("Attack");
 								return;
@@ -1211,20 +1216,22 @@ void Unit::StateInit()
 				}
 				if (AttackType::Near == MyAttackType)
 				{
-					if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+					if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::AABBBOX2D, ColType::AABBBOX2D), 1 < ColTest.size())
 					{
-
 						if (0 < CopyObject->CurHp)
 						{
 							CopyObject->CurHp -= (AddATK + ATK);
 						}
-						TargetPos = CopyObject->GetTransform()->GetLocalPosition();
-						PathCal();
-						CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
-						CopyIndexY = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
-						FSM.ChangeState("Chase");
+						//TargetPos = CopyObject->GetTransform()->GetLocalPosition();
+						//PathCal();
+						//CopyIndexX = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).ix();
+						//CopyIndexY = MapEditor::ConvertPosToTileXY(CopyObject->GetTransform()->GetLocalPosition()).iy();
+						FSM.ChangeState("Attack");
 						return;
 					}
+					/*if (1 < abs(CopyObject->IndexX - IndexX) || 1 < abs(CopyObject->IndexY - IndexY))
+					{						
+					}*/
 					else if (abs(PreAngle - Angle) > 25.f)
 					{
 						if (0 < CopyObject->CurHp)

@@ -222,7 +222,11 @@ void Unit::DefenseMapStateInit()
 		{ .Name = "Move",
 		.Start = [this]() {
 			//경로계산
+			 if (AttackType::Far == MyAttackType && nullptr != MissileRender)
+			 {
 
+				 MissileRender->Off();
+			 }
 			if (0 != PathPos.size())
 			{
 
@@ -324,7 +328,8 @@ void Unit::DefenseMapStateInit()
 					}
 				}
 			}
-			else {
+			else 
+			{
 				DefenseMapFSM.ChangeState("Stay");
 			}
 
@@ -414,14 +419,17 @@ void Unit::DefenseMapStateInit()
 				if (0 == PathPos.size())
 				{
 					DefenseMapFSM.ChangeState("Stay");
+					return;
 				}
 				else if (true == IsHold)
 				{
 					DefenseMapFSM.ChangeState("Stay");
+					return;
 				}
 				else
 				{
 					DefenseMapFSM.ChangeState("Move");
+					return;
 				}
 			}
 			else
@@ -1245,9 +1253,13 @@ void Unit::DefenseMapStateInit()
 				}
 			}
 		},
-		.End = []()  
+		.End = [this]()  
 			{
+				if (AttackType::Far == MyAttackType && nullptr != MissileRender)
+				{
 
+					MissileRender->Off();
+				}
 			}
 		}
 	);

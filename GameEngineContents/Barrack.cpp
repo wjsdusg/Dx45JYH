@@ -69,6 +69,7 @@ void Barrack::Update(float _DeltaTime)
 					{
 						if (Team::Mine == NewUnit->MyTeam)
 						{
+							NewUnit->SetIsClick(false);
 							MoveDoorPos(NewUnit);
 						}
 
