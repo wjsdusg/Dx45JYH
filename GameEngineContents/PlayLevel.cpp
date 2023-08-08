@@ -698,7 +698,7 @@ void PlayLevel::Start()
 
 
 	NewRuinObject = CreateActor<RuinObject>();
-	NewRuinObject->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(90 , 85));
+	NewRuinObject->GetTransform()->SetWorldPosition(MapEditor::ConvertTileXYToPos(130 , 130));
 	NewRuinObject->SetTileCollsion();
 
 	NewNormalObject1 = CreateActor<NormalObject1>();

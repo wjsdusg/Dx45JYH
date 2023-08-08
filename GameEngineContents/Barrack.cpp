@@ -43,7 +43,7 @@ void Barrack::Update(float _DeltaTime)
 	if (GetLiveTime() > 2.f)
 	{
 		Synthesis();
-		CreateUnit(3);
+		CreateUnit(5);
 		ResetLiveTime();
 
 	}

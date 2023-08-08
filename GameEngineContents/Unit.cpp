@@ -1386,6 +1386,7 @@ else
 		{ .Name = "Die",
 		.Start = [this]()
 		{
+			IsClick = false;
 			GlobalValue::Collision->ClrAt(IndexX, IndexY);
 			Render0->ChangeAnimation("Die");
 			auto it = std::find(Units.begin(), Units.end(), DynamicThis<Unit>());

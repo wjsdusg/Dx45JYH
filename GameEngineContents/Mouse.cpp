@@ -235,11 +235,13 @@ void Mouse::FSMInit()
 
 					}
 					FSM.ChangeState("UnitClick");
+					return;
 				}
 			}
 			else
 			{
 				Render0->ChangeAnimation("Default");
+				
 			}
 
 			if (true == GameEngineInput::IsPress("EngineMouseLeft"))
@@ -281,8 +283,9 @@ void Mouse::FSMInit()
 				return;
 			}
 			std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-			if (nullptr == CopyUnit)
+			if (nullptr== CopyUnit||true == CopyUnit->IsDeath())
 			{
+				CopyUnit = nullptr;
 				FSM.ChangeState("Default");
 			}//À¯´ÖÅ¬¸¯
 			else if (Collision->CollisionAll(static_cast<int>(ColEnum::Unit), ColTest, ColType::SPHERE2D, ColType::AABBBOX2D), 0 != ColTest.size())
@@ -304,7 +307,6 @@ void Mouse::FSMInit()
 							{
 								check = true;
 							}
-
 						}
 					}
 					if (nullptr != CopyUnit && true == CopyUnit->GetIsClick() && DoubleClickTimer < 0.5f && true == check&& CopyUnit->MyTeam == Team::Mine)

@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-
+	//_CrtSetBreakAlloc(1000);
 	float4 ss = float4::AngleToDirection2DToDeg(30.f);
 	float sddd = ss.GetAnagleDegZ();
 	float4 ss2 = float4::AngleToDirection2DToDeg(0.f);
